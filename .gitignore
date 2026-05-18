@@ -1,4 +1,36 @@
+# Dependencies
 node_modules/
+
+# Build artefacts
 dist/
+out/
+.next/
+.turbo/
+*.tsbuildinfo
+next-env.d.ts
+
+# Slidev
 .slidev/
 *.pdf
+
+# Env files — never commit secrets
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Editor / OS scratch
+.vscode/
+.idea/
+*.swp
+
+# Claude Code session metadata (logs + per-session JSON)
+.claude/

@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "hooks": {
+    "agentStop": [
+      {
+        "type": "command",
+        "bash": "yaah hook Stop",
+        "timeoutSec": 30
+      }
+    ],
+    "postToolUse": [
+      {
+        "type": "command",
+        "bash": "yaah hook PostToolUse",
+        "timeoutSec": 30
+      }
+    ],
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "yaah hook PreToolUse",
+        "timeoutSec": 30
+      }
+    ],
+    "sessionEnd": [
+      {
+        "type": "command",
+        "bash": "yaah hook SessionEnd",
+        "timeoutSec": 30
+      }
+    ],
+    "sessionStart": [
+      {
+        "type": "command",
+        "bash": "yaah hook SessionStart",
+        "timeoutSec": 30
+      }
+    ]
+  }
+}

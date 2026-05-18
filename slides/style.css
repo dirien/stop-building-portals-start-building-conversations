@@ -1,0 +1,22 @@
+/* Hide neversink page indicator on all slides */
+footer.absolute.bottom-1 {
+  display: none !important;
+}
+
+/* Make the Slidev stage around the slide canvas white as well */
+html,
+body,
+#app,
+#page-root {
+  background: #fff !important;
+}
+
+/* Larger padding and font for Admonitions */
+.markdown-alert.markdown-alert-custom {
+  padding: 14px 20px !important;
+  font-size: 1rem !important;
+}
+
+.markdown-alert .markdown-alert-title-custom {
+  font-size: 1.05rem !important;
+}

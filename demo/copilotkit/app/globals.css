@@ -1,0 +1,247 @@
+/* The Material Symbols font is loaded via a <link> tag in app/layout.tsx,
+   not via CSS @import — Tailwind v4's PostCSS pipeline doesn't reliably
+   preserve external @import urls. */
+@import "tailwindcss";
+@import "@copilotkit/react-ui/v2/styles.css";
+
+/* The A2UI basic catalog's Icon renders `<span class="material-symbols-outlined">{name}</span>`
+   and relies on this class to turn the text into a glyph via the Material
+   Symbols font + ligature mapping. The font itself comes from the <link>
+   in app/layout.tsx. !important here overrides Tailwind v4's preflight. */
+.material-symbols-outlined,
+.material-symbols-outlined * {
+  font-family: "Material Symbols Outlined" !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  font-size: 22px !important;
+  line-height: 1 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga" !important;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
+
+@theme {
+  --color-nord-0: #2e3440;
+  --color-nord-1: #3b4252;
+  --color-nord-2: #434c5e;
+  --color-nord-3: #4c566a;
+  --color-nord-4: #d8dee9;
+  --color-nord-5: #e5e9f0;
+  --color-nord-6: #eceff4;
+  --color-nord-frost1: #8fbcbb;
+  --color-nord-frost2: #88c0d0;
+  --color-nord-frost3: #81a1c1;
+  --color-nord-frost4: #5e81ac;
+  --color-nord-accent: #bf616a;
+  --color-nord-ok: #a3be8c;
+  --color-nord-warn: #ebcb8b;
+}
+
+:root {
+  color-scheme: dark;
+  /* v1 CopilotKit theme vars — kept for any v1 widgets, harmless if unused. */
+  --copilot-kit-primary-color: var(--color-nord-frost2);
+  --copilot-kit-contrast-color: var(--color-nord-0);
+  --copilot-kit-background-color: var(--color-nord-1);
+  --copilot-kit-input-background-color: var(--color-nord-0);
+  --copilot-kit-secondary-color: var(--color-nord-2);
+  --copilot-kit-secondary-contrast-color: var(--color-nord-6);
+  --copilot-kit-separator-color: var(--color-nord-2);
+  --copilot-kit-muted-color: var(--color-nord-3);
+}
+
+/* ─── CopilotKit v2 (shadcn/ui-style) theme overrides ─────────────────────
+   v2 components read shadcn-style variables (--background, --card,
+   --primary, --muted, etc.). Critically, those variables are scoped to
+   the `[data-copilotkit]` attribute the chat root sets on itself — NOT
+   to :root or .dark. We override at the same selector chain so our Nord
+   palette wins. Light + dark coexist in their CSS, so we cover both
+   (.dark [data-copilotkit] AND bare [data-copilotkit]) with the same
+   values; whichever mode is active picks up the Nord override.
+   Mapping mirrors the IDP shell:
+     --background  → nord-1  (drawer surface, peer of Dashboard sidebar)
+     --card        → nord-2  (message bubble + tool-call chip surface)
+     --muted       → nord-2  (subtle bg for secondary chips)
+     --primary     → nord-frost2 (send button, brand accent)
+     --input       → nord-0  (recessed textarea)
+     --border      → nord-2  (hairlines)
+   ----------------------------------------------------------------------- */
+[data-copilotkit],
+.dark [data-copilotkit],
+[data-copilotkit].dark {
+  --background: #3b4252 !important; /* nord-1 */
+  --foreground: #eceff4 !important; /* nord-6 */
+  --card: #434c5e !important; /* nord-2 */
+  --card-foreground: #eceff4 !important;
+  --popover: #3b4252 !important;
+  --popover-foreground: #eceff4 !important;
+  --primary: #88c0d0 !important; /* nord-frost2 */
+  --primary-foreground: #2e3440 !important; /* nord-0 */
+  --secondary: #434c5e !important; /* nord-2 */
+  --secondary-foreground: #eceff4 !important;
+  --muted: #434c5e !important; /* nord-2 */
+  --muted-foreground: rgba(216, 222, 233, 0.65) !important; /* nord-4 dim */
+  --accent: #4c566a !important; /* nord-3 */
+  --accent-foreground: #eceff4 !important;
+  --destructive: #bf616a !important; /* nord-accent */
+  --border: #434c5e !important; /* nord-2 */
+  --input: #2e3440 !important; /* nord-0 */
+  --ring: #88c0d0 !important; /* nord-frost2 */
+}
+
+/* Belt and suspenders: the chat container itself should always sit on
+   nord-1, even if some inner element forgot to inherit. */
+[data-copilotkit] {
+  background-color: #3b4252 !important;
+  color: #eceff4 !important;
+}
+
+html,
+body {
+  background: var(--color-nord-0);
+  color: var(--color-nord-6);
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* The drawer container itself isn't a shadcn primitive — it's
+   positioned/sized by the v2 CopilotSidebar wrapper. Pin its width and
+   border so the canvas main area gets the right margin and the seam
+   between IDP and chat reads as a panel join, not a shadow drop. */
+@media (min-width: 640px) {
+  [data-slot="sidebar"],
+  [data-side="right"][role="dialog"] {
+    width: 360px !important;
+    border-left: 1px solid #434c5e !important; /* nord-2 */
+    box-shadow: -1px 0 0 rgba(0, 0, 0, 0.25) !important;
+  }
+}
+
+/* Inline code / pre blocks inside markdown — Nord accent tone. shadcn's
+   prose CSS picks them up via `code` / `pre` tags. */
+.prose code,
+.prose pre {
+  background-color: #2e3440 !important; /* nord-0 */
+  color: #88c0d0 !important; /* nord-frost2 */
+  border-radius: 4px !important;
+}
+
+.prose a {
+  color: #88c0d0 !important;
+  text-decoration: underline;
+}
+
+/* Welcome / empty-state heading (set via labels.welcomeMessageText) shows
+   up as an h1 inside the chat — tone it down so it doesn't dominate. */
+.cpk h1,
+[data-slot="messages"] h1 {
+  font-size: 0.9rem !important;
+  line-height: 1.45 !important;
+  font-weight: 500 !important;
+  color: rgba(236, 239, 244, 0.72) !important;
+  text-align: left !important;
+  margin-bottom: 0 !important;
+}
+
+/* Hide the Next.js dev tools badge during the talk. `devIndicators: false`
+   disables it after the dev server restarts; this selector covers an already
+   running dev server while iterating. */
+button[aria-label="Open Next.js Dev Tools"] {
+  display: none !important;
+}
+
+/* ─── A2UI Nord override ────────────────────────────────────────────────
+   The @copilotkit/a2ui-renderer basic catalog uses inline styles with
+   hard-coded light colors (#fff card, #ccc border, #666 caption text,
+   #007bff button). We override them inside .a2ui-canvas-wrapper with
+   high-specificity !important rules so the surface fits PlatformOps.
+   Pre-empt the official primary-button color via the documented CSS var.
+   --------------------------------------------------------------------- */
+
+.a2ui-canvas-wrapper {
+  --a2ui-primary-color: #88c0d0; /* Nord frost2 */
+  color: var(--color-nord-6);
+}
+
+/* Card / container backgrounds */
+.a2ui-canvas-wrapper [style*="background-color: rgb(255, 255, 255)"],
+.a2ui-canvas-wrapper [style*="background-color: #fff"],
+.a2ui-canvas-wrapper [style*="background-color:#fff"],
+.a2ui-canvas-wrapper [style*="background:#fff"],
+.a2ui-canvas-wrapper [style*="background-color: white"] {
+  background-color: var(--color-nord-1) !important;
+  background-image: none !important;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Default borders (#ccc / rgb(204,204,204)) */
+.a2ui-canvas-wrapper [style*="border: 1px solid"],
+.a2ui-canvas-wrapper [style*="border:1px solid"],
+.a2ui-canvas-wrapper [style*="border-color: rgb(204"],
+.a2ui-canvas-wrapper [style*="border-color: #ccc"] {
+  border-color: var(--color-nord-2) !important;
+}
+
+/* Caption / secondary text color (#666) */
+.a2ui-canvas-wrapper [style*="color: rgb(102, 102, 102)"],
+.a2ui-canvas-wrapper [style*="color: #666"] {
+  color: rgba(216, 222, 233, 0.65) !important;
+}
+
+/* All-purpose: anything that explicitly set black-on-light text */
+.a2ui-canvas-wrapper [style*="color: rgb(0, 0, 0)"],
+.a2ui-canvas-wrapper [style*="color: #000"],
+.a2ui-canvas-wrapper [style*="color: black"] {
+  color: var(--color-nord-6) !important;
+}
+
+/* Primary button — uses --a2ui-primary-color which we set above, but
+   ensure foreground stays readable on Nord frost2. */
+.a2ui-canvas-wrapper button {
+  border-radius: 6px !important;
+}
+.a2ui-canvas-wrapper button[style*="rgb(0, 123, 255)"],
+.a2ui-canvas-wrapper button[style*="#007bff"],
+.a2ui-canvas-wrapper button[style*="var(--a2ui-primary-color"] {
+  background-color: var(--color-nord-frost2) !important;
+  color: var(--color-nord-0) !important;
+  border: none !important;
+  font-weight: 600 !important;
+}
+
+/* Inputs */
+.a2ui-canvas-wrapper input,
+.a2ui-canvas-wrapper textarea {
+  background-color: var(--color-nord-0) !important;
+  color: var(--color-nord-6) !important;
+  border: 1px solid var(--color-nord-2) !important;
+  border-radius: 6px !important;
+  padding: 6px 10px !important;
+}
+.a2ui-canvas-wrapper input::placeholder,
+.a2ui-canvas-wrapper textarea::placeholder {
+  color: rgba(216, 222, 233, 0.4) !important;
+}
+
+/* Headings inside A2UI inherit color properly via the wrapper, but make
+   sure caption-variant text (which used #666) is still legible. */
+.a2ui-canvas-wrapper h1,
+.a2ui-canvas-wrapper h2,
+.a2ui-canvas-wrapper h3,
+.a2ui-canvas-wrapper h4,
+.a2ui-canvas-wrapper h5,
+.a2ui-canvas-wrapper h6 {
+  color: var(--color-nord-6);
+  letter-spacing: -0.01em;
+}
+
+.a2ui-canvas-wrapper hr {
+  border-color: var(--color-nord-2) !important;
+  opacity: 0.6;
+}

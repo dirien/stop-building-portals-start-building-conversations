@@ -1,0 +1,16 @@
+notify = ['yaah', 'hook', 'Notification']
+
+[mcp_servers]
+[mcp_servers.context7]
+command = 'npx'
+args = ['-y', '@context7/mcp']
+
+[mcp_servers.pulumi]
+url = 'https://mcp.ai.pulumi.com/mcp'
+
+[mcp_servers.yaah]
+command = 'yaah'
+args = ['serve']
+
+[features]
+codex_hooks = true

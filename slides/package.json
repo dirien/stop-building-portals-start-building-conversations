@@ -1,0 +1,25 @@
+{
+  "name": "stop-building-portals-start-building-conversations",
+  "private": true,
+  "scripts": {
+    "dev": "slidev",
+    "build": "slidev build",
+    "export": "slidev export"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
+  "devDependencies": {
+    "@iconify-json/carbon": "^1.2.20",
+    "@iconify-json/logos": "^1.2.11",
+    "@iconify-json/mdi": "^1.2.3",
+    "@slidev/cli": "^52.14.2",
+    "@slidev/theme-seriph": "^0.25.0",
+    "slidev-theme-nord": "^0.0.6"
+  },
+  "dependencies": {
+    "qrcode.vue": "^3.9.1"
+  }
+}

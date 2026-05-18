@@ -1,0 +1,999 @@
+---
+theme: nord
+colorSchema: auto
+title: "Stop Building Portals, Start Building Conversations"
+author: Engin Diri & Hila Fish
+info: |
+  ## Stop Building Portals, Start Building Conversations
+  The Paradigm Shift in Platform Engineering.
+  Engin Diri (Pulumi) & Hila Fish (AWS)
+highlighter: shiki
+lineNumbers: true
+transition: slide-left
+neversink_string: ""
+neversink_slug: ""
+slide_info: false
+layout: cover
+color: navy
+---
+
+# Stop Building Portals, Start Building **Conversations**
+
+The Paradigm Shift in Platform Engineering
+
+**Engin Diri** - _Pulumi_ &nbsp;&nbsp;|&nbsp;&nbsp; **Hila Fish** - _AWS_
+
+:: note ::
+
+<img src="/platforma-brand.jpg" class="inline-block w-8 h-8 rounded mr-2 align-middle" /> PlatforMA 2026 · Tel Aviv
+
+<!--
+Show of hands - who has built or maintained an internal developer portal?
+
+Keep your hand up if adoption plateaued after a few months.
+
+Yeah. That's why we're here today.
+-->
+
+---
+layout: default
+---
+
+<div class="grid grid-cols-2 gap-12 items-center h-full">
+  <div class="flex justify-center">
+    <img src="/engin-diri.jpg" class="w-64 rounded-2xl shadow-xl border-4 border-indigo-500/30" />
+  </div>
+  <div>
+    <h1 class="!text-4xl !mb-2">Engin Diri</h1>
+    <div class="text-xl opacity-80 mb-4">Senior Solutions Architect at <strong>Pulumi</strong></div>
+    <div class="flex items-center gap-4 mb-6 text-base opacity-70">
+      <span class="flex items-center gap-1"><carbon-logo-x /> @_ediri</span>
+      <span class="flex items-center gap-1"><carbon-logo-linkedin /> engin-diri</span>
+      <span class="flex items-center gap-1"><carbon-logo-github /> dirien</span>
+    </div>
+    <div class="text-base leading-relaxed opacity-70">
+      Building platform tooling and infrastructure-as-code.
+      Helping teams ship cloud infrastructure faster.
+    </div>
+  </div>
+</div>
+
+<!--
+I'm Engin. I build platform tooling at Pulumi. I've helped teams build portals, watched them succeed, and watched them fail.
+-->
+
+---
+layout: default
+---
+
+<div class="grid grid-cols-2 gap-12 items-center h-full">
+  <div class="flex justify-center">
+    <img src="/hila-fish.jpg" class="w-64 rounded-2xl shadow-xl border-4 border-cyan-500/30" />
+  </div>
+  <div>
+    <h1 class="!text-4xl !mb-2">Hila Fish</h1>
+    <div class="text-xl opacity-80 mb-4">SRE / DevOps Engineer at <strong>AWS</strong></div>
+    <div class="flex items-center gap-4 mb-6 text-base opacity-70">
+      <span class="flex items-center gap-1"><carbon-logo-x /> @Hilafish1</span>
+      <span class="flex items-center gap-1"><carbon-logo-linkedin /> hila-fish</span>
+      <span class="flex items-center gap-1"><carbon-logo-github /> hilafish</span>
+    </div>
+    <div class="text-base leading-relaxed opacity-70">
+      15+ years in infrastructure and DevOps. HashiCorp Ambassador, AWS Community Builder. Co-organizer of DevOpsDays Tel-Aviv.
+    </div>
+  </div>
+</div>
+
+<!--
+And I'm Hila. 15 years in infrastructure and DevOps. I've operated platforms at scale and I've seen what happens when you build something great that nobody uses.
+-->
+
+---
+layout: center
+class: text-center
+---
+
+<h1 class="!text-7xl">אוקיי, You Built a Portal</h1>
+
+---
+layout: top-title
+color: navy
+align: l
+---
+
+:: title ::
+
+# אוקיי, You Built a Portal
+
+:: content ::
+
+<div class="text-3xl space-y-12">
+
+You went to KubeCon. You saw a Backstage talk. You got inspired.
+
+<v-clicks>
+
+You spent **6 months** building it. Custom plugins. Service catalog. Golden paths. TechDocs.
+
+You launched it. Everyone's excited.
+
+</v-clicks>
+
+</div>
+
+<!--
+This is a story most platform engineers know by heart. You built something real. You solved real problems. And then developers stopped showing up.
+
+But that's not even the full story. Something else happened while you were building that portal...
+-->
+
+---
+layout: center
+class: text-center bg-white
+color: white
+---
+
+<img src="/along-came-ai.png" class="max-h-[60vh] mx-auto rounded-xl shadow-2xl" />
+
+<!--
+And then... AI happened. While you were perfecting your portal, developers discovered something new.
+-->
+
+---
+layout: center
+class: text-center
+---
+
+<h1 class="!text-6xl">Your Developers Moved On</h1>
+
+---
+layout: top-title
+color: navy
+align: l
+---
+
+:: title ::
+
+# Your Developers Moved On
+
+:: content ::
+
+<div class="text-2xl space-y-12">
+
+While you were building the portal, your developers found a **new interface**.
+
+<v-clicks>
+
+They're in **Claude Code** working from the terminal.
+
+They're in **Claude Desktop** asking questions about their infrastructure.
+
+They're in **Cursor** and **Copilot** writing and shipping code without leaving the editor.
+
+They're not coming back to your portal. They want their platform tools **where they already are**.
+
+</v-clicks>
+</div>
+
+<!--
+Your developers moved on. They live in Claude Code, Claude Desktop, Cursor, Copilot. They're not switching to a portal tab anymore. They want the platform to come to them - inside the conversation they're already having.
+-->
+
+---
+layout: fact
+color: navy
+---
+
+# 82%
+
+of developers use AI coding tools weekly
+
+<div class="flex gap-8 justify-center text-sm mt-8">
+<div class="text-center"><strong>6-8</strong><br/><span class="opacity-60">tools used daily</span></div>
+<div class="text-center"><strong>23 min</strong><br/><span class="opacity-60">to recover focus per switch</span></div>
+<div class="text-center"><strong>50%</strong><br/><span class="opacity-60">doubt their catalog</span></div>
+</div>
+
+<!--
+82% of developers now use AI tools weekly. They're in Copilot, Claude Code, Cursor - inside their IDE and terminal. They use 6-8 tools daily. Each context switch costs 23 minutes to recover. And 50% doubt the catalog is accurate anyway.
+
+Your portal is competing with tools developers already love. We solved "what to offer." We never solved "where to offer it."
+-->
+
+---
+layout: center
+class: text-center
+---
+
+<h1 class="!text-7xl">AI tools coming for your portal.</h1>
+
+---
+layout: default
+color: navy
+---
+
+<div class="absolute inset-0 overflow-hidden">
+
+<v-click>
+  <img src="/thumbnails/cc-1.png" class="absolute w-96 rounded shadow-xl border-2 border-white/20" style="top: -2%; left: -1%; transform: rotate(-5deg); z-index: 2;" />
+  <img src="/thumbnails/cc-2.png" class="absolute w-80 rounded shadow-xl border-2 border-white/20" style="top: 0%; left: 25%; transform: rotate(3deg); z-index: 1;" />
+  <img src="/thumbnails/cc-3.png" class="absolute w-88 rounded shadow-xl border-2 border-white/20" style="top: -1%; right: 10%; transform: rotate(4deg); z-index: 3;" />
+</v-click>
+<v-click>
+  <img src="/thumbnails/cc-4.png" class="absolute w-80 rounded shadow-xl border-2 border-white/20" style="top: 2%; right: -2%; transform: rotate(-3deg); z-index: 1;" />
+  <img src="/thumbnails/cc-5.png" class="absolute w-88 rounded shadow-xl border-2 border-white/20" style="top: 35%; left: -1%; transform: rotate(3deg); z-index: 2;" />
+  <img src="/thumbnails/cc-6.png" class="absolute w-80 rounded shadow-xl border-2 border-white/20" style="top: 30%; left: 28%; transform: rotate(-4deg); z-index: 3;" />
+</v-click>
+
+  <img src="/thumbnails/cc-7.png" class="absolute w-84 rounded shadow-xl border-2 border-white/20" style="top: 28%; right: 8%; transform: rotate(2deg); z-index: 1;" />
+  <img src="/thumbnails/cc-8.png" class="absolute w-80 rounded shadow-xl border-2 border-white/20" style="top: 45%; right: -2%; transform: rotate(-5deg); z-index: 2;" />
+
+  <v-click>
+  <div class="absolute bottom-6 left-0 right-0 text-center" style="z-index: 10;">
+    <div class="text-white text-6xl font-bold" style="text-shadow: 3px 3px 12px rgba(0,0,0,0.9);">
+      And the features keep shipping.
+    </div>
+  </div>
+  </v-click>
+</div>
+
+<!--
+Look at the pace. Ultraplan, Computer Use, Auto Mode, Monitor tool, autofix-pr - all shipped in the last 3 weeks alone. This is where developers live now. And these tools need your platform data to be useful.
+-->
+
+---
+layout: center
+class: text-center
+---
+
+<h1 class="!text-7xl">What if the portal lived<br/>inside the conversation?</h1>
+
+---
+layout: center
+class: text-center
+---
+
+<h1 class="!text-8xl font-bold">Welcome MCP Apps!</h1>
+
+---
+layout: section
+color: navy
+---
+
+## Two engineers. One side project. **9 months.**
+
+<div class="text-lg space-y-60 mt-8">
+
+<v-clicks>
+
+<div><span class="text-indigo-300 font-bold">May 2025</span> — Ido (Palo Alto Networks) and Liad (Shopify) start MCP-UI as a side project</div>
+
+</v-clicks>
+
+<div><span class="text-indigo-300 font-bold"></span> </div>
+
+<div><span class="text-indigo-300 font-bold"></span> </div>
+
+<div><span class="text-indigo-300 font-bold"></span> </div>
+</div>
+
+<!--
+This didn't come from a corporate lab. Two engineers started a side project. OpenAI independently validated the idea at DevDay. Anthropic and OpenAI co-authored the spec. Nine months later it shipped everywhere with 9 launch partners on day one - Figma, Slack, Canva, Box, Asana, and more. Monday.com acqui-hired the founders.
+
+That's how fast this moved.
+-->
+
+---
+layout: default
+color: navy
+---
+
+<div class="grid grid-cols-2 gap-8 items-center h-full">
+  <div class="flex flex-col gap-3">
+    <img src="/ido-liad-mcp-summit.jpg" class="w-full rounded-2xl shadow-xl border-4 border-emerald-500/30" />
+    <div class="text-xs opacity-40 text-center">MCP Developers Summit, London 2025</div>
+  </div>
+  <div>
+    <div class="text-sm opacity-50 mb-1">Homegrown talent, global standard 🇮🇱</div>
+    <h1 class="!text-3xl !mb-4">Meet the Inventors</h1>
+    <div class="space-y-3">
+      <div class="p-3 rounded border-1 border-solid border-emerald-200 bg-emerald-50/50">
+        <div class="text-lg font-bold text-gray-800">Ido Salomon</div>
+        <div class="text-sm text-gray-600">AI lead at Palo Alto Networks → AI & MCP in Monday.com's CEO Office</div>
+        <div class="text-xs opacity-50 mt-1">Author of MCP-UI, co-created GitMCP (top 10 of 5,000+ MCP servers). Co-moderator of MCP UI Working Group.</div>
+      </div>
+      <div class="p-3 rounded border-1 border-solid border-emerald-200 bg-emerald-50/50">
+        <div class="text-lg font-bold text-gray-800">Liad Yosef</div>
+        <div class="text-sm text-gray-600">Senior Staff Dev at Shopify (CEO Office) → AI & MCP at Monday.com</div>
+        <div class="text-xs opacity-50 mt-1">Co-creator of MCP-UI. Shipped Shopify's commerce widgets inside AI agents. Co-leads MCP global steering committee UI WG.</div>
+      </div>
+    </div>
+    <div class="mt-3 text-sm opacity-70">
+      Two Israeli engineers. A side project launched May 2025. Monday.com (Nasdaq, Tel Aviv) acqui-hired them both. Now they co-author the spec with Anthropic and OpenAI.
+    </div>
+  </div>
+</div>
+
+<!--
+And here's the part we love sharing at a Tel Aviv conference. Ido was at Palo Alto Networks, Liad at Shopify. Both Israeli. They started MCP-UI as a side project in May 2025 - an SDK that lets MCP servers return interactive HTML instead of just text.
+
+GitMCP, their other project, hit top 10 out of over 5,000 MCP servers. Monday.com - also Israeli, Nasdaq-listed - acqui-hired them both to work directly in the CEO's office. Now they co-author the MCP Apps spec with Anthropic and OpenAI on the global steering committee.
+
+Homegrown talent, global impact. This photo is from the MCP Developers Summit in London where they presented the specification.
+-->
+
+
+---
+layout: section
+color: navy
+---
+
+## Two engineers. One side project. **9 months.**
+
+<div class="text-lg space-y-6 mt-8">
+
+<div><span class="text-indigo-300 font-bold">May 2025</span> — Ido (Palo Alto Networks) and Liad (Shopify) start MCP-UI as a side project</div>
+
+<v-clicks>
+
+<div><span class="text-violet-300 font-bold">Oct 2025</span> — OpenAI ships Apps SDK at DevDay, validates the approach</div>
+
+<div><span class="text-purple-300 font-bold">Nov 2025</span> — SEP-1865: Anthropic + OpenAI co-author the spec together</div>
+
+<div><span class="text-emerald-300 font-bold">Jan 2026</span> — Ships in Claude, ChatGPT, VS Code, Goose. 9 launch partners on day one.</div>
+
+</v-clicks>
+
+</div>
+
+<v-click>
+
+<Admonition title="Grassroots, not corporate" color="emerald-light">
+Monday.com acqui-hired the founders. **From side project to industry standard in 9 months.**
+</Admonition>
+
+</v-click>
+
+<!--
+This didn't come from a corporate lab. Two engineers started a side project. OpenAI independently validated the idea at DevDay. Anthropic and OpenAI co-authored the spec. Nine months later it shipped everywhere with 9 launch partners on day one - Figma, Slack, Canva, Box, Asana, and more. Monday.com acqui-hired the founders.
+
+That's how fast this moved.
+-->
+
+---
+layout: center
+class: text-center
+---
+
+<h1 class="!text-7xl">So how does it work?</h1>
+
+---
+layout: top-title-two-cols
+color: navy
+align: l-lt-lt
+---
+
+:: title ::
+
+# MCP Apps - What Changes
+
+:: left ::
+
+**Before MCP Apps**, your MCP server returns text:
+
+<div class="p-3 rounded bg-gray-800 font-mono text-xs mt-2 mb-4">
+<span class="text-gray-400">$</span> show-catalog<br/>
+<span class="text-gray-500">5 services found: user-service<br/>(healthy), payment-api (healthy),<br/>notification-svc (degraded),<br/>api-gateway (healthy), auth-service<br/>(healthy)</span>
+</div>
+
+The developer reads a wall of text, copies a service name, types another command, repeats. The MCP server is powerful but **invisible**.
+
+:: right ::
+
+**With MCP Apps**, the same tool renders a real UI:
+
+<div class="p-3 rounded border-1 border-solid border-teal-400 bg-gray-800 mt-2 mb-4">
+  <div class="text-teal-300 text-xs mb-2 font-semibold">Platform Service Catalog</div>
+  <div class="grid grid-cols-2 gap-1">
+    <div class="bg-gray-700 rounded p-1.5 text-xs">
+      <div class="font-semibold text-gray-200">user-service</div>
+      <div class="text-green-400 text-[10px]">● healthy</div>
+    </div>
+    <div class="bg-gray-700 rounded p-1.5 text-xs">
+      <div class="font-semibold text-gray-200">payment-api</div>
+      <div class="text-green-400 text-[10px]">● healthy</div>
+    </div>
+    <div class="bg-gray-700 rounded p-1.5 text-xs">
+      <div class="font-semibold text-gray-200">notification-svc</div>
+      <div class="text-amber-400 text-[10px]">● degraded</div>
+    </div>
+    <div class="bg-gray-700 rounded p-1.5 text-xs">
+      <div class="font-semibold text-gray-200">api-gateway</div>
+      <div class="text-green-400 text-[10px]">● healthy</div>
+    </div>
+  </div>
+  <div class="mt-2">
+    <span class="px-2 py-0.5 bg-indigo-500 text-white text-[10px] rounded">Deploy</span>
+    <span class="px-2 py-0.5 bg-gray-600 text-gray-300 text-[10px] rounded ml-1">Details</span>
+  </div>
+</div>
+
+Click. Browse. Deploy. **Inside the conversation.** The same MCP server, the same data - but now with a face.
+
+<!--
+This is the before and after of MCP Apps. Same server, same data. Left: a text dump the developer has to parse mentally. Right: an interactive card they can click, browse, and deploy from - without leaving the conversation. The UI runs in a sandboxed iframe, zero token cost, and it works in Claude, VS Code, Goose, and ChatGPT today.
+-->
+
+---
+layout: top-title
+color: navy
+align: l
+---
+
+:: title ::
+
+# How MCP Apps Work
+
+:: content ::
+
+<div class="grid grid-cols-2 gap-6">
+<div>
+
+**The flow:**
+
+<div class="ns-c-tight text-sm">
+
+1. Developer asks: _"Show me the service catalog"_
+2. LLM calls your MCP tool: `show-catalog`
+3. Tool returns **data** + pointer to **UI resource**
+4. Host fetches bundled HTML from `ui://catalog/app.html`
+5. Renders interactive UI in a **sandboxed iframe**
+6. Developer clicks "Deploy" inside the UI
+7. UI calls **app-only tool** back to server
+8. Deployment runs, UI updates inline
+
+</div>
+
+</div>
+<div>
+
+**Key concepts:**
+
+<Admonition title="Two-part registration" color="emerald-light">
+**Tool** returns data + `_meta.ui.resourceUri`
+**Resource** serves the bundled HTML
+</Admonition>
+
+<Admonition title="App-only tools" color="blue-light">
+Tools the **UI can call** but the **LLM cannot see**. User stays in control of actions like deploy.
+</Admonition>
+
+<Admonition title="Zero token cost" color="green-light">
+UI is served as a resource, not generated as tokens.
+</Admonition>
+
+</div>
+</div>
+
+<!--
+Two-part registration: tool and resource, linked by a URI. The tool returns data plus a pointer to the UI. The host fetches the HTML, renders it sandboxed. The UI can call app-only tools - tools the model can't see, only the user can trigger. All through secure postMessage. Zero token cost.
+-->
+
+---
+layout: top-title
+color: navy
+align: l
+---
+
+:: title ::
+
+# Server Side: Your Catalog as an MCP App
+
+:: content ::
+
+```ts {all|3-5|7-12|all} twoslash
+// @noErrors
+import { registerAppTool, registerAppResource } from "@modelcontextprotocol/ext-apps/server";
+
+// Register a tool that returns data + points to a UI
+registerAppTool(server, "show-catalog", {
+  title: "Platform Service Catalog",
+  description: "Shows all registered platform services",
+  _meta: { ui: { resourceUri: "ui://catalog/app.html" } },
+}, async () => ({
+  content: [{ type: "text", text: "5 services found" }],     // text fallback
+  structuredContent: { view: "catalog", services: [/*...*/] }, // data for UI
+}));
+
+// Register the HTML resource the tool references
+registerAppResource(server, "catalog-ui", "ui://catalog/app.html", {}, async () => ({
+  contents: [{ uri: "ui://catalog/app.html", text: html }],
+}));
+```
+
+<!--
+That's it. Two registrations linked by a URI. The tool returns structured data for the UI plus a text fallback for hosts that don't support MCP Apps. The resource serves the bundled HTML. Under 200 lines for the whole server.
+-->
+
+---
+layout: top-title
+color: navy
+align: l
+---
+
+:: title ::
+
+# Client Side: Inside the Conversation
+
+:: content ::
+
+```ts {all|1-5|7-9|11-15|17-20|all} twoslash
+// @noErrors
+import { App } from "@modelcontextprotocol/ext-apps";
+
+const app = new App({ name: "Service Catalog", version: "1.0.0" });
+await app.connect();
+
+// Receive tool results with structured data
+app.ontoolresult = (result) => {
+  renderUI(result.structuredContent);
+};
+
+// Call tools back to the server from the UI
+document.getElementById("deploy-btn").addEventListener("click", async () => {
+  const result = await app.callServerTool({
+    name: "deploy-service",
+    arguments: { serviceId: "user-service", environment: "staging" },
+  });
+});
+
+// Adapt to host theme
+app.onhostcontextchanged = (ctx) => {
+  document.documentElement.style.colorScheme = ctx.themeMode;
+};
+```
+
+<!--
+Sandboxed iframe. Standard web APIs - addEventListener, DOM manipulation. Receives tool results, renders UI, calls tools back to the server. If you can build a web app, you can build this.
+-->
+
+---
+layout: cover
+color: navy
+---
+
+# Demo
+
+Platform Service Catalog as an MCP App
+
+Browse services, view details, deploy to staging
+
+:: note ::
+
+All inside the conversation. Non-UI clients get the text fallback automatically.
+
+<!--
+SWITCH TO TERMINAL. Start the MCP App server. Open Claude Desktop. "Show me the service catalog." The catalog renders inline. Click a service. Click Deploy. The entire Backstage workflow, zero context switches.
+-->
+
+---
+layout: top-title-two-cols
+color: navy
+align: l-lt-lt
+---
+
+:: title ::
+
+# The Same Workflow, Two Worlds
+
+:: left ::
+
+### Through the portal
+
+<div class="ns-c-supertight text-sm opacity-60">
+
+1. Open portal bookmark
+2. Log in (again)
+3. Find service catalog
+4. Scroll to find your service
+5. Click into detail page
+6. Fill deployment form
+7. Submit, switch back to IDE
+8. Wait for Slack notification
+
+</div>
+
+<Admonition title="8 steps, 4 context switches" color="red-light">
+~5 minutes
+</Admonition>
+
+:: right ::
+
+### Through the conversation
+
+> "Deploy user-service to staging"
+
+<div class="p-3 rounded border-1 border-solid border-emerald-300 bg-emerald-50 mt-2">
+  <div class="text-xs text-emerald-600 mb-1 font-semibold">Platform Service Catalog</div>
+  <div class="text-xs text-gray-700">user-service - healthy - 3 replicas</div>
+  <div class="mt-2">
+    <span class="px-2 py-0.5 bg-indigo-500 text-white text-xs rounded">Deploy to Staging</span>
+  </div>
+</div>
+
+<div class="p-2 rounded bg-emerald-50 border-1 border-solid border-emerald-300 text-xs text-emerald-700 mt-2">
+  ✓ Deployed user-service to staging successfully.
+</div>
+
+<Admonition title="3 steps, 0 context switches" color="emerald-light">
+~10 seconds
+</Admonition>
+
+<!--
+Same operation. Eight steps versus three. Five minutes versus ten seconds. Same platform data, same security model. The Backstage catalog didn't go away - we just stopped asking developers to visit it.
+-->
+
+---
+layout: top-title
+color: navy
+align: l
+---
+
+:: title ::
+
+# Even Backstage Agrees
+
+:: content ::
+
+Backstage v1.40 shipped `@backstage/plugin-mcp-actions-backend`
+
+```ts {all|4-5|7-9|all} twoslash
+// @noErrors
+// Backstage v1.40 - your portal becomes an MCP server
+
+import { createBackendModule } from '@backstage/backend-plugin-api';
+import { mcpActionsPlugin } from '@backstage/plugin-mcp-actions-backend';
+
+// Every scaffolder action becomes an MCP tool
+// Every catalog entity becomes queryable via conversation
+// Your portal becomes an MCP server
+
+const backend = createBackend();
+backend.add(mcpActionsPlugin);
+```
+
+<Admonition title="Your portal isn't dead" color="emerald-light">
+It's becoming your **MCP server**. The catalog is still the source of truth. MCP is how agents and conversations access it.
+</Admonition>
+
+<!--
+This is the validation. Backstage itself shipped MCP support. Every scaffolder action becomes a tool. Every catalog entity becomes queryable from the conversation. Backstage isn't dying - it's evolving from a destination to infrastructure.
+-->
+
+---
+layout: center
+class: text-center
+---
+
+<h1 class="!text-7xl">Beyond MCP Apps:<br/>Generative UI</h1>
+
+---
+layout: top-title-two-cols
+color: navy
+align: l-lt-lt
+---
+
+:: title ::
+
+# OpenUI by Thesys
+
+:: left ::
+
+**The problem:** Every MCP App needs hand-built HTML. That doesn't scale to hundreds of tools.
+
+**The idea:** Let the AI generate UI, but constrain it to a **component catalog** defined by your platform team.
+
+<div class="ns-c-tight mt-2">
+
+- Platform team defines components with **Zod schemas**
+- AI generates compact component references, not HTML
+- Runtime renders real React components
+- **~40 tokens** per component vs ~2,000 for raw HTML
+
+</div>
+
+:: right ::
+
+```tsx
+// Platform team defines the catalog
+const ServiceCard = defineComponent({
+  name: "ServiceCard",
+  props: z.object({
+    name: z.string(),
+    health: z.enum(["healthy", "degraded"]),
+    team: z.string(),
+  }),
+  component: ({ props }) => (
+    <Card status={props.health}>
+      <h3>{props.name}</h3>
+      <span>{props.team}</span>
+    </Card>
+  ),
+});
+
+// AI output: ~40 tokens
+<ServiceCard
+  name="Payment API"
+  health="healthy"
+  team="Commerce" />
+```
+
+<div class="text-xs opacity-50 mt-2">@openuidev/react-lang - published 2026</div>
+
+<!--
+OpenUI solves the scaling problem. With MCP Apps you build a custom HTML app per tool. With OpenUI, your platform team defines a component catalog with Zod schemas - what components exist, what props they accept. The AI generates compact references - 40 tokens instead of 2,000. The runtime renders real React components. It's golden paths for UI - the same concept platform teams already apply to infrastructure.
+-->
+
+---
+layout: top-title-two-cols
+color: navy
+align: l-lt-lt
+---
+
+:: title ::
+
+# json-render by Vercel Labs
+
+:: left ::
+
+**The problem:** Your platform UI needs to render in the IDE, in a mobile app, in email notifications, and in PDF reports. MCP Apps only work in MCP hosts.
+
+**The idea:** One JSON schema, rendered on **any platform**.
+
+<div class="ns-c-tight mt-2">
+
+- Define component catalog with Zod schemas
+- AI generates a JSON spec describing the UI
+- **Streaming-first** - renders as tokens arrive
+- Renderers for React, React Native, email, PDF, terminal
+- `@json-render/mcp` package for MCP integration
+
+</div>
+
+:: right ::
+
+```ts
+// Define catalog
+const catalog = defineCatalog(schema, {
+  components: {
+    ServiceStatus: {
+      props: z.object({
+        name: z.string(),
+        status: z.enum(["running", "stopped"]),
+        replicas: z.number(),
+      }),
+    },
+  },
+});
+
+// AI generates JSON spec
+const spec = {
+  root: "s1",
+  elements: {
+    s1: {
+      type: "ServiceStatus",
+      props: {
+        name: "API Gateway",
+        status: "running",
+        replicas: 4,
+      },
+    },
+  },
+};
+// Renders on ANY platform
+```
+
+<div class="text-xs opacity-50 mt-2">@json-render/core + @json-render/react - v0.17, published 2026</div>
+
+<!--
+json-render tackles a different problem. Your platform isn't just an IDE tool - you need the same service status card in mobile push notifications, in email digests, in PDF compliance reports, and in AI conversations. json-render lets you define one JSON schema that renders on any platform. Streaming-first means the UI builds as tokens arrive from the AI.
+-->
+
+---
+layout: top-title-two-cols
+color: navy
+align: l-lt-lt
+---
+
+:: title ::
+
+# AG-UI by CopilotKit
+
+:: left ::
+
+**The problem:** You're building your own AI-powered platform frontend, not using Claude Desktop or ChatGPT. You need a protocol for agent-to-UI communication.
+
+**The idea:** A **standardized event protocol** between AI agent backends and your React frontend.
+
+<div class="ns-c-tight mt-2">
+
+- 16 event types: lifecycle, text, tools, state
+- Bidirectional state sync via JSON Patch
+- Framework-agnostic backend (LangGraph, CrewAI, etc.)
+- **2M+ weekly downloads**
+- 30K GitHub stars on CopilotKit
+
+</div>
+
+:: right ::
+
+```tsx
+// Your React frontend
+useCopilotAction({
+  name: "showDeployStatus",
+  description: "Show deployment status",
+  parameters: [
+    { name: "serviceId", type: "string" },
+    { name: "env", type: "string" },
+  ],
+  // AI triggers this, React renders it
+  render: ({ status, args }) => (
+    <DeployStatusCard
+      serviceId={args.serviceId}
+      env={args.env}
+      loading={status === "executing"}
+    />
+  ),
+});
+
+// AG-UI events flow over the wire:
+// RUN_STARTED → TOOL_CALL_START →
+// STATE_DELTA → TOOL_CALL_END
+```
+
+<div class="text-xs opacity-50 mt-2">@copilotkit/react-core v1.55 + @ag-ui/client v0.0.52</div>
+
+<!--
+AG-UI is for when you're building your own platform frontend. Maybe you're building a custom engineering dashboard, not relying on Claude Desktop. AG-UI standardizes how agent backends talk to your React frontend - 16 event types, bidirectional state sync, works with any agent framework. CopilotKit has 30K GitHub stars and 2M weekly downloads. This is production-grade.
+-->
+
+---
+layout: top-title
+color: navy
+align: l
+---
+
+:: title ::
+
+# MCP Apps vs Generative UI - When to Use What
+
+:: content ::
+
+| | **MCP Apps** | **OpenUI** | **json-render** | **AG-UI** |
+|---|---|---|---|---|
+| **Best for** | Rich interactive apps | High-volume chat UIs | Multi-platform delivery | Custom platform frontends |
+| **UI richness** | Full HTML/JS/CSS | Component catalog | JSON schema | React components |
+| **Token cost** | Zero (bundled) | Low (~40/card) | Medium | N/A (transport) |
+| **Who builds UI?** | You (HTML) | AI (constrained) | AI (constrained) | You (React) |
+| **Host required** | Claude, ChatGPT, VS Code | Any with OpenUI runtime | Any renderer | Your own app |
+| **Platform use case** | Service catalog, deploy flows | Status pages, alerts | Reports, notifications | Engineering dashboard |
+
+<v-click>
+
+<Admonition title="They're not competing" color="purple-light">
+MCP Apps for deep interactions. OpenUI for scale. json-render for reach. AG-UI for custom hosts. A real platform team uses **multiple approaches** for different workflows.
+</Admonition>
+
+</v-click>
+
+<!--
+This is not a "pick one" decision. MCP Apps when you need full control - service catalogs, deploy workflows, complex forms. OpenUI when you have hundreds of tools and can't hand-build UI for each. json-render when you need the same UI across mobile, email, and web. AG-UI when you're building your own platform frontend. These are complementary layers.
+-->
+
+---
+layout: top-title
+color: navy
+align: l
+---
+
+:: title ::
+
+# What To Do Monday Morning
+
+:: content ::
+
+<div class="grid grid-cols-2 gap-3">
+
+<Admonition title="1. Audit your portal" color="indigo-light">
+Which workflows have the lowest adoption? Those are your MCP candidates.
+</Admonition>
+
+<Admonition title="2. Build one MCP server" color="indigo-light">
+Start with service catalog or deploy. `registerAppTool` + `registerAppResource`. Under 200 lines.
+</Admonition>
+
+<Admonition title="3. Measure against your portal" color="indigo-light">
+Track tool calls, UI renders, time-to-action. Compare adoption rates.
+</Admonition>
+
+<Admonition title="4. Plan for the stack" color="purple-light">
+MCP Apps for deep flows. Consider OpenUI or json-render as your tool count grows. Evaluate AG-UI if you're building a custom frontend.
+</Admonition>
+
+</div>
+
+<!--
+Four things for Monday. Audit your lowest-adoption portal workflows. Build one MCP server - under 200 lines. Measure. And plan for the broader stack as your tool count grows. Your portal is your context layer. MCP is how agents access it.
+-->
+
+---
+layout: fact
+color: navy
+---
+
+# Stop Building Portals.
+
+# Start Building <span v-mark.circle.yellow="1">Conversations</span>.
+
+<!--
+Your portal isn't dead. It's your catalog of record, your golden paths, your agent gateway. But it is no longer the primary interface. The conversation is.
+
+Thank you.
+-->
+
+---
+layout: fact
+color: navy
+---
+
+# Q&A
+
+<!--
+Open it up for questions. If there's time, we can also show specific parts of the demo again or dive deeper into any of the GenUI approaches.
+-->
+
+---
+layout: default
+color: navy
+---
+
+<div class="flex gap-10 justify-center items-start mt-8">
+  <div class="text-center">
+    <img src="/engin-diri.jpg" class="w-20 rounded-full mx-auto mb-2 border-2 border-indigo-500/30" />
+    <div class="text-lg font-bold">Engin Diri</div>
+    <div class="opacity-60 text-sm">Pulumi</div>
+    <div class="flex items-center justify-center gap-3 mt-1 text-sm opacity-50">
+      <span class="flex items-center gap-1"><carbon-logo-github /> dirien</span>
+      <span class="flex items-center gap-1"><carbon-logo-linkedin /> engin-diri</span>
+    </div>
+    <div class="mt-3 bg-white rounded-lg p-2 inline-block">
+      <QRCode value="https://www.linkedin.com/in/engin-diri/" :size="100" render-as="svg" />
+    </div>
+  </div>
+  <div class="text-center">
+    <img src="/hila-fish.jpg" class="w-20 rounded-full mx-auto mb-2 border-2 border-cyan-500/30" />
+    <div class="text-lg font-bold">Hila Fish</div>
+    <div class="opacity-60 text-sm">AWS</div>
+    <div class="flex items-center justify-center gap-3 mt-1 text-sm opacity-50">
+      <span class="flex items-center gap-1"><carbon-logo-github /> hilafish</span>
+      <span class="flex items-center gap-1"><carbon-logo-linkedin /> hila-fish</span>
+    </div>
+    <div class="mt-3 bg-white rounded-lg p-2 inline-block">
+      <QRCode value="https://www.linkedin.com/in/hila-fish/" :size="100" render-as="svg" />
+    </div>
+  </div>
+  <div class="text-center">
+    <div class="w-20 h-20 rounded-full mx-auto mb-2 border-2 border-amber-500/30 flex items-center justify-center">
+      <carbon-logo-github class="text-3xl" />
+    </div>
+    <div class="text-lg font-bold">Slides + Demo</div>
+    <div class="opacity-60 text-xs mt-1">github.com/dirien/stop-building-<br/>portals-start-building-conversations</div>
+    <div class="mt-3 bg-white rounded-lg p-2 inline-block">
+      <QRCode value="https://github.com/dirien/stop-building-portals-start-building-conversations" :size="100" render-as="svg" />
+    </div>
+  </div>
+</div>
+
+<!--
+Thank you! Scan the QR codes to connect on LinkedIn or grab the slides and demo code from the repo.
+-->

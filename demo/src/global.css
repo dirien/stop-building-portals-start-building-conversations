@@ -1,0 +1,676 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   PlatformOps — Nord palette
+   Mirrors the colors of the CopilotKit dashboard so the MCP App iframe
+   matches the host. Same brand inside Claude Desktop, inside PlatformOps,
+   anywhere the MCP server is rendered.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Polar Night (backgrounds) */
+  --nord-0: #2e3440;
+  --nord-1: #3b4252;
+  --nord-2: #434c5e;
+  --nord-3: #4c566a;
+  /* Snow Storm (text) */
+  --nord-4: #d8dee9;
+  --nord-5: #e5e9f0;
+  --nord-6: #eceff4;
+  /* Frost (accents) */
+  --frost-1: #8fbcbb;
+  --frost-2: #88c0d0;
+  --frost-3: #81a1c1;
+  --frost-4: #5e81ac;
+  /* Aurora (status) */
+  --ok: #a3be8c;
+  --warn: #ebcb8b;
+  --accent: #bf616a;
+
+  /* Semantic aliases */
+  --color-bg: var(--nord-0);
+  --color-surface: var(--nord-1);
+  --color-surface-elev: var(--nord-2);
+  --color-border: var(--nord-2);
+  --color-text: var(--nord-6);
+  --color-text-secondary: rgba(216, 222, 233, 0.65);
+  --color-text-muted: rgba(216, 222, 233, 0.45);
+  --color-primary: var(--frost-2);
+  --color-primary-hover: var(--frost-1);
+  --color-healthy: var(--ok);
+  --color-degraded: var(--warn);
+  --color-unhealthy: var(--accent);
+
+  --radius: 10px;
+  --radius-sm: 6px;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  padding: 20px 22px;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+/* ─── Loading ─────────────────────────────────────────────────────────── */
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 56px 24px;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
+
+.spinner {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--frost-2);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─── Catalog header ──────────────────────────────────────────────────── */
+
+.catalog-header {
+  margin-bottom: 22px;
+}
+
+.catalog-header h1 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+  color: var(--color-text);
+}
+
+.catalog-header p {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
+
+.catalog-stats {
+  display: flex;
+  gap: 18px;
+  margin-top: 14px;
+  font-size: 0.78rem;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-secondary);
+}
+
+.stat-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.stat-dot.healthy {
+  background: var(--ok);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 18%, transparent);
+}
+
+.stat-dot.degraded {
+  background: var(--warn);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--warn) 18%, transparent);
+}
+
+.stat-dot.unhealthy {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+/* ─── Service grid ────────────────────────────────────────────────────── */
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.service-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.service-card:hover {
+  border-color: var(--frost-2);
+  background: color-mix(in srgb, var(--color-surface) 92%, var(--frost-2));
+  transform: translateY(-1px);
+}
+
+.service-card:active {
+  transform: translateY(0);
+}
+
+.service-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  gap: 8px;
+}
+
+.service-card-name {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--color-text);
+}
+
+.health-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.health-badge.healthy {
+  background: color-mix(in srgb, var(--ok) 15%, transparent);
+  color: var(--ok);
+}
+
+.health-badge.degraded {
+  background: color-mix(in srgb, var(--warn) 15%, transparent);
+  color: var(--warn);
+}
+
+.health-badge.unhealthy {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--accent);
+}
+
+.service-card-desc {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.service-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.service-card-tag {
+  background: var(--color-surface-elev);
+  color: var(--color-text-secondary);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+/* ─── Detail view ─────────────────────────────────────────────────────── */
+
+.detail-view {
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--frost-2);
+  font-size: 0.82rem;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 4px 0;
+  margin-bottom: 18px;
+  transition: color 0.15s ease;
+}
+
+.back-btn:hover {
+  color: var(--frost-1);
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  gap: 12px;
+}
+
+.detail-header h1 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.detail-section {
+  margin-bottom: 22px;
+}
+
+.detail-section h2 {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 10px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.detail-item {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 11px 13px;
+}
+
+.detail-item-label {
+  font-size: 0.66rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 4px;
+}
+
+.detail-item-value {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.endpoint-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.endpoint-list li {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 7px 11px;
+  color: var(--frost-1);
+}
+
+.dep-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.dep-chip {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 4px 11px;
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+}
+
+/* ─── Deploy button ───────────────────────────────────────────────────── */
+
+.deploy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--frost-2);
+  color: var(--nord-0);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 9px 16px;
+  font-size: 0.83rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+.deploy-btn:hover:not(:disabled) {
+  background: var(--frost-1);
+  transform: translateY(-1px);
+}
+
+.deploy-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.deploy-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Production deploy is more cautious — secondary styling */
+.deploy-btn[data-env="production"] {
+  background: var(--color-surface-elev);
+  color: var(--color-text);
+  border: 1px solid var(--frost-2);
+}
+
+.deploy-btn[data-env="production"]:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-surface-elev) 80%, var(--frost-2));
+}
+
+/* ─── Deploy result ───────────────────────────────────────────────────── */
+
+.deploy-result {
+  background: color-mix(in srgb, var(--ok) 8%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--ok) 35%, var(--color-border));
+  border-radius: var(--radius);
+  padding: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+.deploy-result.error {
+  background: color-mix(in srgb, var(--accent) 8%, var(--color-surface));
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--color-border));
+}
+
+.deploy-result h2 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ok);
+}
+
+.deploy-result.error h2 {
+  color: var(--accent);
+}
+
+.deploy-result p {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+
+/* ─── Resource list (clusters / lambdas / agents) ─────────────────────── */
+
+.resource-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resource-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+
+.resource-row:hover {
+  border-color: var(--frost-2);
+  background: color-mix(in srgb, var(--color-surface) 92%, var(--frost-2));
+}
+
+.resource-row-main {
+  min-width: 0;
+  flex: 1;
+}
+
+.resource-row-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  margin-bottom: 2px;
+}
+
+.resource-row-meta {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.resource-row-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.resource-row-cost {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+
+.model-chip {
+  background: color-mix(in srgb, var(--frost-3) 18%, transparent);
+  color: var(--frost-2);
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+}
+
+/* ─── Phase list (provisioning steps) ─────────────────────────────────── */
+
+.phase-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0;
+}
+
+.phase-list li {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 0.85rem;
+}
+
+.phase-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ok) 20%, transparent);
+  color: var(--ok);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.phase-name {
+  color: var(--color-text);
+}
+
+.phase-duration {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.detail-item-foot {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+/* ─── Provision forms ─────────────────────────────────────────────────── */
+
+.provision-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 540px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.form-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.provision-form input[type="text"],
+.provision-form input[type="number"],
+.provision-form input[type="url"],
+.provision-form select {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.provision-form input:focus,
+.provision-form select:focus {
+  outline: none;
+  border-color: var(--frost-2);
+  background: color-mix(in srgb, var(--color-surface) 90%, var(--frost-2));
+}
+
+.provision-form input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.checkbox-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 6px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.checkbox-row input[type="checkbox"] {
+  accent-color: var(--frost-2);
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.form-status {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.form-status.active {
+  color: var(--frost-2);
+}
+
+/* ─── Light-mode override (when host requests light theme) ────────────── */
+
+:root[style*="light"] {
+  --color-bg: var(--nord-6);
+  --color-surface: var(--nord-5);
+  --color-surface-elev: var(--nord-4);
+  --color-border: rgba(46, 52, 64, 0.12);
+  --color-text: var(--nord-0);
+  --color-text-secondary: rgba(46, 52, 64, 0.65);
+  --color-text-muted: rgba(46, 52, 64, 0.45);
+}

@@ -1,0 +1,23 @@
+{
+  "mcp": {
+    "context7": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@context7/mcp"
+      ]
+    },
+    "pulumi": {
+      "type": "remote",
+      "url": "https://mcp.ai.pulumi.com/mcp"
+    },
+    "yaah": {
+      "type": "local",
+      "command": [
+        "yaah",
+        "serve"
+      ]
+    }
+  }
+}

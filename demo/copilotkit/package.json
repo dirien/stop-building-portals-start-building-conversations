@@ -1,0 +1,48 @@
+{
+  "name": "platform-catalog-copilotkit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Custom Backstage-alternative platform frontend hosting MCP Apps + AG-UI + A2UI",
+  "scripts": {
+    "dev": "next dev -p 3002",
+    "build": "next build",
+    "start": "next start -p 3002",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@a2ui/web_core": "^0.9.0",
+    "@ag-ui/a2ui-middleware": "^0.0.5",
+    "@ag-ui/client": "^0.0.53",
+    "@ag-ui/mcp-apps-middleware": "^0.0.3",
+    "@ai-sdk/anthropic": "^3.0.78",
+    "@anthropic-ai/sdk": "^0.96.0",
+    "@copilotkit/a2ui-renderer": "^1.57.1",
+    "@copilotkit/react-core": "^1.57.1",
+    "@copilotkit/react-ui": "^1.57.1",
+    "@copilotkit/runtime": "^1.57.1",
+    "@modelcontextprotocol/ext-apps": "^1.7.2",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "next": "^16.0.0",
+    "openai": "^6.38.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "rxjs": "^7.8.1",
+    "zod": "^4.4.3",
+    "zustand": "^5.0.13"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.0",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^5.6.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "rxjs": "7.8.1"
+    }
+  }
+}
