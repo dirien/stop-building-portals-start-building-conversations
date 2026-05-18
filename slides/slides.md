@@ -56,7 +56,7 @@ layout: cover
   </p>
   <p class="!mt-8 !text-[1.1rem] !m-0 !leading-relaxed opacity-70">
     <strong>Engin Diri</strong> · Sr. Solutions Architect, Pulumi<br/>
-    <strong>Hila Fish</strong> · SRE / DevOps Engineer, AWS
+    <strong>Hila Fish</strong> · Solutions Architect, AWS
   </p>
 </div>
 
@@ -113,7 +113,7 @@ layout: default
   <div class="flex-1">
     <h1 class="!text-[5rem] !leading-[1.02] !font-semibold !tracking-tight !mb-3">Hila Fish</h1>
     <p class="!text-[1.8rem] !leading-relaxed !m-0 opacity-80">
-      SRE / DevOps Engineer at <strong>AWS</strong>
+      Solutions Architect at <strong>AWS</strong>
     </p>
     <div class="!mt-6 flex items-center gap-6 !text-[1.1rem] opacity-70">
       <span class="flex items-center gap-2"><carbon-logo-x /> @Hilafish1</span>
