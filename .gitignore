@@ -34,3 +34,6 @@ pnpm-debug.log*
 
 # Claude Code session metadata (logs + per-session JSON)
 .claude/
+
+# Local-only Claude Code project MCP server registrations
+.mcp.json
