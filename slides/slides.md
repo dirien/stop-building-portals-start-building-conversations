@@ -406,12 +406,6 @@ layout: default
 
 <div class="!text-[1rem] opacity-60 tracking-[0.3em] uppercase !mt-1 !mb-6">Homegrown talent 🇮🇱</div>
 
-<v-click>
-<div class="absolute top-8 right-8 max-w-[22rem] rotate-[4deg] px-5 py-3 rounded-xl border-2 border-solid border-[#d08770] bg-[#d08770] text-[#2e3440] shadow-xl !text-[0.95rem] !leading-snug z-10">
-Two Israeli engineers. A side project launched May 2025. Monday.com (Nasdaq, Tel Aviv) acqui-hired them both. Now they co-author the spec with Anthropic and OpenAI.
-</div>
-</v-click>
-
 <div class="flex items-start gap-12">
 <div class="flex-shrink-0 w-[40%] flex flex-col gap-3">
 <img src="/ido-liad-mcp-summit.jpg" class="w-full rounded-2xl shadow-xl border-4 border-[var(--frost1)]/30" />
@@ -434,6 +428,12 @@ Two Israeli engineers. A side project launched May 2025. Monday.com (Nasdaq, Tel
 </v-click>
 </div>
 </div>
+
+<v-click>
+<div class="absolute top-8 right-8 max-w-[22rem] rotate-[4deg] px-5 py-3 rounded-xl border-2 border-solid border-[#d08770] bg-[#d08770] text-[#2e3440] shadow-xl !text-[0.95rem] !leading-snug z-10">
+Two Israeli engineers. A side project launched May 2025. Monday.com (Nasdaq, Tel Aviv) acqui-hired them both. Now they co-author the spec with Anthropic and OpenAI.
+</div>
+</v-click>
 
 <!--
 And here's the part we love sharing at a Tel Aviv conference. Ido was at Palo Alto Networks, Liad at Shopify. Both Israeli. They started MCP-UI as a side project in May 2025 - an SDK that lets MCP servers return interactive HTML instead of just text.
@@ -762,7 +762,7 @@ Yes. And no. Depends on who you build for.
 </div>
 
 <Admonition title="The individual layer" color="indigo-light">
-Fast. Local. Yours.
+<div class="!text-[1.7rem] !font-bold !mt-6">Fast. Local. Yours.</div>
 </Admonition>
 
 </v-click>
@@ -783,7 +783,7 @@ Fast. Local. Yours.
 </div>
 
 <Admonition title="The platform layer" color="emerald-light">
-You're not the user. Your org is.
+<div class="!text-[1.7rem] !font-bold !mt-6">You're not the user. Your org is.</div>
 </Admonition>
 
 </v-click>
@@ -809,7 +809,7 @@ layout: two-cols-header
 
 <v-click>
 <p class="!text-[1.56rem] !leading-relaxed !mt-2 !mb-4 opacity-80">
-Agentic UI is the umbrella. Any interface an AI agent controls at runtime. <strong>MCP Apps is one approach inside it</strong>: pre-built HTML shipped through the protocol. The next two slides cover what composes with it.
+Agentic UI is the umbrella. Any interface an AI agent controls at runtime. <br></br><strong>MCP Apps is one approach inside it</strong>. 
 </p>
 </v-click>
 
@@ -817,13 +817,13 @@ Agentic UI is the umbrella. Any interface an AI agent controls at runtime. <stro
 
 <v-click>
 
-<h3 class="!text-[1.5rem] !mt-2 !mb-3">Three patterns, by who controls the UI</h3>
+<h3 class="!text-[1.5rem] !mt-2 !mb-3">3 components for UI population</h3>
 
 <div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1.05rem] [&_li]:!leading-[1.5] [&_li]:!my-2">
 
-- **Open-ended.** Agent renders custom HTML. *(MCP Apps)*
+- **Open-ended.** Agent renders custom HTML. <br></br>*(MCP Apps)*
 - **Declarative.** Agent emits UI as data. *(A2UI)*
-- **Controlled.** You define the components, agent triggers them. *(AG-UI / CopilotKit)*
+- **Alignment.** Align & sync the components with the agent in the UI. *(AG-UI / CopilotKit)*
 
 </div>
 
@@ -938,8 +938,7 @@ Bring MCP Apps into your own app. CopilotKit handles the React host, AG-UI keeps
 
 <div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1.05rem] [&_li]:!leading-[1.5] [&_li]:!my-2">
 
-- The same MCP App UI runs in your internal dashboard, not just Claude
-- Tool progress and shared state stay in sync as the user interacts
+- The same MCP App UI runs in any of your internal portal, not just Claude Desktop
 - Swap the agent backend without rewriting the UI
 - Works with LangChain, Mastra, PydanticAI, Agno, and the major clouds
 
@@ -1075,14 +1074,14 @@ Four moves your platform team can run this week.
 <div class="px-5 py-2 rounded-xl border border-solid h-full" style="border-color: rgba(163, 190, 140, 0.5); background: rgba(163, 190, 140, 0.08);">
 <div class="!text-[2rem] !font-bold !leading-none !m-0" style="color: var(--green);">02</div>
 <div class="!text-[1.2rem] !font-bold !mt-1 !mb-2">Build one MCP server</div>
-<p class="!text-[1.05rem] !leading-snug !m-0 opacity-80">Start with service catalog or deploy. <code>registerAppTool</code> + <code>registerAppResource</code>. Around 250 lines.</p>
+<p class="!text-[1.05rem] !leading-snug !m-0 opacity-80">Start with service catalog or deploy.</p>
 </div>
 </v-click>
 
 <v-click>
 <div class="px-5 py-2 rounded-xl border border-solid h-full" style="border-color: rgba(235, 203, 139, 0.5); background: rgba(235, 203, 139, 0.08);">
 <div class="!text-[2rem] !font-bold !leading-none !m-0" style="color: var(--yellow);">03</div>
-<div class="!text-[1.2rem] !font-bold !mt-1 !mb-2">Measure against your portal</div>
+<div class="!text-[1.2rem] !font-bold !mt-1 !mb-2">Test your Agentic UI POC</div>
 <p class="!text-[1.05rem] !leading-snug !m-0 opacity-80">Track tool calls, UI renders, time-to-action. Compare adoption rates.</p>
 </div>
 </v-click>
