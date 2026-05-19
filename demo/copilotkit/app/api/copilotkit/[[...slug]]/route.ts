@@ -6,41 +6,17 @@ import {
 import { MCPAppsMiddleware } from "@ag-ui/mcp-apps-middleware";
 import { A2UIMiddleware } from "@ag-ui/a2ui-middleware";
 import { createAnthropic } from "@ai-sdk/anthropic";
+import { generateA2uiTool } from "../a2uiGenerateTool";
+import {
+  PLATFORM_A2UI_CATALOG_ID,
+  toMiddlewareSchema,
+} from "../../../../lib/a2uiCatalogSpec";
 
-const PLATFORM_A2UI_CATALOG_ID = "https://platformops.dev/a2ui/catalog/v0_9";
-
-// The PlatformOps A2UI catalog schema, inlined server-side. We can't import
-// the client-side catalog from `@copilotkit/a2ui-renderer` here because that
-// package pulls React rendering code into the Node.js runtime. Inlining the
-// component names + a one-line summary is enough for the agent. The real
-// rendering contract lives in components/platformA2UICatalog.tsx.
-const a2uiSchema = {
-  catalogId: PLATFORM_A2UI_CATALOG_ID,
-  components: {
-    Text: { summary: "A run of text. props: text (string|{path}), variant?: h1|h2|h3|h4|h5|caption|body" },
-    Image: { summary: "An image. props: url (string|{path}), fit?: contain|cover|fill" },
-    Icon: { summary: "A Material Symbols icon. props: name (string). Valid: check, close, info, warning, error, favorite, refresh, settings, person, mail, calendarToday, home, lock, search, send, share, star, upload, download, visibility, edit." },
-    Video: { summary: "A video player. props: url" },
-    AudioPlayer: { summary: "An audio player. props: url, description?" },
-    Divider: { summary: "A divider line. props: axis?: horizontal|vertical" },
-    Row: { summary: "A horizontal layout. props: children: string[] (component ids), justify?, align?" },
-    Column: { summary: "A vertical layout. props: children: string[] (component ids), justify?, align?" },
-    List: { summary: "A vertical or horizontal list. props: children: string[], direction?: vertical|horizontal" },
-    Card: { summary: "A card container. props: child: string (one component id)" },
-    Tabs: { summary: "Tabbed pages. props: tabItems: [{title, child}]" },
-    Modal: { summary: "A modal. props: entryPointChild, contentChild" },
-    Button: { summary: "A clickable button. props: child (text component id), action: {event:{name, context?}}, variant?: primary|secondary|text" },
-    TextField: { summary: "A text input. props: label, text?, textFieldType?: shortText|longText|number|date|obscured" },
-    CheckBox: { summary: "A checkbox. props: label, checked?" },
-    Slider: { summary: "A numeric slider. props: value, minValue?, maxValue?" },
-    ChoicePicker: { summary: "A dropdown / picker. props: selections, options: [{label, value}]" },
-    DateTimeInput: { summary: "A date/time input. props: value, enableDate?, enableTime?" },
-    PlatformChart: {
-      summary:
-        "A polished PlatformOps chart. props: title, subtitle?, type: bar|line|stacked-bar|donut, unit?, series: [{label, value?, values?, color?}], xLabels?, caption?. Use for A2UI cost, deploy frequency, SLO burn, invocation trends, and health comparisons.",
-    },
-  },
-};
+// Inline catalog schema for A2UIMiddleware. Derived from the shared spec
+// in lib/a2uiCatalogSpec.ts so adding a new component there updates the
+// middleware, the React renderer, and the secondary-designer prompt at
+// once. The spec module is React-free so it's safe to import server-side.
+const a2uiSchema = toMiddlewareSchema();
 
 const MCP_SERVER_URL = process.env.MCP_SERVER_URL ?? "http://localhost:3001/mcp";
 const PLATFORM_SERVER_ID = "platform-catalog";
@@ -73,6 +49,16 @@ const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const agent = new BuiltInAgent({
   model: anthropic("claude-sonnet-4-5-20250929"),
   maxSteps: 8,
+  // Canonical A2UI pattern (see CopilotKit's showcase a2ui-factory.ts):
+  // expose ONE tool to the primary agent and let a secondary LLM call
+  // (inside the tool's `execute`) emit the structured surface. The
+  // A2UIMiddleware below is configured with `injectA2UITool: false` and
+  // `a2uiToolNames: ['generate_a2ui']` so it tracks THIS tool's results
+  // and converts them to ACTIVITY_SNAPSHOT events for the frontend
+  // renderer. The primary agent never needs to know A2UI structure —
+  // forcing data + components apart at the schema level prevents the
+  // hardcoded-values regression.
+  tools: [generateA2uiTool],
   // NOTE: We attempted to also expose data-only `server.tool` MCP
   // registrations (cost-breakdown, list-deployments, etc.) via
   // `mcpServers: [{ type: "http", url: MCP_SERVER_URL }]` here, but
@@ -92,7 +78,7 @@ const agent = new BuiltInAgent({
     "",
     "(A) MCP App tools — durable resource pages that already exist in the portal. Use these for the catalog and resource detail views (services, clusters, lambdas, agents) and the create-* forms. These render as sandboxed iframes shipped by the MCP server. Tools include: `list-services`, `show-service`, `list-clusters`, `cluster-provision`, `list-lambdas`, `lambda-provision`, `list-agents`, `agent-provision`, `deploy-service` (the MCP version — renders the deploy-result page).",
     "",
-    "(B) `render_a2ui` (A2UI v0.9) — agent-composed work surfaces that no static portal page could have prebuilt. Use this for: deploy-readiness checklists, service health comparisons, ownership/escalation cards, incident runbook summaries, SLO breakdown cards, Day 1 / Day 2 self-service boards, cost summary cards, and any one-off question-shaped UI the user asks for. These are NOT a second catalog renderer; they are bespoke working surfaces.",
+    "(B) `generate_a2ui` (A2UI v0.9 work surfaces) — agent-composed work surfaces that no static portal page could have prebuilt. Use this for: deploy-readiness checklists, service health comparisons, ownership/escalation cards, incident runbook summaries, SLO breakdown cards, Day 1 / Day 2 self-service boards, cost summary cards, and any one-off question-shaped UI the user asks for. This tool takes a SHORT BRIEF and an optional `data` object — a secondary A2UI designer turns it into a polished surface. You do NOT need to think about components, surfaceId structure, or path bindings; the designer handles that.",
     "",
     "(C) AG-UI streaming frontend tools — operational actions with live state. Use these whenever the user is DOING something the platform team must execute. Tools:",
     "  - `deploy-streaming` (frontend) for deploys the user wants to watch. Preferred over the MCP `deploy-service` tool when the deploy comes from chat. Streams Validate → Push → Roll out → Health check.",
@@ -102,61 +88,54 @@ const agent = new BuiltInAgent({
     "BEHAVIOUR RULES:",
     "- Always call a tool to do work. Don't narrate what you would do — call the tool.",
     "- Pick ONE rendering tool per user request and stop. Each rendering tool overwrites the canvas, so a second rendering call destroys the first one.",
-    "- HARD RULE for AG-UI streaming tools (`deploy-streaming`, `stream-action`, `render-chart`): the tool's own UI IS your response. After calling one of these, you MUST NOT call ANY other rendering tool (no render_a2ui, no MCP App tool, no second AG-UI tool) in the same turn. Reply with ONE short text line (e.g. '✓ Deployed user-service to staging.') and stop. Do NOT call render_a2ui to 'prettify the result' or 'summarise what happened' — the streaming card has already done that. Calling render_a2ui after deploy-streaming overwrites the animation the user is watching.",
+    "- HARD RULE for AG-UI streaming tools (`deploy-streaming`, `stream-action`, `render-chart`): the tool's own UI IS your response. After calling one of these, you MUST NOT call ANY other rendering tool (no generate_a2ui, no MCP App tool, no second AG-UI tool) in the same turn. Reply with ONE short text line (e.g. '✓ Deployed user-service to staging.') and stop. Do NOT call generate_a2ui to 'prettify the result' or 'summarise what happened' — the streaming card has already done that. Calling generate_a2ui after deploy-streaming overwrites the animation the user is watching.",
     "- The agent context labelled 'Currently focused resource' tells you which service/cluster/lambda/agent the user is looking at. Use that id without re-asking the user.",
-    `- The agent context labelled 'A2UI Component Schema' lists every component available to render_a2ui. Only use components from that list — the available components are: Text, Image, Icon, Video, AudioPlayer, Row, Column, List, Card, Tabs, Modal, Divider, Button, TextField, CheckBox, ChoicePicker, Slider, DateTimeInput, PlatformChart. NEVER invent component names like "Title", "Badge", "Metric", "Heading", "Pill", "KPI" — these do not exist. For headings use Text with variant 'h2' or 'h3'. For status pills use Text with variant 'caption'. For metric tiles use a Card containing a Column of Text components. For charts inside A2UI, use PlatformChart with real series data. catalogId MUST be exactly "${PLATFORM_A2UI_CATALOG_ID}".`,
+    `- You do NOT have a 'render_a2ui' tool. Use 'generate_a2ui' instead — pass a one- or two-sentence brief plus the pre-pulled data object. The secondary designer handles all A2UI v0.9 structure (createSurface + updateComponents + updateDataModel + path bindings + catalogId='${PLATFORM_A2UI_CATALOG_ID}'). Your only job: give it a clear brief and clean data.`,
     "- Never call AGUISendStateSnapshot or AGUISendStateDelta — those are low-level protocol tools with no shared state model defined, they will fail with PatchError. Use the streaming frontend tools (`deploy-streaming` or `stream-action`) instead.",
-    "- Be decisive. Production-ready UI: real data from the data tools (`cost-breakdown`, `service-metrics`, `list-deployments`, `get-runbook`, `get-oncall` — these are frontend tools registered by <DataTools />, NOT MCP server tools, but they call exactly as you'd call an MCP tool and return structured data), no placeholders, no fake URLs.",
+    "- Be decisive. Production-ready UI: real data from the data tools (`cost-breakdown`, `service-metrics`, `list-deployments`, `get-runbook`, `get-oncall`, `list-audit-events`, `policy-status` — these are frontend tools registered by <DataTools />, NOT MCP server tools, but they call exactly as you'd call an MCP tool and return structured data), no placeholders, no fake URLs.",
     "",
-    "─── Deploy-readiness A2UI surface ───",
-    "When the user asks 'Is it safe to deploy?', 'Is this ready to ship?', or anything like 'check deploy readiness for <service>', call render_a2ui to emit a readiness checklist surface. First pull the data: call `service-metrics` for SLO, `list-deployments` for recent rollouts, `get-oncall` for the owning team's rotation, `show-service` for owner/dependency metadata. Then compose the surface.",
+    "─── How to call `generate_a2ui` ───",
     "",
-    `STRUCTURE — surfaceId='deploy-readiness', catalogId='${PLATFORM_A2UI_CATALOG_ID}'. Root MUST be a Column with children ['header', 'verdict-card', 'checks-card']. The verdict-card is a Card containing a Column with a Text (variant h4) reading 'Go' or 'No-Go' and a Text (variant body) explaining why. The checks-card is a Card containing a Column whose first child is a Text(variant=h5, text='Readiness checks'), followed by rows for: SLO headroom, last deploy age, on-call coverage, active alerts, dependency status. Each row is a Row with a leading Icon (check/warning/error) and a Text. Use the real numbers you pulled.`,
+    "HARD RULE: `generate_a2ui` requires a non-empty `data` argument. The secondary A2UI designer composes path bindings against THAT object — it has zero ability to call tools itself. If you call `generate_a2ui` without first fetching data, the surface renders empty paths and the call fails the runtime guardrail. ALWAYS fetch data first.",
     "",
-    "─── Self-service actions (Port.io-style, rendered via A2UI) ───",
-    "When the user asks for 'self-service actions', 'Day 1 / Day 2 actions', or 'what can I do with this <resource>', call render_a2ui to emit a board with two stacked Cards (Day 1 = provisioning, Day 2 = operate).",
+    "Mandatory workflow for any A2UI work surface:",
+    "  1. FETCH DATA FIRST. Call the relevant data tools and wait for their results:",
+    "       • SLO / health / metrics questions → `service-metrics`",
+    "       • deploy history / readiness / rollback / who-deployed → `list-deployments`",
+    "       • on-call / rotation / coverage → `get-oncall`",
+    "       • runbook / incident steps → `get-runbook`",
+    "       • cost / spend / per-team / per-resource-type → `cost-breakdown`",
+    "       • audit log / who did what / governance feed → `list-audit-events`",
+    "       • policy / IAM / SBOM / compliance → `policy-status`",
+    "       • service / dependency / owner metadata → `show-service` (MCP)",
+    "  2. MERGE results into a single `data` object with intuitive keys for path bindings. Example: { service: 'payment-api', metrics: {...}, deployments: [...], oncall: {...}, dependencies: [...] }.",
+    "  3. CALL `generate_a2ui` ONCE with a 1–2 sentence `brief`, the `data` object, and a suggested `surfaceId`. NEVER call generate_a2ui without `data`.",
+    "  4. STOP. The secondary designer renders the surface; reply with one short acknowledgement line.",
     "",
-    "STRUCTURAL REQUIREMENTS — follow exactly:",
-    "- surfaceId MUST be 'self-service-actions' (never 'default').",
-    `- catalogId MUST be '${PLATFORM_A2UI_CATALOG_ID}'.`,
-    "- Root component (id='root') MUST be a Column whose children are exactly: ['header', 'day1-card', 'day2-card'].",
-    "- header is a Text with variant='h3' summarising what's being shown (e.g. 'Self-service actions for payment-api' or 'Self-service actions').",
-    "- day1-card and day2-card are each a Card whose child is a Column. Each Column has children: [<tab-heading-id>, <button-id-1>, <button-id-2>, ...]. The tab-heading is a Text with variant='h5' reading exactly 'Day 1 — Provision' or 'Day 2 — Operate'.",
-    "- Each action Button must have: child=<text-id-for-label>, variant='secondary', and action={ event: { name: 'self_service_action', context: { prompt: '<the natural-language prompt to run next>' } } }. The Text component for the button's child has the human-readable label.",
-    "- DO NOT use the Tabs component. DO NOT use Modal. Stick to Column + Card + Text + Button.",
-    "- Pick 4–6 actions per Card, scoped to the focused resource if there is one.",
+    "Self-service boards are the only exception to step 1: there is no 'fetch actions' tool — the action list IS the data you populate (from the action catalogue below). For self-service, `data` looks like { title: '...', day1Actions: [{label, prompt}, ...], day2Actions: [...] }.",
     "",
-    "WORKED EXAMPLE — when the user asks for self-service actions for a service called 'payment-api', call render_a2ui with components shaped exactly like this (ids can be renamed, structure cannot):",
-    "[",
-    "  { id: 'root', component: 'Column', children: ['header', 'day1-card', 'day2-card'] },",
-    "  { id: 'header', component: 'Text', text: 'Self-service actions for payment-api', variant: 'h3' },",
-    "  { id: 'day1-card', component: 'Card', child: 'day1-col' },",
-    "  { id: 'day1-col', component: 'Column', children: ['day1-title', 'day1-b1', 'day1-b2', 'day1-b3', 'day1-b4'] },",
-    "  { id: 'day1-title', component: 'Text', text: 'Day 1 — Provision', variant: 'h5' },",
-    "  { id: 'day1-b1', component: 'Button', child: 'day1-b1-text', variant: 'secondary', action: { event: { name: 'self_service_action', context: { prompt: 'Scaffold a new service similar to payment-api' } } } },",
-    "  { id: 'day1-b1-text', component: 'Text', text: 'Scaffold a similar new service' },",
-    "  { id: 'day1-b2', component: 'Button', child: 'day1-b2-text', variant: 'secondary', action: { event: { name: 'self_service_action', context: { prompt: 'Create a preview environment for payment-api on a feature branch' } } } },",
-    "  { id: 'day1-b2-text', component: 'Text', text: 'Create a feature-branch preview env' },",
-    "  { id: 'day1-b3', component: 'Button', child: 'day1-b3-text', variant: 'secondary', action: { event: { name: 'self_service_action', context: { prompt: 'Provision a sandbox database for payment-api' } } } },",
-    "  { id: 'day1-b3-text', component: 'Text', text: 'Provision a sandbox database' },",
-    "  { id: 'day1-b4', component: 'Button', child: 'day1-b4-text', variant: 'secondary', action: { event: { name: 'self_service_action', context: { prompt: 'Register payment-api in the service catalog' } } } },",
-    "  { id: 'day1-b4-text', component: 'Text', text: 'Register in service catalog' },",
-    "  { id: 'day2-card', component: 'Card', child: 'day2-col' },",
-    "  { id: 'day2-col', component: 'Column', children: ['day2-title', 'day2-b1', 'day2-b2', 'day2-b3', 'day2-b4', 'day2-b5'] },",
-    "  { id: 'day2-title', component: 'Text', text: 'Day 2 — Operate', variant: 'h5' },",
-    "  { id: 'day2-b1', component: 'Button', child: 'day2-b1-text', variant: 'secondary', action: { event: { name: 'self_service_action', context: { prompt: 'Deploy payment-api to staging using deploy-streaming' } } } },",
-    "  { id: 'day2-b1-text', component: 'Text', text: 'Deploy to staging' },",
-    "  { id: 'day2-b2', component: 'Button', child: 'day2-b2-text', variant: 'secondary', action: { event: { name: 'self_service_action', context: { prompt: 'Deploy payment-api to production using deploy-streaming' } } } },",
-    "  { id: 'day2-b2-text', component: 'Text', text: 'Deploy to production' },",
-    "  { id: 'day2-b3', component: 'Button', child: 'day2-b3-text', variant: 'secondary', action: { event: { name: 'self_service_action', context: { prompt: 'Roll back the most recent payment-api deployment and confirm with an A2UI card' } } } },",
-    "  { id: 'day2-b3-text', component: 'Text', text: 'Roll back last deploy' },",
-    "  { id: 'day2-b4', component: 'Button', child: 'day2-b4-text', variant: 'secondary', action: { event: { name: 'self_service_action', context: { prompt: 'Show the last 10 CloudWatch log entries for payment-api as an A2UI list' } } } },",
-    "  { id: 'day2-b4-text', component: 'Text', text: 'Tail recent logs' },",
-    "  { id: 'day2-b5', component: 'Button', child: 'day2-b5-text', variant: 'secondary', action: { event: { name: 'self_service_action', context: { prompt: 'Pull the payment-api runbook and render it as a polished A2UI Card with sections for Symptoms, First 5 minutes, and Escalation' } } } },",
-    "  { id: 'day2-b5-text', component: 'Text', text: 'Open runbook' },",
-    "]",
+    "Recommended surfaceId values: 'deploy-readiness', 'self-service-actions', 'slo-metrics', 'cost-summary', 'runbook', 'ownership', 'health-comparison'.",
     "",
-    "ACTION CATALOGUE — pick from these when assembling the buttons (adapt the prompt text to the focused resource id):",
+    "EXAMPLE — deploy readiness for payment-api:",
+    "  - First call: service-metrics({serviceId: 'payment-api'}) → metrics",
+    "  - Then: list-deployments({serviceId: 'payment-api', limit: 3}) → deployments",
+    "  - Then: get-oncall({team: 'Payments Platform'}) → oncall",
+    "  - Then: show-service via MCP App OR pass the dependency list inline if you already have it",
+    "  - Finally:",
+    "      generate_a2ui({",
+    "        brief: 'Deploy-readiness checklist for payment-api: Go/No-Go verdict plus rows for SLO, last deploy, on-call coverage, active alerts, and dependency health.',",
+    "        surfaceId: 'deploy-readiness',",
+    "        data: { service: 'payment-api', verdict: 'Go', metrics, deployments, oncall, dependencies: [...] },",
+    "      })",
+    "",
+    "EXAMPLE — Day 1 / Day 2 self-service board for payment-api:",
+    "      generate_a2ui({",
+    "        brief: 'Port.io-style self-service board for payment-api with Day 1 provisioning actions and Day 2 operate actions, rendered as two stacked Cards. Each button fires `self_service_action` with a `prompt` context payload.',",
+    "        surfaceId: 'self-service-actions',",
+    "        data: { title: 'Self-service actions for payment-api', day1Actions: [{label,prompt}, ...], day2Actions: [{label,prompt}, ...] },",
+    "      })",
+    "",
+    "ACTION CATALOGUE — when assembling self-service `data.day1Actions` / `data.day2Actions`, pick from these (adapt prompts to the focused resource id):",
     "- service Day 1: 'Scaffold a similar new service', 'Create a feature-branch preview env', 'Provision a sandbox database', 'Register in service catalog'",
     "- service Day 2: 'Deploy to staging', 'Deploy to production', 'Roll back last deploy', 'Tail recent logs', 'Show on-call rotation', 'Open runbook'",
     "- cluster Day 1: 'Provision a similar new EKS cluster', 'Add a node group', 'Attach an IAM role'",
@@ -170,7 +149,7 @@ const agent = new BuiltInAgent({
     "",
     "Handling A2UI button clicks (the self-service feedback loop):",
     "- After you render the self-service surface, the user may click a Button. The A2UI middleware then injects a `log_a2ui_event` tool call with the userAction payload. The action.event.name will be 'self_service_action' and context.prompt will carry the natural-language prompt for the next step.",
-    "- React to it: do NOT render the same self-service surface again. Read context.prompt and run the matching tool (the relevant MCP tool, render_a2ui for a generated work surface, `deploy-streaming` / `stream-action` / `render-chart` for AG-UI live actions). One acknowledgement line + one tool call.",
+    "- React to it: do NOT render the same self-service surface again. Read context.prompt and run the matching tool (the relevant MCP tool, generate_a2ui for a new work surface, `deploy-streaming` / `stream-action` / `render-chart` for AG-UI live actions). One acknowledgement line + one tool call.",
   ].join("\n"),
 })
   .use(
@@ -182,9 +161,12 @@ const agent = new BuiltInAgent({
   )
   .use(
     new A2UIMiddleware({
-      injectA2UITool: true,
-      // Pass the real basic-catalog schema (not an empty object) so the
-      // middleware injects the full component reference into every request.
+      // We provide the A2UI tool ourselves (see generateA2uiTool above) so
+      // the middleware only needs to recognize its results and stream them
+      // as activity events. The schema is still injected into the agent's
+      // context so the secondary LLM has the catalog reference.
+      injectA2UITool: false,
+      a2uiToolNames: ["generate_a2ui"],
       schema: a2uiSchema,
     }),
   );

@@ -292,7 +292,7 @@ function ResourceContext({
     agent.addMessage({
       id: `self-service-${Date.now()}`,
       role: "user",
-      content: `Render the Day 1 / Day 2 self-service actions board for ${resourceId(resource)} as an A2UI surface (use the structure from the system instructions — two stacked Cards, no Tabs).`,
+      content: `What can I do with ${resourceId(resource)}?`,
     });
     await agent.runAgent();
   };
@@ -537,65 +537,71 @@ const PATTERN_FOR_TAG: Record<QuickPrompt["tag"], string> = {
   "AG-UI": "Controlled",
 };
 
+// Prompts are intent-only: say WHAT the user wants to know, not HOW to render
+// it. The primary agent picks the tool family (MCP App / generate_a2ui /
+// deploy-streaming / stream-action / render-chart) and the secondary A2UI
+// designer picks the actual component shape. Mentioning "Card", "Column",
+// "PlatformChart", "catalogId", etc. in the user prompt collapses the
+// architecture back into one big LLM call deciding everything.
 const QUICK_PROMPTS: Record<Section, QuickPrompt[]> = {
   catalog: [
     { label: "Open service catalog", prompt: "Show me the service catalog", tag: "MCP App", subtext: "Catalog page with health + ownership" },
     { label: "Show payment-api", prompt: "Show me the payment-api service details", tag: "MCP App", subtext: "Service detail page from the catalog" },
-    { label: "Is payment-api safe to deploy?", prompt: "Check deploy readiness for payment-api — pull SLO, recent deploys, on-call and dependencies, then render the readiness checklist.", tag: "A2UI", subtext: "Generated readiness checklist with Go / No-Go verdict" },
+    { label: "Is payment-api safe to deploy?", prompt: "Is payment-api safe to deploy right now?", tag: "A2UI", subtext: "Agent gathers SLO, deploys, on-call, deps; designer picks the surface" },
     { label: "Deploy payment-api to staging", prompt: "Deploy payment-api to staging", tag: "AG-UI", subtext: "Streams Validate → Push → Roll out → Health check" },
   ],
   clusters: [
     { label: "List EKS clusters", prompt: "List the EKS clusters", tag: "MCP App", subtext: "Cluster catalog with health + monthly cost" },
-    { label: "Provision new cluster", prompt: "I want to create a new EKS cluster. Open the form so I can fill in the details.", tag: "MCP App", subtext: "Provisioning form, opens in the canvas" },
-    { label: "Status of platformops-prod", prompt: "What's the current status of platformops-prod? Render it as a polished A2UI card with node groups and pod count.", tag: "A2UI", subtext: "Composed status card from live cluster data" },
-    { label: "Scale prod cluster", prompt: "Scale the general node group on platformops-prod to 12 nodes — stream the rollout.", tag: "AG-UI", subtext: "Live node-drain rollout, phases tick in the canvas" },
+    { label: "Provision new cluster", prompt: "I want to create a new EKS cluster. Open the form.", tag: "MCP App", subtext: "Provisioning form, opens in the canvas" },
+    { label: "Status of platformops-prod", prompt: "What's the current status of platformops-prod?", tag: "A2UI", subtext: "Composed status surface from live cluster data" },
+    { label: "Scale prod cluster", prompt: "Scale the general node group on platformops-prod to 12 nodes.", tag: "AG-UI", subtext: "Live node-drain rollout, phases tick in the canvas" },
   ],
   lambdas: [
     { label: "List Lambda functions", prompt: "List the Lambda functions", tag: "MCP App", subtext: "Lambda catalog with invocations + errors" },
-    { label: "Create new Lambda", prompt: "I want to create a new Lambda. Open the form so I can fill in name, runtime, memory, and trigger.", tag: "MCP App", subtext: "Provisioning form, opens in the canvas" },
-    { label: "Tail invoice-processor logs", prompt: "Show me the last 10 log entries for invoice-processor as a polished A2UI list with timestamps and levels", tag: "A2UI", subtext: "CloudWatch-style log feed, composed live" },
-    { label: "Run webhook-fanout test", prompt: "Run a test invocation of webhook-fanout and stream the progress card", tag: "AG-UI", subtext: "Streaming test invocation with phases" },
+    { label: "Create new Lambda", prompt: "I want to create a new Lambda. Open the form.", tag: "MCP App", subtext: "Provisioning form, opens in the canvas" },
+    { label: "Tail invoice-processor logs", prompt: "Show me the last 10 log entries for invoice-processor.", tag: "A2UI", subtext: "Designer picks the log-feed shape" },
+    { label: "Run webhook-fanout test", prompt: "Run a test invocation of webhook-fanout.", tag: "AG-UI", subtext: "Streaming test invocation with phases" },
   ],
   agents: [
     { label: "List AgentCore agents", prompt: "List the AgentCore agents", tag: "MCP App", subtext: "AgentCore catalog with model + cost" },
-    { label: "Deploy new agent", prompt: "I want to deploy a new AgentCore agent. Open the form so I can fill in name, model, guardrails, and knowledge bases.", tag: "MCP App", subtext: "Provisioning form, opens in the canvas" },
-    { label: "Recent support-triage traces", prompt: "Pull the 5 most recent traces for support-triage and render them as an A2UI card list", tag: "A2UI", subtext: "Trace cards composed from agent telemetry" },
-    { label: "Probe support-triage", prompt: "Run a test invocation of support-triage with the prompt 'where is my order' and stream the execution", tag: "AG-UI", subtext: "Streams tool calls + tokens as they happen" },
+    { label: "Deploy new agent", prompt: "I want to deploy a new AgentCore agent. Open the form.", tag: "MCP App", subtext: "Provisioning form, opens in the canvas" },
+    { label: "Recent support-triage traces", prompt: "Show me the 5 most recent traces for support-triage.", tag: "A2UI", subtext: "Designer composes trace cards from telemetry" },
+    { label: "Probe support-triage", prompt: "Run a test invocation of support-triage with the prompt 'where is my order'.", tag: "AG-UI", subtext: "Streams tool calls + tokens as they happen" },
   ],
   "golden-paths": [
-    { label: "Scaffold a new service", prompt: "I want to scaffold a new service from the platform template. Open the form so I can fill in name, language, owning team, and tier.", tag: "MCP App", subtext: "Opinionated scaffold form, registers into the catalog" },
+    { label: "Scaffold a new service", prompt: "I want to scaffold a new service from the platform template. Open the form.", tag: "MCP App", subtext: "Opinionated scaffold form, registers into the catalog" },
     { label: "Provision new EKS cluster", prompt: "Provision a new EKS cluster from the golden template. Open the form.", tag: "MCP App", subtext: "Provisioning form with vetted defaults" },
     { label: "Bootstrap a new Lambda", prompt: "Bootstrap a new Lambda function from the platform template. Open the form.", tag: "MCP App", subtext: "Includes IAM, DLQ, tracing wired" },
     { label: "Deploy AgentCore agent", prompt: "Deploy a new AgentCore agent from the platform template. Open the form.", tag: "MCP App", subtext: "Includes guardrails + knowledge base wiring" },
   ],
   "self-service": [
-    { label: "What can I do (global)?", prompt: "Render the global Day 1 / Day 2 self-service actions board as an A2UI surface (no resource focused).", tag: "A2UI", subtext: "Day 1 / Day 2 board for the whole platform" },
-    { label: "Self-service for payment-api", prompt: "Show me the payment-api service details, then render its Day 1 / Day 2 self-service actions as an A2UI surface.", tag: "A2UI", subtext: "Focus a service, then surface its actions" },
-    { label: "Self-service for platformops-prod", prompt: "Show me the status of platformops-prod, then render its Day 1 / Day 2 self-service actions as an A2UI surface.", tag: "A2UI", subtext: "Cluster-scoped Day 1 / Day 2 board" },
-    { label: "Self-service for webhook-fanout", prompt: "Show me invocation metrics for the webhook-fanout Lambda, then render its Day 1 / Day 2 self-service actions as an A2UI surface.", tag: "A2UI", subtext: "Lambda-scoped Day 1 / Day 2 board" },
+    { label: "What can I do (global)?", prompt: "What can I do on the platform right now? Show me the global Day 1 / Day 2 self-service board.", tag: "A2UI", subtext: "Day 1 / Day 2 board for the whole platform" },
+    { label: "Self-service for payment-api", prompt: "Open payment-api, then show me what I can do with it.", tag: "A2UI", subtext: "Focus a service, then surface its actions" },
+    { label: "Self-service for platformops-prod", prompt: "Show me the status of platformops-prod, then what I can do with it.", tag: "A2UI", subtext: "Cluster-scoped Day 1 / Day 2 board" },
+    { label: "Self-service for webhook-fanout", prompt: "Show me invocation metrics for webhook-fanout, then what I can do with it.", tag: "A2UI", subtext: "Lambda-scoped Day 1 / Day 2 board" },
   ],
   deployments: [
-    { label: "Recent production deploys", prompt: "List the 10 most recent production deployments and render them as an A2UI Column of Card components with service, environment, who, when, and commit sha", tag: "A2UI", subtext: "Deploy history with attribution + audit" },
-    { label: "Deploys this week", prompt: "Render an A2UI surface with catalogId 'https://platformops.dev/a2ui/catalog/v0_9' and a PlatformChart titled 'Deploys this week', type 'bar', unit '', and series [{\"label\":\"Mon\",\"value\":3},{\"label\":\"Tue\",\"value\":6},{\"label\":\"Wed\",\"value\":4},{\"label\":\"Thu\",\"value\":8},{\"label\":\"Fri\",\"value\":11,\"color\":\"#EBCB8B\"},{\"label\":\"Sat\",\"value\":2},{\"label\":\"Sun\",\"value\":1}]. Include a short caption explaining Friday was the busiest deploy day.", tag: "A2UI", subtext: "Custom A2UI chart component" },
-    { label: "Roll back data-pipeline", prompt: "Roll back the most recent data-pipeline deployment and confirm with an A2UI card showing the rollback details", tag: "A2UI", subtext: "Rollback confirmation with audit details" },
-    { label: "Deploy notification-service", prompt: "Deploy notification-service to staging — stream the progress", tag: "AG-UI", subtext: "Streaming deploy with 4 phases" },
+    { label: "Recent production deploys", prompt: "Show me the 10 most recent production deployments.", tag: "A2UI", subtext: "Designer composes the deploy history with attribution + audit" },
+    { label: "Deploys this week", prompt: "How many deployments happened each day this week?", tag: "A2UI", subtext: "Designer picks the chart shape" },
+    { label: "Roll back data-pipeline", prompt: "Roll back the most recent data-pipeline deployment.", tag: "A2UI", subtext: "Rollback confirmation with audit details" },
+    { label: "Deploy notification-service", prompt: "Deploy notification-service to staging.", tag: "AG-UI", subtext: "Streaming deploy with 4 phases" },
   ],
   oncall: [
-    { label: "Who's on-call this week?", prompt: "Tell me who's on-call across all teams right now and render it as an A2UI Column of Cards", tag: "A2UI", subtext: "Rotation cards per team" },
-    { label: "payment-api runbook", prompt: "Pull the payment-api runbook and render it as a polished A2UI card with sections for Symptoms, First 5 minutes, and Escalation", tag: "A2UI", subtext: "Composed runbook with section structure" },
-    { label: "Page primary on-call", prompt: "Page the primary on-call for Platform Team about a notification-service incident — stream the page progress", tag: "AG-UI", subtext: "Streaming incident page with phases" },
+    { label: "Who's on-call this week?", prompt: "Who's on-call across all teams right now?", tag: "A2UI", subtext: "Designer composes the rotation surface" },
+    { label: "payment-api runbook", prompt: "Pull the payment-api runbook.", tag: "A2UI", subtext: "Designer composes Symptoms / First 5 minutes / Escalation" },
+    { label: "Page primary on-call", prompt: "Page the primary on-call for Platform Team about a notification-service incident.", tag: "AG-UI", subtext: "Streaming incident page with phases" },
   ],
   cost: [
-    { label: "Cost by resource type", prompt: "Pull the cost breakdown via cost-breakdown, then render an A2UI surface with catalogId 'https://platformops.dev/a2ui/catalog/v0_9' and a PlatformChart titled 'Monthly cost by resource type', type 'bar', unit '$', and series matching the breakdown (one entry per resource type, sorted descending by value). Include a caption with the highest-cost resource type.", tag: "A2UI", subtext: "Custom A2UI cost chart" },
-    { label: "Cost by team", prompt: "Pull the cost breakdown via cost-breakdown groupBy 'team', then render an A2UI surface with catalogId 'https://platformops.dev/a2ui/catalog/v0_9' and a PlatformChart titled 'Monthly cost by team', type 'donut', unit '$', and series matching the per-team values.", tag: "A2UI", subtext: "Custom A2UI donut chart" },
-    { label: "Lambda invocations trend", prompt: "Render an A2UI surface with catalogId 'https://platformops.dev/a2ui/catalog/v0_9' and a PlatformChart titled 'Lambda invocations - last 7 days', type 'line', unit '', xLabels [\"Mon\",\"Tue\",\"Wed\",\"Thu\",\"Fri\",\"Sat\",\"Sun\"], and series [{\"label\":\"webhook-fanout\",\"values\":[28000,31000,29800,32400,33100,18900,12200],\"color\":\"#88C0D0\"},{\"label\":\"invoice-processor\",\"values\":[12100,14300,13800,15400,16200,9300,5400],\"color\":\"#A3BE8C\"},{\"label\":\"image-resize\",\"values\":[7100,8200,7800,8400,9100,5400,4100],\"color\":\"#EBCB8B\"}].", tag: "A2UI", subtext: "Custom A2UI line chart" },
-    { label: "SLO health for payment-api", prompt: "Pull current SLO metrics for payment-api and render them in a polished A2UI Card showing target, current, headroom, and a status Text in the right color.", tag: "A2UI", subtext: "SLO card with headroom" },
+    { label: "Cost by resource type", prompt: "Show me the monthly cost broken down by resource type.", tag: "A2UI", subtext: "Designer picks the chart shape" },
+    { label: "Cost by team", prompt: "Show me the monthly cost broken down by team.", tag: "A2UI", subtext: "Designer picks the chart shape" },
+    { label: "Lambda invocations trend", prompt: "Show me Lambda invocations over the last 7 days.", tag: "A2UI", subtext: "Designer picks the chart shape" },
+    { label: "SLO health for payment-api", prompt: "How healthy is payment-api against its SLO?", tag: "A2UI", subtext: "Designer composes the SLO surface" },
   ],
   governance: [
-    { label: "Recent audit events", prompt: "List the 10 most recent audit events across the platform — deployments, rollbacks, scale operations, and provisioning — and render as an A2UI Column of Cards showing who, what, when, and outcome.", tag: "A2UI", subtext: "Audit log composed natively, attributable per user" },
-    { label: "Who deployed payment-api last?", prompt: "Pull the most recent payment-api deployment, and render an A2UI Card showing who deployed it, when, the commit sha, and whether it passed the policy checks.", tag: "A2UI", subtext: "Single-event accountability card" },
-    { label: "Policy status across catalog", prompt: "Render an A2UI Column with one Card per service summarising its current policy posture — IAM, network, encryption-at-rest, SBOM scan — and whether each check passed.", tag: "A2UI", subtext: "Compliance snapshot across the catalog" },
-    { label: "Services failing IAM policy", prompt: "Which services are currently failing the IAM least-privilege policy? Render an A2UI Card list with service id, owning team, and the specific finding.", tag: "A2UI", subtext: "Filtered policy failures grouped by service" },
+    { label: "Recent audit events", prompt: "Show me the 10 most recent audit events across the platform.", tag: "A2UI", subtext: "Designer composes the audit log surface" },
+    { label: "Who deployed payment-api last?", prompt: "Who deployed payment-api last, and did it pass the policy checks?", tag: "A2UI", subtext: "Single-event accountability surface" },
+    { label: "Policy status across catalog", prompt: "What is the current policy posture across all services? IAM, network, encryption-at-rest, SBOM.", tag: "A2UI", subtext: "Compliance snapshot across the catalog" },
+    { label: "Services failing IAM policy", prompt: "Which services are currently failing the IAM least-privilege policy?", tag: "A2UI", subtext: "Filtered policy failures grouped by service" },
   ],
 };
 
@@ -649,39 +655,42 @@ interface ResourceAction {
   tag: "MCP App" | "A2UI" | "AG-UI";
 }
 
+// Same principle as QUICK_PROMPTS: intent only. The agent picks the
+// rendering family; the secondary A2UI designer picks the component shape.
 const ACTIONS_FOR_RESOURCE: Record<NonNullable<SelectedResource>["kind"], ResourceAction[]> = {
   service: [
-    { label: "Self-service actions", prompt: "Render the Day 1 / Day 2 self-service actions board for {id} as an A2UI surface (use the structure from the system instructions — two stacked Cards, no Tabs).", tag: "A2UI" },
+    { label: "Self-service actions", prompt: "What can I do with {id}?", tag: "A2UI" },
     { label: "Overview", prompt: "Show me the {id} service details", tag: "MCP App" },
-    { label: "SLO health", prompt: "Pull current SLO metrics for {id} and render them in a polished A2UI Card with target, current, headroom, and status", tag: "A2UI" },
+    { label: "Is it safe to deploy?", prompt: "Is {id} safe to deploy right now?", tag: "A2UI" },
+    { label: "SLO health", prompt: "How healthy is {id} against its SLO?", tag: "A2UI" },
     { label: "Deploy to staging", prompt: "Deploy {id} to staging", tag: "AG-UI" },
     { label: "Deploy to production", prompt: "Deploy {id} to production", tag: "AG-UI" },
-    { label: "Recent deploys", prompt: "List the recent deployments for {id} and render them as an A2UI Column of Card components", tag: "A2UI" },
-    { label: "Roll back", prompt: "Roll back the most recent {id} deployment and confirm with an A2UI card", tag: "A2UI" },
-    { label: "Runbook", prompt: "Pull the {id} runbook and render it as a polished A2UI Card with sections for Symptoms, First 5 minutes, and Escalation", tag: "A2UI" },
-    { label: "On-call for owning team", prompt: "Who's on-call for the team that owns {id}? Render as an A2UI Card.", tag: "A2UI" },
+    { label: "Recent deploys", prompt: "Show me the recent deployments for {id}.", tag: "A2UI" },
+    { label: "Roll back", prompt: "Roll back the most recent {id} deployment.", tag: "A2UI" },
+    { label: "Runbook", prompt: "Pull the {id} runbook.", tag: "A2UI" },
+    { label: "On-call for owning team", prompt: "Who's on-call for the team that owns {id}?", tag: "A2UI" },
   ],
   cluster: [
-    { label: "Self-service actions", prompt: "Render the Day 1 / Day 2 self-service actions board for {id} as an A2UI surface (use the structure from the system instructions — two stacked Cards, no Tabs).", tag: "A2UI" },
-    { label: "Cluster overview", prompt: "What's the current status of {id}? Render it as a polished A2UI card.", tag: "A2UI" },
-    { label: "Scale general node group", prompt: "Scale the general node group on {id} to 12 nodes — stream the rollout as an AG-UI action", tag: "AG-UI" },
-    { label: "Pod health", prompt: "Show me the pod health summary for {id} as an A2UI Card list grouped by node group", tag: "A2UI" },
-    { label: "Cost", prompt: "What does {id} cost per month? Render an A2UI Card with the breakdown.", tag: "A2UI" },
-    { label: "List services on cluster", prompt: "Which platform services run on {id}? Render as A2UI Cards.", tag: "A2UI" },
+    { label: "Self-service actions", prompt: "What can I do with {id}?", tag: "A2UI" },
+    { label: "Cluster overview", prompt: "What's the current status of {id}?", tag: "A2UI" },
+    { label: "Scale general node group", prompt: "Scale the general node group on {id} to 12 nodes.", tag: "AG-UI" },
+    { label: "Pod health", prompt: "Show me the pod health summary for {id}, grouped by node group.", tag: "A2UI" },
+    { label: "Cost", prompt: "What does {id} cost per month?", tag: "A2UI" },
+    { label: "List services on cluster", prompt: "Which platform services run on {id}?", tag: "A2UI" },
   ],
   lambda: [
-    { label: "Self-service actions", prompt: "Render the Day 1 / Day 2 self-service actions board for {id} as an A2UI surface (use the structure from the system instructions — two stacked Cards, no Tabs).", tag: "A2UI" },
-    { label: "Invocation metrics", prompt: "Give me 24h invocation metrics for {id}, rendered as an A2UI Card with invocations, errors, error rate, p99, and throttles", tag: "A2UI" },
-    { label: "Tail logs", prompt: "Show me the last 10 CloudWatch log entries for {id} as a polished A2UI list with timestamps and levels", tag: "A2UI" },
-    { label: "Invoke (AG-UI)", prompt: "Run a test invocation of {id} and stream the AG-UI execution", tag: "AG-UI" },
-    { label: "Cold-start budget", prompt: "How does {id}'s cold-start budget look this week? Render as an A2UI Card with p99 and a budget bar.", tag: "A2UI" },
+    { label: "Self-service actions", prompt: "What can I do with {id}?", tag: "A2UI" },
+    { label: "Invocation metrics", prompt: "Give me 24h invocation metrics for {id}: invocations, errors, error rate, p99, throttles.", tag: "A2UI" },
+    { label: "Tail logs", prompt: "Show me the last 10 CloudWatch log entries for {id}.", tag: "A2UI" },
+    { label: "Invoke", prompt: "Run a test invocation of {id}.", tag: "AG-UI" },
+    { label: "Cold-start budget", prompt: "How does {id}'s cold-start budget look this week?", tag: "A2UI" },
   ],
   agent: [
-    { label: "Self-service actions", prompt: "Render the Day 1 / Day 2 self-service actions board for {id} as an A2UI surface (use the structure from the system instructions — two stacked Cards, no Tabs).", tag: "A2UI" },
-    { label: "Recent traces", prompt: "Pull the 5 most recent traces for {id} and render them as an A2UI Column of Card items showing prompt, tools called, latency, tokens", tag: "A2UI" },
-    { label: "Run a probe (AG-UI)", prompt: "Run a test invocation of {id} with prompt 'where is my order' and stream the AG-UI execution", tag: "AG-UI" },
-    { label: "Cost & latency", prompt: "Render an A2UI Card with {id}'s cost, average latency, error rate, and invocation volume", tag: "A2UI" },
-    { label: "Swap model", prompt: "What would change if {id} switched to claude-haiku-4-5? Render an A2UI Card comparing current vs proposed", tag: "A2UI" },
+    { label: "Self-service actions", prompt: "What can I do with {id}?", tag: "A2UI" },
+    { label: "Recent traces", prompt: "Show me the 5 most recent traces for {id}: prompt, tools called, latency, tokens.", tag: "A2UI" },
+    { label: "Run a probe", prompt: "Run a test invocation of {id} with prompt 'where is my order'.", tag: "AG-UI" },
+    { label: "Cost & latency", prompt: "What is {id}'s cost, average latency, error rate, and invocation volume?", tag: "A2UI" },
+    { label: "Swap model", prompt: "What would change if {id} switched to claude-haiku-4-5?", tag: "A2UI" },
   ],
 };
 

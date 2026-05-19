@@ -1,7 +1,8 @@
 "use client";
 
-import { useFrontendTool } from "@copilotkit/react-core/v2";
+import { useFrontendTool, ToolCallStatus } from "@copilotkit/react-core/v2";
 import { z } from "zod";
+import type { ComponentType } from "react";
 
 /**
  * Data-only frontend tools.
@@ -25,7 +26,89 @@ export function DataTools() {
   useListDeploymentsTool();
   useGetRunbookTool();
   useGetOncallTool();
+  useListAuditEventsTool();
+  usePolicyStatusTool();
   return null;
+}
+
+// ─── Shared chat breadcrumb for data-tool calls ──────────────────────────
+//
+// Each frontend data tool gets a `render` prop that drops one of these into
+// the chat sidebar so the audience SEES the agent calling external APIs
+// (mocked or not). Three states: in-progress (args still streaming),
+// executing (handler running), complete (with a one-line summary of the
+// result).
+
+type ResultSummary = (result: unknown, args: Record<string, unknown>) => string;
+
+function makeDataToolRender(opts: {
+  /** Human display name shown on the chip, e.g. "service-metrics". */
+  label: string;
+  /** Short single-emoji or unicode glyph used as the chip icon. */
+  glyph: string;
+  /** Render a 1-line summary of args, e.g. "(payment-api)". Returns "" if none. */
+  argsSummary: (args: Record<string, unknown>) => string;
+  /** Render a 1-line summary of the result, e.g. "→ 10 events". */
+  resultSummary: ResultSummary;
+}): ComponentType<any> {
+  // The CopilotKit `render` prop is typed as a discriminated union over
+  // ToolCallStatus values; using ComponentType<any> here keeps the factory
+  // ergonomic without re-implementing the union three times. The runtime
+  // shape is { name, args, status, result?, ... } regardless of status.
+  function DataToolBreadcrumb({
+    args,
+    status,
+    result,
+  }: {
+    name: string;
+    args: Partial<Record<string, unknown>>;
+    status: ToolCallStatus;
+    result?: unknown;
+  }) {
+    const argsText = opts.argsSummary(args as Record<string, unknown>);
+    const isExecuting =
+      status === ToolCallStatus.Executing ||
+      status === ToolCallStatus.InProgress;
+    const tone = isExecuting
+      ? "border-nord-frost2/40 text-nord-frost2"
+      : "border-nord-ok/40 text-nord-ok";
+    const dot = isExecuting ? "animate-pulse" : "";
+    const summary =
+      status === ToolCallStatus.Complete
+        ? opts.resultSummary(parseToolResult(result), args as Record<string, unknown>)
+        : "";
+
+    return (
+      <div
+        className={`inline-flex items-center gap-2 text-[11px] uppercase tracking-wider px-3 py-1.5 rounded-full border bg-nord-1/60 my-1 ${tone}`}
+      >
+        <span
+          className={`inline-block w-1.5 h-1.5 rounded-full bg-current opacity-80 ${dot}`}
+        />
+        <span className="opacity-60">{opts.glyph}</span>
+        <span>{opts.label}</span>
+        {argsText && <span className="opacity-60 normal-case">{argsText}</span>}
+        {summary && (
+          <span className="opacity-80 normal-case font-medium">{summary}</span>
+        )}
+      </div>
+    );
+  }
+  return DataToolBreadcrumb;
+}
+
+/**
+ * Frontend tool results round-trip through the agent runtime as JSON
+ * strings. Parse opportunistically so the summary functions can read
+ * structured fields.
+ */
+function parseToolResult(raw: unknown): unknown {
+  if (typeof raw !== "string") return raw;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return raw;
+  }
 }
 
 // ─── cost-breakdown ────────────────────────────────────────────────────────
@@ -38,6 +121,18 @@ const costBreakdownTool = {
   name: "cost-breakdown",
   description:
     "Returns the current monthly cost breakdown across the platform. Use this whenever the user asks about cost, spend, or where the money is going. Pass groupBy='team' to get per-team cost, or omit for the per-resource-type default.",
+  render: makeDataToolRender({
+    label: "cost-breakdown",
+    glyph: "$",
+    argsSummary: (args) =>
+      args.groupBy ? `(groupBy=${args.groupBy})` : "(resource-type)",
+    resultSummary: (result) => {
+      const r = result as { items?: unknown[]; total?: number; currency?: string };
+      const items = Array.isArray(r.items) ? r.items.length : 0;
+      const total = typeof r.total === "number" ? r.total : 0;
+      return `→ ${items} buckets, $${total.toLocaleString()}/mo`;
+    },
+  }),
   parameters: z.object({
     groupBy: z
       .enum(["resource-type", "team"])
@@ -169,6 +264,30 @@ const serviceMetricsTool = {
   name: "service-metrics",
   description:
     "Returns current SLO + traffic + error + latency metrics for a single platform service. Use this when the user asks about service health, SLO status, or deploy readiness.",
+  render: makeDataToolRender({
+    label: "service-metrics",
+    glyph: "📊",
+    argsSummary: (args) => (args.serviceId ? `(${args.serviceId})` : ""),
+    resultSummary: (result) => {
+      const r = result as {
+        sloCurrentPct?: number;
+        sloTargetPct?: number;
+        errors24h?: number;
+        activeAlerts?: number;
+        notFound?: boolean;
+      };
+      if (r.notFound) return "→ not found";
+      const slo =
+        typeof r.sloCurrentPct === "number" && typeof r.sloTargetPct === "number"
+          ? `SLO ${r.sloCurrentPct}% / ${r.sloTargetPct}%`
+          : "";
+      const alerts =
+        typeof r.activeAlerts === "number" && r.activeAlerts > 0
+          ? `, ${r.activeAlerts} active alerts`
+          : "";
+      return `→ ${slo}${alerts}`;
+    },
+  }),
   parameters: z.object({
     serviceId: z
       .string()
@@ -204,6 +323,22 @@ const listDeploymentsTool = {
   name: "list-deployments",
   description:
     "Returns recent deployments across the platform. Optionally filter by serviceId or environment. Use this for deploy-readiness, rollback decisions, deploy history dashboards, and audit queries.",
+  render: makeDataToolRender({
+    label: "list-deployments",
+    glyph: "🚀",
+    argsSummary: (args) => {
+      const parts: string[] = [];
+      if (args.serviceId) parts.push(String(args.serviceId));
+      if (args.environment) parts.push(String(args.environment));
+      if (args.limit) parts.push(`limit=${args.limit}`);
+      return parts.length ? `(${parts.join(", ")})` : "";
+    },
+    resultSummary: (result) => {
+      const r = result as { count?: number; deployments?: unknown[] };
+      const n = Array.isArray(r.deployments) ? r.deployments.length : (r.count ?? 0);
+      return `→ ${n} deployment${n === 1 ? "" : "s"}`;
+    },
+  }),
   parameters: z.object({
     serviceId: z
       .string()
@@ -479,6 +614,22 @@ const getRunbookTool = {
   name: "get-runbook",
   description:
     "Returns the operational runbook for a service: symptoms to watch for, first-5-minutes actions, escalation tiers, and known playbook links. Use this when the user asks for a runbook, incident response steps, or 'what do I do at 3am for X'.",
+  render: makeDataToolRender({
+    label: "get-runbook",
+    glyph: "📖",
+    argsSummary: (args) => (args.serviceId ? `(${args.serviceId})` : ""),
+    resultSummary: (result) => {
+      const r = result as {
+        notFound?: boolean;
+        symptoms?: unknown[];
+        firstFiveMinutes?: unknown[];
+      };
+      if (r.notFound) return "→ no runbook on file";
+      const s = Array.isArray(r.symptoms) ? r.symptoms.length : 0;
+      const f = Array.isArray(r.firstFiveMinutes) ? r.firstFiveMinutes.length : 0;
+      return `→ ${s} symptoms, ${f} first-5-min steps`;
+    },
+  }),
   parameters: z.object({
     serviceId: z
       .string()
@@ -598,6 +749,23 @@ const getOncallTool = {
   name: "get-oncall",
   description:
     "Returns the current on-call rotation. Pass team to scope to one team; omit team to get the full platform rotation across all teams. Use this for incident-response coordination and deploy-readiness ('do we have on-call coverage if this breaks?').",
+  render: makeDataToolRender({
+    label: "get-oncall",
+    glyph: "📟",
+    argsSummary: (args) => (args.team ? `(${args.team})` : "(all teams)"),
+    resultSummary: (result) => {
+      const r = result as {
+        team?: string;
+        notFound?: boolean;
+        teams?: unknown[];
+        primary?: { name?: string };
+      };
+      if (r.notFound) return "→ no rotation on file";
+      if (Array.isArray(r.teams)) return `→ ${r.teams.length} teams covered`;
+      if (r.primary?.name) return `→ ${r.primary.name} primary`;
+      return "→ ok";
+    },
+  }),
   parameters: z.object({
     team: z
       .string()
@@ -637,4 +805,468 @@ function daysAgo(d: number): string {
 }
 function daysAhead(d: number): string {
   return new Date(Date.now() + d * 86_400_000).toISOString();
+}
+
+// ─── list-audit-events ─────────────────────────────────────────────────────
+
+interface AuditEvent {
+  id: string;
+  timestamp: string;
+  actor: string;
+  team: string;
+  action:
+    | "deploy"
+    | "rollback"
+    | "scale"
+    | "provision"
+    | "policy-scan"
+    | "incident-page";
+  resource: string;
+  resourceType: "service" | "cluster" | "lambda" | "agent";
+  environment?: "staging" | "production";
+  outcome: "success" | "failed" | "rolled-back";
+  policyChecksPassed: boolean;
+  details?: string;
+}
+
+const AUDIT_EVENTS: AuditEvent[] = [
+  {
+    id: "evt_01HQXZ4F",
+    timestamp: hoursAgo(2),
+    actor: "engin.diri@",
+    team: "Payments Platform",
+    action: "deploy",
+    resource: "payment-api",
+    resourceType: "service",
+    environment: "staging",
+    outcome: "success",
+    policyChecksPassed: true,
+    details: "commit a4f1e29, duration 84s",
+  },
+  {
+    id: "evt_01HQXY7K",
+    timestamp: hoursAgo(27),
+    actor: "sam.lin@",
+    team: "Payments Platform",
+    action: "deploy",
+    resource: "payment-api",
+    resourceType: "service",
+    environment: "production",
+    outcome: "success",
+    policyChecksPassed: true,
+    details: "commit 9d2b71c",
+  },
+  {
+    id: "evt_01HQXY1B",
+    timestamp: hoursAgo(8),
+    actor: "alex.park@",
+    team: "Identity Platform",
+    action: "deploy",
+    resource: "user-service",
+    resourceType: "service",
+    environment: "production",
+    outcome: "success",
+    policyChecksPassed: true,
+    details: "commit f70a2d8",
+  },
+  {
+    id: "evt_01HQXT9D",
+    timestamp: hoursAgo(14),
+    actor: "riley.cohen@",
+    team: "Comms Platform",
+    action: "rollback",
+    resource: "notification-service",
+    resourceType: "service",
+    environment: "production",
+    outcome: "rolled-back",
+    policyChecksPassed: true,
+    details: "elevated 5xx — rolled back to commit 0a4e22b",
+  },
+  {
+    id: "evt_01HQXR4F",
+    timestamp: hoursAgo(20),
+    actor: "morgan.lee@",
+    team: "Data Platform",
+    action: "deploy",
+    resource: "data-pipeline",
+    resourceType: "service",
+    environment: "production",
+    outcome: "success",
+    policyChecksPassed: true,
+    details: "commit c8e91f3",
+  },
+  {
+    id: "evt_01HQXR0C",
+    timestamp: hoursAgo(31),
+    actor: "engin.diri@",
+    team: "Platform Engineering",
+    action: "scale",
+    resource: "platformops-prod",
+    resourceType: "cluster",
+    outcome: "success",
+    policyChecksPassed: true,
+    details: "general node group 8 → 12 nodes",
+  },
+  {
+    id: "evt_01HQXM2A",
+    timestamp: hoursAgo(34),
+    actor: "taylor.singh@",
+    team: "Integrations",
+    action: "deploy",
+    resource: "webhook-fanout",
+    resourceType: "lambda",
+    environment: "production",
+    outcome: "success",
+    policyChecksPassed: true,
+    details: "commit 6f0c812",
+  },
+  {
+    id: "evt_01HQXJ9N",
+    timestamp: hoursAgo(40),
+    actor: "platform-bot@",
+    team: "Platform Engineering",
+    action: "policy-scan",
+    resource: "user-service",
+    resourceType: "service",
+    outcome: "failed",
+    policyChecksPassed: false,
+    details: "IAM least-privilege finding: payments:write granted but unused 30d",
+  },
+  {
+    id: "evt_01HQXJ7P",
+    timestamp: hoursAgo(72),
+    actor: "priya.rao@",
+    team: "Payments Platform",
+    action: "deploy",
+    resource: "payment-api",
+    resourceType: "service",
+    environment: "production",
+    outcome: "success",
+    policyChecksPassed: true,
+    details: "commit 2d7a019",
+  },
+  {
+    id: "evt_01HQXH8M",
+    timestamp: hoursAgo(48),
+    actor: "jordan.wu@",
+    team: "Identity Platform",
+    action: "deploy",
+    resource: "user-service",
+    resourceType: "service",
+    environment: "staging",
+    outcome: "success",
+    policyChecksPassed: true,
+    details: "commit b91c044",
+  },
+];
+
+// Hoisted to module scope. Inline tool registrations in the hook body would
+// create a new tool object on every Dashboard render, which (a) trips
+// CopilotKit's "frontendTools must be a stable array" warning and
+// (b) loses in-flight tool calls → AI_MissingToolResultsError. Stable
+// reference means stable registration.
+const listAuditEventsTool = {
+  name: "list-audit-events",
+  description:
+    "Returns recent audit events across the platform: deploys, rollbacks, scale operations, provisioning, policy scans, on-call pages. Each event has actor, team, action type, resource, outcome, policy-check status, and optional details. Use this for audit log questions, governance dashboards, and accountability queries.",
+  render: makeDataToolRender({
+    label: "list-audit-events",
+    glyph: "📜",
+    argsSummary: (args) => {
+      const parts: string[] = [];
+      if (args.resource) parts.push(String(args.resource));
+      if (args.action) parts.push(String(args.action));
+      if (args.team) parts.push(String(args.team));
+      return parts.length ? `(${parts.join(", ")})` : "";
+    },
+    resultSummary: (result) => {
+      const r = result as { count?: number; events?: unknown[] };
+      const n = Array.isArray(r.events) ? r.events.length : (r.count ?? 0);
+      return `→ ${n} event${n === 1 ? "" : "s"}`;
+    },
+  }),
+  parameters: z.object({
+    resource: z
+      .string()
+      .optional()
+      .describe(
+        "Filter to events affecting a specific resource id (service, cluster, lambda, or agent).",
+      ),
+    action: z
+      .enum([
+        "deploy",
+        "rollback",
+        "scale",
+        "provision",
+        "policy-scan",
+        "incident-page",
+      ])
+      .optional()
+      .describe("Filter by action type."),
+    team: z
+      .string()
+      .optional()
+      .describe("Filter to events initiated by members of one team."),
+    limit: z
+      .number()
+      .optional()
+      .describe("Max number of records, default 10."),
+  }),
+  handler: async ({
+    resource,
+    action,
+    team,
+    limit,
+  }: {
+    resource?: string;
+    action?:
+      | "deploy"
+      | "rollback"
+      | "scale"
+      | "provision"
+      | "policy-scan"
+      | "incident-page";
+    team?: string;
+    limit?: number;
+  }) => {
+    const filtered = AUDIT_EVENTS.filter((e) => {
+      if (resource && e.resource !== resource) return false;
+      if (action && e.action !== action) return false;
+      if (team && e.team !== team) return false;
+      return true;
+    });
+    return {
+      count: filtered.length,
+      events: filtered.slice(0, limit ?? 10),
+    };
+  },
+};
+
+function useListAuditEventsTool() {
+  useFrontendTool(listAuditEventsTool);
+}
+
+// ─── policy-status ─────────────────────────────────────────────────────────
+
+interface PolicyCheck {
+  name: "iam" | "network" | "encryption-at-rest" | "sbom-scan";
+  status: "pass" | "fail" | "warn";
+  finding?: string;
+  lastEvaluated: string;
+}
+
+interface PolicyPosture {
+  resource: string;
+  resourceType: "service" | "cluster" | "lambda" | "agent";
+  team: string;
+  overall: "pass" | "fail" | "warn";
+  checks: PolicyCheck[];
+}
+
+const POLICY_POSTURE: PolicyPosture[] = [
+  {
+    resource: "payment-api",
+    resourceType: "service",
+    team: "Payments Platform",
+    overall: "pass",
+    checks: [
+      { name: "iam", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "network", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "encryption-at-rest", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "sbom-scan", status: "pass", lastEvaluated: hoursAgo(12) },
+    ],
+  },
+  {
+    resource: "user-service",
+    resourceType: "service",
+    team: "Identity Platform",
+    overall: "fail",
+    checks: [
+      {
+        name: "iam",
+        status: "fail",
+        finding:
+          "Role 'user-service-task' has 'payments:write' but the policy has not been exercised in 30+ days. Recommend removal under least-privilege.",
+        lastEvaluated: hoursAgo(40),
+      },
+      { name: "network", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "encryption-at-rest", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "sbom-scan", status: "pass", lastEvaluated: hoursAgo(18) },
+    ],
+  },
+  {
+    resource: "notification-service",
+    resourceType: "service",
+    team: "Comms Platform",
+    overall: "warn",
+    checks: [
+      { name: "iam", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "network", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "encryption-at-rest", status: "pass", lastEvaluated: hoursAgo(6) },
+      {
+        name: "sbom-scan",
+        status: "warn",
+        finding:
+          "Transitive dependency 'libxml2@2.9.10' has a moderate-severity CVE (CVE-2024-25062). Upgrade path available.",
+        lastEvaluated: hoursAgo(8),
+      },
+    ],
+  },
+  {
+    resource: "data-pipeline",
+    resourceType: "service",
+    team: "Data Platform",
+    overall: "pass",
+    checks: [
+      { name: "iam", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "network", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "encryption-at-rest", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "sbom-scan", status: "pass", lastEvaluated: hoursAgo(24) },
+    ],
+  },
+  {
+    resource: "webhook-fanout",
+    resourceType: "lambda",
+    team: "Integrations",
+    overall: "pass",
+    checks: [
+      { name: "iam", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "network", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "encryption-at-rest", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "sbom-scan", status: "pass", lastEvaluated: hoursAgo(10) },
+    ],
+  },
+  {
+    resource: "invoice-processor",
+    resourceType: "lambda",
+    team: "Payments Platform",
+    overall: "fail",
+    checks: [
+      {
+        name: "iam",
+        status: "fail",
+        finding:
+          "Lambda execution role uses 'AWSLambdaFullAccess' managed policy. Should be scoped down to specific S3 buckets + Stripe webhook endpoints.",
+        lastEvaluated: hoursAgo(40),
+      },
+      { name: "network", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "encryption-at-rest", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "sbom-scan", status: "pass", lastEvaluated: hoursAgo(14) },
+    ],
+  },
+  {
+    resource: "platformops-prod",
+    resourceType: "cluster",
+    team: "Platform Engineering",
+    overall: "pass",
+    checks: [
+      { name: "iam", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "network", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "encryption-at-rest", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "sbom-scan", status: "pass", lastEvaluated: hoursAgo(6) },
+    ],
+  },
+  {
+    resource: "support-triage",
+    resourceType: "agent",
+    team: "Customer Insights",
+    overall: "pass",
+    checks: [
+      { name: "iam", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "network", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "encryption-at-rest", status: "pass", lastEvaluated: hoursAgo(6) },
+      { name: "sbom-scan", status: "pass", lastEvaluated: hoursAgo(36) },
+    ],
+  },
+];
+
+// Hoisted for the same stable-reference reason as listAuditEventsTool.
+const policyStatusTool = {
+  name: "policy-status",
+  description:
+    "Returns the current policy posture across the platform: per-resource compliance for IAM least-privilege, network segmentation, encryption-at-rest, and SBOM (CVE) scanning. Each resource has an overall status (pass/fail/warn) and the four individual checks with findings when failing. Use this for governance dashboards, compliance audits, 'which services are failing X' queries, and 'what's our IAM exposure' questions.",
+  render: makeDataToolRender({
+    label: "policy-status",
+    glyph: "🛡",
+    argsSummary: (args) => {
+      const parts: string[] = [];
+      if (args.resource) parts.push(String(args.resource));
+      if (args.check) parts.push(`check=${args.check}`);
+      if (args.status) parts.push(`status=${args.status}`);
+      return parts.length ? `(${parts.join(", ")})` : "(catalog-wide)";
+    },
+    resultSummary: (result) => {
+      const r = result as {
+        count?: number;
+        summary?: { passing?: number; warning?: number; failing?: number };
+      };
+      const n = r.count ?? 0;
+      const s = r.summary;
+      if (s) {
+        return `→ ${n} matches · ${s.passing ?? 0} pass · ${s.warning ?? 0} warn · ${s.failing ?? 0} fail`;
+      }
+      return `→ ${n} resource${n === 1 ? "" : "s"}`;
+    },
+  }),
+  parameters: z.object({
+    resource: z
+      .string()
+      .optional()
+      .describe(
+        "Filter to one resource id (e.g. 'payment-api', 'user-service'). Omit to return the whole catalog.",
+      ),
+    check: z
+      .enum(["iam", "network", "encryption-at-rest", "sbom-scan"])
+      .optional()
+      .describe("Filter results to a specific check type."),
+    status: z
+      .enum(["pass", "fail", "warn"])
+      .optional()
+      .describe(
+        "Filter to resources whose OVERALL status matches (e.g. status='fail' lists everything currently failing at least one check).",
+      ),
+    team: z
+      .string()
+      .optional()
+      .describe("Filter to resources owned by one team."),
+  }),
+  handler: async ({
+    resource,
+    check,
+    status,
+    team,
+  }: {
+    resource?: string;
+    check?: "iam" | "network" | "encryption-at-rest" | "sbom-scan";
+    status?: "pass" | "fail" | "warn";
+    team?: string;
+  }) => {
+    const filtered = POLICY_POSTURE.filter((p) => {
+      if (resource && p.resource !== resource) return false;
+      if (team && p.team !== team) return false;
+      if (status && p.overall !== status) return false;
+      if (check) {
+        const c = p.checks.find((x) => x.name === check);
+        if (!c) return false;
+        // When `check` is given, prefer rows where THAT check is non-pass
+        // if status filter is also fail/warn — otherwise return all.
+        if (status && c.status !== status) return false;
+      }
+      return true;
+    });
+      return {
+        count: filtered.length,
+        resources: filtered,
+        summary: {
+          totalResources: POLICY_POSTURE.length,
+          passing: POLICY_POSTURE.filter((p) => p.overall === "pass").length,
+          warning: POLICY_POSTURE.filter((p) => p.overall === "warn").length,
+          failing: POLICY_POSTURE.filter((p) => p.overall === "fail").length,
+        },
+      };
+    },
+};
+
+function usePolicyStatusTool() {
+  useFrontendTool(policyStatusTool);
 }

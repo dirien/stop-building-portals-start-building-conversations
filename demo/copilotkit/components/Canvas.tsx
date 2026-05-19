@@ -609,23 +609,186 @@ function A2UIPanel({
 }: {
   state: Extract<CanvasState, { kind: "a2ui" }>;
 }) {
+  const [view, setView] = useState<"rendered" | "source">("rendered");
   const key =
     typeof state.message?.id === "string"
       ? `${state.message.id}-${state.surfaceId}`
       : state.surfaceId;
-  // The "a2ui-canvas-wrapper" class lets globals.css override the basic
-  // catalog's hard-coded light inline styles into Nord colors.
+
   return (
-    <div className="p-6 a2ui-canvas-wrapper">
-      <A2UIRender
-        key={key}
-        activityType={state.activityType}
-        content={state.content}
-        message={state.message}
-        agent={state.agent}
-      />
+    <div className="flex flex-col h-full min-h-0">
+      <div className="px-6 pt-4 pb-2 flex items-center gap-2">
+        <ViewToggle value={view} onChange={setView} />
+        <div className="text-[11px] opacity-50 ml-2 font-mono truncate">
+          surfaceId · {state.surfaceId}
+        </div>
+      </div>
+      {view === "rendered" ? (
+        // The "a2ui-canvas-wrapper" class lets globals.css override the basic
+        // catalog's hard-coded light inline styles into Nord colors.
+        <div className="px-6 pb-6 a2ui-canvas-wrapper">
+          <A2UIRender
+            key={key}
+            activityType={state.activityType}
+            content={state.content}
+            message={state.message}
+            agent={state.agent}
+          />
+        </div>
+      ) : (
+        <A2UISourceView content={state.content} />
+      )}
     </div>
   );
+}
+
+function ViewToggle({
+  value,
+  onChange,
+}: {
+  value: "rendered" | "source";
+  onChange: (v: "rendered" | "source") => void;
+}) {
+  const base =
+    "text-[11px] uppercase tracking-wider px-2.5 py-1 rounded border transition-colors";
+  const on = "border-nord-ok/60 bg-nord-ok/15 text-nord-ok";
+  const off = "border-nord-2 text-nord-4 hover:bg-nord-2/40";
+  return (
+    <div className="inline-flex gap-1">
+      <button className={`${base} ${value === "rendered" ? on : off}`} onClick={() => onChange("rendered")}>
+        Rendered
+      </button>
+      <button className={`${base} ${value === "source" ? on : off}`} onClick={() => onChange("source")}>
+        Source (JSON)
+      </button>
+    </div>
+  );
+}
+
+/**
+ * Inspect the raw A2UI activity payload the agent emitted. Splits it into
+ * Components / Data panels the way A2UI playground does. Critically: this
+ * is how you confirm the agent is using path bindings (`{ path: "/x" }`)
+ * instead of hardcoding values into the component tree.
+ */
+function A2UISourceView({ content }: { content: unknown }) {
+  const parsed = extractA2UIPayload(content);
+  return (
+    <div className="px-6 pb-6 flex flex-col gap-4 overflow-auto">
+      <SourceSection
+        title="Components (shape)"
+        subtitle="Component tree the renderer mounts. Values referenced via { path } come from the data model below."
+        json={parsed.components}
+        emptyHint="No components in this payload."
+      />
+      <SourceSection
+        title="Data model (values)"
+        subtitle="The JSON document components bind to. If this is empty or thin, the agent is hardcoding values into the component tree — a regression bug."
+        json={parsed.dataModel}
+        emptyHint="No updateDataModel in this payload — every value is hardcoded into the component tree."
+        emptyTone="warn"
+      />
+      {parsed.surfaces.length > 1 && (
+        <div className="text-[11px] opacity-50">
+          This payload contains {parsed.surfaces.length} surfaces: {parsed.surfaces.join(", ")}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SourceSection({
+  title,
+  subtitle,
+  json,
+  emptyHint,
+  emptyTone,
+}: {
+  title: string;
+  subtitle: string;
+  json: unknown;
+  emptyHint: string;
+  emptyTone?: "warn";
+}) {
+  const empty =
+    json === undefined ||
+    json === null ||
+    (Array.isArray(json) && json.length === 0) ||
+    (typeof json === "object" && json !== null && Object.keys(json as object).length === 0);
+
+  return (
+    <div className="rounded-xl border border-nord-2 bg-nord-0/40 overflow-hidden">
+      <div className="px-4 py-2 border-b border-nord-2 bg-nord-1/40">
+        <div className="text-[11px] uppercase tracking-[0.15em] font-semibold">{title}</div>
+        <div className="text-[11px] opacity-60 mt-0.5">{subtitle}</div>
+      </div>
+      {empty ? (
+        <div
+          className={`px-4 py-3 text-xs font-mono ${
+            emptyTone === "warn" ? "text-nord-warn" : "opacity-50"
+          }`}
+        >
+          {emptyHint}
+        </div>
+      ) : (
+        <pre className="px-4 py-3 text-[11px] leading-snug font-mono text-nord-4 overflow-auto whitespace-pre">
+          {JSON.stringify(json, null, 2)}
+        </pre>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Walk the A2UI activity content and pull out the component tree + data
+ * model. The middleware emits operations in different shapes depending on
+ * how the agent invoked render_a2ui — `a2ui_operations` (canonical), or
+ * `messages`, or a flat `components`/`value` pair. Handle each.
+ */
+function extractA2UIPayload(content: unknown): {
+  components: unknown[] | null;
+  dataModel: unknown;
+  surfaces: string[];
+} {
+  let components: unknown[] | null = null;
+  let dataModel: unknown = undefined;
+  const surfaces = new Set<string>();
+
+  const ops = pickOps(content);
+  for (const op of ops) {
+    if (typeof op !== "object" || op === null) continue;
+    const o = op as Record<string, any>;
+    if (o.createSurface?.surfaceId) surfaces.add(o.createSurface.surfaceId);
+    if (o.updateComponents?.components) {
+      components = o.updateComponents.components;
+      if (o.updateComponents.surfaceId) surfaces.add(o.updateComponents.surfaceId);
+    }
+    if (o.updateDataModel) {
+      // value lives directly on updateDataModel (v0.9 wire format).
+      if ("value" in o.updateDataModel) dataModel = o.updateDataModel.value;
+      else dataModel = o.updateDataModel;
+      if (o.updateDataModel.surfaceId) surfaces.add(o.updateDataModel.surfaceId);
+    }
+  }
+
+  // Fallback: flat shape (some middleware versions emit { components, value }).
+  if (components === null && Array.isArray((content as any)?.components)) {
+    components = (content as any).components;
+  }
+  if (dataModel === undefined && (content as any)?.value !== undefined) {
+    dataModel = (content as any).value;
+  }
+
+  return { components, dataModel, surfaces: Array.from(surfaces) };
+}
+
+function pickOps(content: unknown): unknown[] {
+  if (!content || typeof content !== "object") return [];
+  const c = content as Record<string, unknown>;
+  if (Array.isArray(c.a2ui_operations)) return c.a2ui_operations;
+  if (Array.isArray(c.messages)) return c.messages;
+  if (Array.isArray(c.operations)) return c.operations;
+  return [];
 }
 
 // ─── Deploy streaming panel ───────────────────────────────────────────────

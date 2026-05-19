@@ -1,9 +1,12 @@
 "use client";
 
 import { createCatalog } from "@copilotkit/a2ui-renderer";
-import { z } from "zod/v3";
+import {
+  PLATFORM_A2UI_CATALOG_ID,
+  PLATFORM_CUSTOM_COMPONENTS,
+} from "../lib/a2uiCatalogSpec";
 
-export const PLATFORM_A2UI_CATALOG_ID = "https://platformops.dev/a2ui/catalog/v0_9";
+export { PLATFORM_A2UI_CATALOG_ID };
 
 const CHART_COLORS = [
   "#88C0D0",
@@ -14,28 +17,15 @@ const CHART_COLORS = [
   "#81A1C1",
 ];
 
-const chartSeriesSchema = z.object({
-  label: z.string(),
-  value: z.number().optional(),
-  values: z.array(z.number()).optional(),
-  color: z.string().optional(),
-});
-
-export const platformCatalogDefinitions = {
-  PlatformChart: {
-    description:
-      "A polished PlatformOps chart for A2UI surfaces. Use it for cost breakdowns, deploy frequency, SLO burn, invocation trends, and service health comparisons.",
-    props: z.object({
-      title: z.string(),
-      subtitle: z.string().optional(),
-      type: z.enum(["bar", "line", "stacked-bar", "donut"]).default("bar"),
-      unit: z.string().optional(),
-      series: z.array(chartSeriesSchema).min(1),
-      xLabels: z.array(z.string()).optional(),
-      caption: z.string().optional(),
-    }) as any,
-  },
-};
+// Build catalog definitions from the shared spec so adding a new component
+// in lib/a2uiCatalogSpec.ts automatically wires it into the React renderer.
+// Only thing that lives here is the renderer function for each component.
+export const platformCatalogDefinitions = Object.fromEntries(
+  PLATFORM_CUSTOM_COMPONENTS.map((spec) => [
+    spec.name,
+    { description: spec.summary, props: spec.props as any },
+  ]),
+);
 
 type PlatformChartProps = {
   title: string;
@@ -55,15 +45,103 @@ type PlatformChartProps = {
 export const platformA2UICatalog = createCatalog(
   platformCatalogDefinitions as any,
   {
-    PlatformChart: ({ props }: { props: PlatformChartProps }) => (
-      <PlatformChart {...props} />
-    ),
+    PlatformChart: ({ props }: { props: PlatformChartProps }) => {
+      // The basic A2UI renderer resolves `{ path: ... }` references only
+      // for built-in components. For custom catalog entries (like ours),
+      // nested path bindings inside arrays/objects arrive here unresolved
+      // and crash React with "Objects are not valid as a React child".
+      // Sanitize before spreading so the demo degrades gracefully and the
+      // audience can see WHICH paths were unresolved.
+      const { sanitized, unresolved } = sanitizeProps(props);
+      if (unresolved.length > 0) {
+        return (
+          <UnresolvedPathsNotice
+            title={asString(sanitized.title) || "Chart"}
+            unresolved={unresolved}
+          />
+        );
+      }
+      return <PlatformChart {...(sanitized as PlatformChartProps)} />;
+    },
   } as any,
   {
     catalogId: PLATFORM_A2UI_CATALOG_ID,
     includeBasicCatalog: true,
   },
 );
+
+/**
+ * Walk a props tree and detect `{ path: "..." }` reference objects that the
+ * A2UI runtime did not resolve. Returns:
+ *  - `sanitized`: a copy with each unresolved path replaced by a safe
+ *    primitive of the right shape (0 for numbers, "" for strings) so the
+ *    chart can render at all
+ *  - `unresolved`: the list of paths that weren't resolved, for telemetry
+ *
+ * This is a defensive guard, not a real path resolver — we don't have the
+ * per-item data context here. The right long-term fix is for the agent to
+ * either compute literal values at design time or for `createCatalog` to
+ * deep-resolve nested bindings.
+ */
+function sanitizeProps(props: unknown): {
+  sanitized: Record<string, unknown>;
+  unresolved: string[];
+} {
+  const unresolved: string[] = [];
+
+  function walk(value: unknown): unknown {
+    if (Array.isArray(value)) return value.map(walk);
+    if (value && typeof value === "object") {
+      const o = value as Record<string, unknown>;
+      // The A2UI v0.9 path-reference shape is `{ path: <string> }` with no
+      // other meaningful keys. Treat it as unresolved.
+      if (typeof o.path === "string" && Object.keys(o).length === 1) {
+        unresolved.push(o.path);
+        return o.path; // a string the chart can degrade to
+      }
+      const out: Record<string, unknown> = {};
+      for (const [k, v] of Object.entries(o)) out[k] = walk(v);
+      return out;
+    }
+    return value;
+  }
+
+  const sanitized = walk(props) as Record<string, unknown>;
+  return { sanitized, unresolved };
+}
+
+function asString(v: unknown): string {
+  return typeof v === "string" ? v : "";
+}
+
+function UnresolvedPathsNotice({
+  title,
+  unresolved,
+}: {
+  title: string;
+  unresolved: string[];
+}) {
+  const unique = Array.from(new Set(unresolved));
+  return (
+    <section className="rounded-xl border border-nord-warn/40 bg-nord-warn/5 p-5">
+      <div className="text-[10px] uppercase tracking-[0.2em] text-nord-warn mb-1">
+        PlatformChart — bindings unresolved
+      </div>
+      <h3 className="text-base font-semibold tracking-tight">{title}</h3>
+      <p className="text-xs opacity-70 mt-2 leading-relaxed">
+        The chart could not render because the agent bound props to data paths
+        that the renderer did not resolve. Custom catalog components like
+        PlatformChart should receive literal values, not <code>{"{ path }"}</code>{" "}
+        references.
+      </p>
+      <ul className="mt-3 text-[11px] font-mono opacity-80 space-y-0.5">
+        {unique.map((p) => (
+          <li key={p}>· {p}</li>
+        ))}
+      </ul>
+    </section>
+  );
+}
 
 function PlatformChart({
   title,
