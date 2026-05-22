@@ -166,10 +166,12 @@ But that's not even the full story. Something else happened while you were build
 
 ---
 layout: center
-class: text-center bg-white
+class: text-center
 ---
 
-<img src="/along-came-ai.png" class="max-h-[60vh] mx-auto rounded-xl shadow-2xl" />
+<div class="absolute inset-0 bg-black flex items-center justify-center">
+  <img src="/godzilla-idp.png" class="h-full w-full object-contain" />
+</div>
 
 <!--
 And then... AI happened. While you were perfecting your portal, developers discovered something new.
@@ -187,27 +189,38 @@ And then... AI happened. While you were perfecting your portal, developers disco
 layout: default
 ---
 
-# Your Developers Moved On
+<div class="absolute inset-0 overflow-hidden">
 
-<div class="!max-w-[92%] mt-6 [&_p]:!text-[1.5rem] [&_p]:!leading-[1.4] [&_p]:!my-6">
+  <!-- Centered title — same shape as the divider slides. z-index:1 puts
+       it behind the logos so they overlap on top. -->
+  <div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center" style="z-index: 1;">
+    <h1 class="!text-[3.78rem] !leading-tight !font-semibold !tracking-tight !m-0 whitespace-nowrap">
+      Your Developers <span class="text-[var(--frost1)]">Moved On</span>
+    </h1>
+  </div>
 
-While you were building the portal, your developers found a **new interface**.
+  <!-- Product icons scatter in one per click, scaled + tilted randomly -->
+  <v-click>
+    <logos-github-copilot class="absolute !text-[18.8rem]" style="bottom: 24%; right: 54%; transform: rotate(-9deg); z-index: 5;" />
+  </v-click>
+  <v-click>
+    <logos-openai-icon class="absolute !text-[18.8rem]" style="top: -20%; right: 6%; transform: rotate(7deg); z-index: 5;" />
+  </v-click>
+  <v-click>
+    <logos-claude-icon class="absolute !text-[13.4rem]" style="top: -8%; left: 2%; transform: rotate(4deg); z-index: 4;" />
+  </v-click>
+  <v-click>
+    <img src="/cursor-cube.png" class="absolute w-[21.5rem] h-auto" style="bottom: -20%; left: 8%; transform: rotate(-5deg); z-index: 5;" />
+  </v-click>
+  <v-click>
+    <img src="/kiro-ghost.png" class="absolute w-[21.5rem] h-auto" style="bottom: -10%; right: 14%; transform: rotate(6deg); z-index: 5;" />
+  </v-click>
 
-<v-clicks>
 
-They're in **Claude Code** or **Codex** working from the terminal.
-
-They're in **Claude Desktop** asking questions about their infrastructure.
-
-They're in **Cursor** and **Kiro** writing and shipping code without leaving the editor.
-
-They're not coming back to your portal. They want their platform tools **where they already are**.
-
-</v-clicks>
 </div>
 
 <!--
-Your developers moved on. They live in Claude Code, Claude Desktop, Cursor, Copilot. They're not switching to a portal tab anymore. They want the platform to come to them - inside the conversation they're already having.
+Your developers moved on. They live in Claude Code, Claude Desktop, Cursor, Kiro, Copilot, Codex. They're not switching to a portal tab anymore. They want the platform to come to them — inside the conversation they're already having.
 -->
 
 ---
@@ -349,10 +362,156 @@ layout: default
 
 <div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
   <h1 class="!text-[6.5rem] !leading-tight !font-semibold !tracking-tight !m-0 !max-w-[95%]">
-    What if the portal lived<br/>
+    What if the "portal" lived<br/>
     <span class="text-[var(--frost1)]">inside the conversation?</span>
   </h1>
 </div>
+
+---
+
+<div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
+  <h1 class="!text-[5.5rem] !leading-[1.15] !font-semibold !tracking-tight !m-0 !max-w-[95%]">
+    In 2026, we need<br/>
+    <span class="text-[var(--frost1)]">new touchpoints</span> for our IDP.
+  </h1>
+</div>
+
+<!--
+The portal-as-destination is one shape. Conversation is another. But chat isn't the only new interface developers are using — there are more touchpoints we have to meet them at.
+-->
+
+---
+layout: default
+---
+
+
+# Backstage isn't dying. It's becoming plumbing.
+
+<v-click>
+<p class="!text-[1.56rem] !leading-relaxed !mt-2 !mb-4 opacity-80">
+You've seen the "Backstage is dead" posts.
+</p>
+</v-click>
+
+<v-click>
+
+<p class="!text-[1.092rem] !leading-relaxed !mt-2 !mb-4 opacity-80">
+Meanwhile, v1.40 quietly shipped <code>@backstage/plugin-mcp-actions-backend</code>.
+</p>
+
+<div class="[&_pre]:!text-[1.25rem] [&_pre]:!leading-[1.2] [&_code]:!text-[1.15rem]">
+
+```ts {all|none}
+// Backstage v1.40 - your portal becomes an MCP server
+
+import { createBackend } from '@backstage/backend-defaults';
+
+const backend = createBackend();
+backend.add(import('@backstage/plugin-mcp-actions-backend'));
+
+// Every scaffolder action -> MCP tool
+// Every catalog entity -> queryable from a conversation
+backend.start();
+```
+
+</div>
+
+</v-click>
+
+<v-click>
+<div class="absolute left-1/2 top-[60%] -translate-x-1/2 -translate-y-1/2 z-50 w-[80%] text-center" style="text-shadow: 0 3px 12px rgba(0,0,0,0.95), 0 0 4px rgba(0,0,0,0.9);">
+  <div class="!text-[2.7rem] !font-bold !leading-relaxed text-white">
+    The portal stopped being the interface. It became the source of truth that agents and conversations query.
+  </div>
+</div>
+</v-click>
+
+<!--
+Port.io ran a loud "Backstage is dead" piece. Here's where I land: Backstage isn't dying, it's getting demoted from interface to plumbing. v1.40 shipped MCP support. Every scaffolder action turns into an MCP tool. Every catalog entry is queryable from the conversation. The portal used to be where you went. Now it's where the agents look things up. And the practical upshot for this room: the six months you spent building your portal didn't go in the trash. That catalog is exactly what you need backing the MCP server.
+-->
+---
+class: bg-white
+---
+
+<div class="absolute inset-0">
+  <v-click>
+    <div class="absolute top-[18%] right-[6%] !text-[16rem] !leading-none !font-bold !tracking-tight text-gray-900" dir="rtl">רגע!!!</div>
+  </v-click>
+  <img src="/hila-fish.jpg" class="absolute bottom-0 left-0 max-h-[70%]" />
+</div>
+
+<!--
+Hila jumps in. "Rega" - the inside joke from our last talk. It means "wait a moment" or "hold on" in Hebrew. The Tel Aviv room will get it instantly. Used to pause before we tackle the elephant in the room - the question everyone in this audience is already thinking but might not ask out loud.
+-->
+
+---
+
+<div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
+  <h1 class="!text-[5.5rem] !leading-[1.05] !font-semibold !tracking-tight !m-0 !max-w-[95%]">
+    But isn't everyone moving<br/>to <span class="text-[var(--frost1)]">Skills and CLI?</span>
+  </h1>
+</div>
+
+---
+layout: two-cols-header
+---
+
+
+# But isn't everyone moving to Skills and CLI?
+
+<p class="!text-[1.56rem] !leading-relaxed !mt-2 !mb-4 opacity-80">
+Yes. And no. Depends on who you build for.
+</p>
+
+::left::
+
+<v-click>
+
+<h3 class="!text-[1.5rem] !mt-2 !mb-3">Skills + CLI win for</h3>
+
+<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1.1rem] [&_li]:!leading-[1.5] [&_li]:!my-2">
+
+- Your own workflows
+- Project conventions and runbooks
+- Customizing how your agent thinks for you
+- Anything that fits in a `SKILL.md` file
+
+</div>
+
+<Admonition title="The individual layer" color="indigo-light">
+<div class="!text-[1.7rem] !font-bold !mt-6">Fast. Local. Yours.</div>
+</Admonition>
+
+</v-click>
+
+::right::
+
+<v-click>
+
+<h3 class="!text-[1.5rem] !mt-2 !mb-3">Protocols win for</h3>
+
+<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1.1rem] [&_li]:!leading-[1.5] [&_li]:!my-2">
+
+- A team serving the rest of engineering
+- OAuth identity, audit trails, RBAC
+- UI for users beyond the terminal
+- Anything that has to outlive the person who built it
+
+</div>
+
+<Admonition title="The platform layer" color="emerald-light">
+<div class="!text-[1.7rem] !font-bold !mt-6">You're not the user. Your org is.</div>
+</Admonition>
+
+</v-click>
+
+<!--
+Here's the elephant. A lot of solo developers are skipping MCP and extending their coding agents directly. Skills, CLAUDE.md files, custom slash commands. For them, that's the right call. Fast, local, lives in the repo, no servers to maintain. But you're not in this room to optimize your personal workflow. You're here because you build platforms. Platforms have multiple users, governance to satisfy, identities to track, and product managers who won't open a terminal. Skills don't have audit trails. Skills can't authenticate as the user against external systems. Skills don't render UI for the PMs. The protocol war may shift. The need for a protocol won't.
+-->
+---
+layout: default
+---
+# Placeholder for the next section. We can iterate on the story here, but I want to get the rest of the slides in place first.
 
 ---
 
@@ -678,118 +837,12 @@ SWITCH TO TERMINAL. Start the MCP App server. Open Claude Desktop. "Show me the 
 layout: default
 ---
 
-
-# Backstage isn't dying. It's becoming plumbing.
-
-<p class="!text-[1.2rem] !leading-relaxed !mt-2 !mb-4 opacity-80">
-You've seen the "Backstage is dead" takes.<br/>
-Meanwhile, v1.40 quietly shipped <code>@backstage/plugin-mcp-actions-backend</code>.
-</p>
-
-<div class="[&_pre]:!text-[1.25rem] [&_pre]:!leading-[1.2] [&_code]:!text-[1.15rem]">
-
-```ts {all|6} twoslash
-// @noErrors
-// Backstage v1.40 - your portal becomes an MCP server
-
-import { createBackend } from '@backstage/backend-defaults';
-
-const backend = createBackend();
-backend.add(import('@backstage/plugin-mcp-actions-backend'));
-
-// Every scaffolder action -> MCP tool
-// Every catalog entity -> queryable from a conversation
-backend.start();
-```
-
-</div>
-
-<Admonition title="Catalog of record + MCP server" color="emerald-light">
-The portal stopped being the interface. It became the source of truth that agents and conversations query.
-</Admonition>
-
-<!--
-Port.io ran a loud "Backstage is dead" piece. Here's where I land: Backstage isn't dying, it's getting demoted from interface to plumbing. v1.40 shipped MCP support. Every scaffolder action turns into an MCP tool. Every catalog entry is queryable from the conversation. The portal used to be where you went. Now it's where the agents look things up. And the practical upshot for this room: the six months you spent building your portal didn't go in the trash. That catalog is exactly what you need backing the MCP server.
--->
-
----
-class: bg-white
----
-
-<div class="absolute inset-0">
-  <v-click>
-    <div class="absolute top-[18%] right-[6%] !text-[16rem] !leading-none !font-bold !tracking-tight text-gray-900" dir="rtl">רגע!!!</div>
-  </v-click>
-  <img src="/hila-fish.jpg" class="absolute bottom-0 left-0 max-h-[70%]" />
+<div class="absolute inset-0 bg-black flex items-center justify-center">
+  <img src="/thinking-patrick.gif" class="h-full w-auto object-contain" />
 </div>
 
 <!--
-Hila jumps in. "Rega" - the inside joke from our last talk. It means "wait a moment" or "hold on" in Hebrew. The Tel Aviv room will get it instantly. Used to pause before we tackle the elephant in the room - the question everyone in this audience is already thinking but might not ask out loud.
--->
-
----
-
-<div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
-  <h1 class="!text-[5.5rem] !leading-[1.05] !font-semibold !tracking-tight !m-0 !max-w-[95%]">
-    But isn't everyone moving<br/>to <span class="text-[var(--frost1)]">Skills and CLI?</span>
-  </h1>
-</div>
-
----
-layout: two-cols-header
----
-
-
-# But isn't everyone moving to Skills and CLI?
-
-<p class="!text-[1.56rem] !leading-relaxed !mt-2 !mb-4 opacity-80">
-Yes. And no. Depends on who you build for.
-</p>
-
-::left::
-
-<v-click>
-
-<h3 class="!text-[1.5rem] !mt-2 !mb-3">Skills + CLI win for</h3>
-
-<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1.1rem] [&_li]:!leading-[1.5] [&_li]:!my-2">
-
-- Your own workflows
-- Project conventions and runbooks
-- Customizing how your agent thinks for you
-- Anything that fits in a `SKILL.md` file
-
-</div>
-
-<Admonition title="The individual layer" color="indigo-light">
-<div class="!text-[1.7rem] !font-bold !mt-6">Fast. Local. Yours.</div>
-</Admonition>
-
-</v-click>
-
-::right::
-
-<v-click>
-
-<h3 class="!text-[1.5rem] !mt-2 !mb-3">Protocols win for</h3>
-
-<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1.1rem] [&_li]:!leading-[1.5] [&_li]:!my-2">
-
-- A team serving the rest of engineering
-- OAuth identity, audit trails, RBAC
-- UI for users beyond the terminal
-- Anything that has to outlive the person who built it
-
-</div>
-
-<Admonition title="The platform layer" color="emerald-light">
-<div class="!text-[1.7rem] !font-bold !mt-6">You're not the user. Your org is.</div>
-</Admonition>
-
-</v-click>
-
-<!--
-Here's the elephant. A lot of solo developers are skipping MCP and extending their coding agents directly. Skills, CLAUDE.md files, custom slash commands. For them, that's the right call. Fast, local, lives in the repo, no servers to maintain. But you're not in this room to optimize your personal workflow. You're here because you build platforms. Platforms have multiple users, governance to satisfy, identities to track, and product managers who won't open a terminal. Skills don't have audit trails. Skills can't authenticate as the user against external systems. Skills don't render UI for the PMs. The protocol war may shift. The need for a protocol won't.
+~6s. Let the gif loop a couple of times. No words. The audience laughs, you give them space to actually think with you.
 -->
 
 ---
@@ -901,61 +954,46 @@ A2UI is Google's answer to the same question MCP Apps answers, with a different 
 -->
 
 ---
-layout: two-cols-header
+layout: default
 ---
 
 
 # CopilotKit + AG-UI: the unifier
 
 <v-click>
-<p class="!text-[1.56rem] !leading-relaxed !mt-2 !mb-4 opacity-80">
-Bring MCP Apps into your own app. CopilotKit handles the React host, AG-UI keeps the agent and the UI in sync while the user clicks around.
+<p class="!text-[1.6rem] !leading-snug !mt-2 !mb-2 opacity-80">
+<strong>AG-UI</strong>: the open protocol between any agent backend and any frontend.
+</p>
+<p class="!text-[1.6rem] !leading-snug !mt-0 !mb-6 opacity-80">
+<strong>CopilotKit</strong>: its first-party React host.
 </p>
 </v-click>
-
-::left::
-
-<v-click>
-
-<h3 class="!text-[1.5rem] !mt-2 !mb-3">The stack</h3>
-
-<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1.05rem] [&_li]:!leading-[1.5] [&_li]:!my-2">
-
-- **MCP Apps**: your tools plus their UI bundles
-- **A2UI**: declarative UI from a component catalog
-- **AG-UI**: the event protocol between agent and frontend
-- **CopilotKit**: the React framework that wires it together
-
-</div>
-
-</v-click>
-
-::right::
 
 <v-click>
 
 <h3 class="!text-[1.5rem] !mt-2 !mb-3">What this unlocks</h3>
 
-<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1.05rem] [&_li]:!leading-[1.5] [&_li]:!my-2">
+<div class="opacity-85 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1.25rem] [&_li]:!leading-[1.4] [&_li]:!my-2 !max-w-[92%]">
 
-- The same MCP App UI runs in any of your internal portal, not just Claude Desktop
-- Swap the agent backend without rewriting the UI
-- Works with LangChain, Mastra, PydanticAI, Agno, and the major clouds
+- Streaming, tool calls, shared state, interrupts. One channel.
+- Backend swappable: LangGraph, Mastra, PydanticAI, Agno, CrewAI, ADK, custom.
+- Your React, your branding. MCP Apps and A2UI compose on top.
+- Long-running, bidirectional. Built for what HTTP wasn't.
 
 </div>
 
 </v-click>
 
 <Admonition title="The host can be yours" color="emerald-light">
-Claude Desktop is one MCP host. CopilotKit lets you build your own, and the same MCP Apps render inside it.
+Claude Desktop is one host. CopilotKit lets you build your own, and the same MCP Apps, A2UI surfaces, and AG-UI actions render inside it.
 </Admonition>
 
-<div class="absolute bottom-[14px] left-6 bg-white rounded-lg p-2">
-  <QRCode value="https://www.copilotkit.ai/" :size="90" render-as="svg" />
+<div class="absolute bottom-[14px] right-6 bg-white rounded-lg p-2">
+  <QRCode value="https://docs.ag-ui.com/introduction" :size="90" render-as="svg" />
 </div>
 
 <!--
-This is the practical answer to "but what about my own platform frontend?" CopilotKit is an MIT-licensed React framework. AG-UI is its underlying protocol for agent-to-frontend communication. Together they let you build a custom host that renders MCP Apps natively. You write the developer dashboard your engineers actually want to use, embed a chat panel, and the MCP App UI from your service-catalog server renders inline inside YOUR app instead of inside Claude Desktop. Same backend code, different host. CopilotKit raised $27M in May 2026 specifically to make this the standard. If your platform team needs a branded developer experience that includes conversation, this is the stack.
+This is the practical answer to "but what about my own platform frontend?" AG-UI is the open, event-based protocol that standardizes how agent backends talk to frontends — streaming, tool calls, shared state, human-in-the-loop, all on one bidirectional channel. It was born from CopilotKit's work with LangGraph and CrewAI and is now an open protocol with multiple first-party clients. CopilotKit itself is the MIT-licensed React host: you write the developer dashboard your engineers actually want to use, embed a chat panel, and the same MCP Apps + A2UI surfaces + AG-UI streaming actions you've seen all day render inside YOUR app. Same backend code, different host. The point of the protocol is that the BACKEND is replaceable: today LangGraph, tomorrow your own agent, the frontend doesn't care. That's the bet on a standard. If your platform team needs a branded developer experience that includes conversation, this is the stack.
 -->
 
 ---
