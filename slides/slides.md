@@ -1062,7 +1062,7 @@ layout: default
       </div>
     </div>
     <div class="text-center">
-      <img src="/hila-fish.jpg" class="w-28 rounded-full mx-auto mb-3 border-4 border-[var(--frost1)]/30" />
+      <img src="/hila-fish-headshot.png" class="w-28 rounded-full mx-auto mb-3 border-4 border-[var(--frost1)]/30" />
       <div class="!text-[1.4rem] !font-bold">Hila Fish</div>
       <div class="opacity-60 !text-[1rem]">AWS</div>
       <div class="flex items-center justify-center gap-3 mt-2 !text-[0.95rem] opacity-50">
