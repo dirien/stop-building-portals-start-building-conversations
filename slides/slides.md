@@ -413,6 +413,31 @@ Even Backstage — our northern star for building IDPs — has shifted. v1.40 sh
 
 ---
 
+<div class="flex flex-col items-center justify-center h-full">
+
+<h1 class="!text-[5rem] !leading-tight !font-semibold !tracking-tight !mb-12 text-center">Portal = <span style="color: #88C0D0;">Data</span> + <span class="opacity-50">UI</span></h1>
+
+<div class="flex gap-16">
+<v-click>
+<div class="px-8 py-6 rounded-xl border-2 border-solid text-center" style="border-color: rgba(163, 190, 140, 0.5); background: rgba(163, 190, 140, 0.1);">
+<div class="!text-[1.4rem] !font-bold mb-2" style="color: #A3BE8C;">Data layer</div>
+<div class="!text-[1.2rem] opacity-80">Services, owners, SLOs, deploys, on-call</div>
+<div class="!mt-4 !text-[1.5rem] !font-bold" style="color: #A3BE8C;">✓ Stays</div>
+</div>
+</v-click>
+<v-click>
+<div class="px-8 py-6 rounded-xl border-2 border-solid text-center" style="border-color: rgba(191, 97, 106, 0.5); background: rgba(191, 97, 106, 0.1);">
+<div class="!text-[1.4rem] !font-bold mb-2" style="color: #BF616A;">UI layer</div>
+<div class="!text-[1.2rem] opacity-80">The website you navigate to</div>
+<div class="!mt-4 !text-[1.5rem] !font-bold" style="color: #BF616A;">This is what we need to rethink</div>
+</div>
+</v-click>
+</div>
+
+</div>
+
+---
+
 <div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
   <h1 class="!text-[7rem] !leading-tight !font-semibold !tracking-tight !m-0 !max-w-[95%]">
     <span class="text-[var(--frost1)]">So,</span> let's think for a second&hellip;
