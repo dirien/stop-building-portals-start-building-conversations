@@ -18,7 +18,7 @@ layout: cover
     <span class="!text-[2.4rem]">&#9888;</span>
     <span class="tracking-[0.4em] uppercase !text-[1.2rem] !font-bold text-[var(--red)]">Warning</span>
   </div>
-  <h1 class="!text-[3.4rem] !leading-[1.1] !font-semibold !tracking-tight !mb-6 !max-w-[95%]">
+  <h1 class="!text-[4.0rem] !leading-[1.1] !font-semibold !tracking-tight !mb-6 !max-w-[95%]">
     The talk you're about to hear<br/>
     could be <span class="text-[var(--frost1)]">outdated</span><br/> the moment it's done.
   </h1>
@@ -49,12 +49,12 @@ layout: cover
 
 <div class="absolute inset-0 flex flex-col justify-center items-start px-16 py-12">
   <h1 class="!text-[3.8rem] !leading-[1.05] !font-semibold !tracking-tight !mb-4 !max-w-[100%]">
-    Stop Building Portals,<br/>Start Building <strong>Conversations</strong>
+    Stop Building Portals,<br/><span style="color: #8FBCBB;">Start Building</span> <strong style="color: #8FBCBB;">Conversations</strong>
   </h1>
   <p class="!mt-0 !text-[1.5rem] !m-0 !leading-snug opacity-70">
-    The Paradigm Shift in Platform Engineering.
+    The Paradigm Shift in Platform Engineering
   </p>
-  <p class="!mt-14 !text-[1.43rem] !m-0 !leading-relaxed opacity-70">
+  <p class="!mt-14 !text-[2.0rem] !m-0 !leading-relaxed opacity-70">
     <strong>Engin Diri</strong> · Sr. Solutions Architect, Pulumi<br/>
     <strong>Hila Fish</strong> · Solutions Architect, AWS
   </p>
@@ -91,8 +91,8 @@ layout: default
       <span class="flex items-center gap-2"><carbon-logo-linkedin /> engin-diri</span>
       <span class="flex items-center gap-2"><carbon-logo-github /> dirien</span>
     </div>
-    <p class="!mt-8 !text-[1.25rem] !leading-relaxed opacity-70 !max-w-[90%] !m-0">
-      Building platform tooling and infrastructure-as-code.
+    <p class="!mt-8 !text-[1.25rem] !leading-relaxed opacity-70 !max-w-[100%] !m-0 whitespace-nowrap">
+      Building platform tooling and infrastructure-as-code.<br>
       Helping teams ship cloud infrastructure faster.
     </p>
   </div>
@@ -120,8 +120,8 @@ layout: default
       <span class="flex items-center gap-2"><carbon-logo-linkedin /> hila-fish</span>
       <span class="flex items-center gap-2"><carbon-logo-github /> hilafish</span>
     </div>
-    <p class="!mt-8 !text-[1.25rem] !leading-relaxed opacity-70 !max-w-[90%] !m-0">
-       Helps ship AWS cloud infrastructure faster.<br/>
+    <p class="!mt-8 !text-[1.25rem] !leading-relaxed opacity-70 !max-w-[100%] !m-0 whitespace-nowrap">
+       Helping teams ship AWS cloud infrastructure faster.<br/>
        Core organizer of DevOpsDays Tel-Aviv &amp;<br/>
        TLV Community events.<br/>
        Next event - 11.6.26 @ AWS Floor 28.
@@ -181,6 +181,32 @@ And then... AI happened. While you were perfecting your portal, developers disco
 -->
 
 ---
+
+<div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
+  <h1 class="!text-[10rem] !leading-none !font-semibold !tracking-tight !m-0 text-[var(--frost1)]">
+    84%
+  </h1>
+  <p class="!mt-8 !text-[2.2rem] !leading-relaxed !m-0 !max-w-[100%] whitespace-nowrap">
+    of developers use / plan to use AI coding tools
+  </p>
+  <div class="!mt-14 flex gap-16 text-[1.3rem]">
+    <v-click at="1"><div class="text-center"><strong class="!text-[2rem]">7.4</strong><br/><strong class="opacity-60">tools used daily</strong></div></v-click>
+    <v-click at="3"><div class="text-center"><strong class="!text-[2rem]" style="font-weight: 900; color: #BF616A; -webkit-text-stroke: 1px #BF616A;">50%</strong><br/><strong style="color: #BF616A;">distrust their portal data</strong></div></v-click>
+    <v-click at="2"><div class="text-center"><strong class="!text-[2rem]">13&times;/hr</strong><br/><strong class="opacity-60">context switches per dev</strong></div></v-click>
+  </div>
+</div>
+
+<div class="absolute bottom-3 right-6 text-[0.55rem] opacity-40 text-right">
+  Stack Overflow Developer Survey &middot; DevOps.com Tool Sprawl Survey &middot; Atlassian Developer Experience Report &middot; Port.io State of Internal Developer Portals
+</div>
+
+<!--
+84% of developers now use or plan to use AI tools - Stack Overflow's 2025 survey. They're in Copilot, Claude Code, Cursor - inside their IDE and terminal. The average dev juggles 7.4 tools a day. Atlassian's 2025 Developer Experience Report - 3,500 engineers - found developers switch tasks 13 times per hour. Six minutes per task. And half of them flat-out don't trust the data in their portal anyway - Port.io's 2025 State of Internal Developer Portals.
+
+Your portal is competing with tools developers already love. We solved "what to offer." We never solved "where to offer it."
+-->
+
+---
 layout: default
 ---
 
@@ -220,31 +246,6 @@ layout: default
 Your developers moved on. They live in Claude Code, Claude Desktop, Cursor, Kiro, Copilot, Codex. They're not switching to a portal tab anymore. They want the platform to come to them — inside the conversation they're already having.
 -->
 
----
-
-<div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
-  <h1 class="!text-[10rem] !leading-none !font-semibold !tracking-tight !m-0 text-[var(--frost1)]">
-    84%
-  </h1>
-  <p class="!mt-8 !text-[2.2rem] !leading-relaxed !m-0 !max-w-[100%] whitespace-nowrap">
-    of developers use / plan to use AI coding tools
-  </p>
-  <div class="!mt-14 flex gap-16 text-[1.3rem]">
-    <v-click at="1"><div class="text-center"><strong class="!text-[2rem]">7.4</strong><br/><strong class="opacity-60">tools used daily</strong></div></v-click>
-    <v-click at="3"><div class="text-center"><strong class="!text-[2rem]" style="font-weight: 900; color: #BF616A; -webkit-text-stroke: 1px #BF616A;">50%</strong><br/><strong style="color: #BF616A;">distrust their portal data</strong></div></v-click>
-    <v-click at="2"><div class="text-center"><strong class="!text-[2rem]">13&times;/hr</strong><br/><strong class="opacity-60">context switches per dev</strong></div></v-click>
-  </div>
-</div>
-
-<div class="absolute bottom-3 right-6 text-[0.55rem] opacity-40 text-right">
-  Stack Overflow Developer Survey &middot; DevOps.com Tool Sprawl Survey &middot; Atlassian Developer Experience Report &middot; Port.io State of Internal Developer Portals
-</div>
-
-<!--
-84% of developers now use or plan to use AI tools - Stack Overflow's 2025 survey. They're in Copilot, Claude Code, Cursor - inside their IDE and terminal. The average dev juggles 7.4 tools a day. Atlassian's 2025 Developer Experience Report - 3,500 engineers - found developers switch tasks 13 times per hour. Six minutes per task. And half of them flat-out don't trust the data in their portal anyway - Port.io's 2025 State of Internal Developer Portals.
-
-Your portal is competing with tools developers already love. We solved "what to offer." We never solved "where to offer it."
--->
 
 ---
 
@@ -256,18 +257,6 @@ Your portal is competing with tools developers already love. We solved "what to 
 
 <!--
 That's the part most platform teams haven't internalized yet. Once a developer's workflow lives inside an AI tool, they're not switching back to a portal tab for one more form. The conversation IS the workflow now.
--->
-
----
-
-<div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
-  <h1 class="!text-[10rem] !leading-none !font-semibold !tracking-tight !m-0">
-    <span style="color: #BF616A;">We all</span> <span class="text-[var(--frost1)]">know</span> <span style="color: #BF616A;">why</span>
-  </h1>
-</div>
-
-<!--
-Pause. Let it hang. Then click forward.
 -->
 
 ---
@@ -308,6 +297,25 @@ layout: default
 
 <!--
 Look at the pace. Behind me — Ultraplan, Monitor tool, /autofix-pr, Computer Use, /powerup — all shipped a few weeks back. (Click) Then in just the past two weeks — Plugins from URLs, claude project purge, /ultrareview landed too. This is where developers live now. And these tools need your platform data to be useful.
+-->
+
+---
+layout: default
+---
+
+<div class="absolute inset-0 bg-black">
+  <img src="/cj-overwhelmed.png" class="absolute inset-0 w-full h-full object-cover" />
+  <v-click>
+  <div class="absolute bottom-8 left-0 right-0 text-center">
+    <span dir="rtl" class="!text-[3.6rem] !font-bold text-white drop-shadow-[0_3px_8px_rgba(0,0,0,0.9)]">
+      CJ: אוי ויי
+    </span>
+  </div>
+  </v-click>
+</div>
+
+<!--
+~5s. The audience just saw the firehose of AI tool releases. This is the face. Let the laugh land.
 -->
 
 ---
@@ -370,61 +378,44 @@ Even Backstage — our northern star for building IDPs — has shifted. v1.40 sh
 
 ---
 
-<div class="absolute inset-0 flex flex-col items-center justify-center px-16">
-  <div class="w-[700px] rounded-2xl border border-solid border-[var(--frost1)]/30 bg-[var(--slidev-bg-alt)] overflow-hidden shadow-2xl">
+<div class="absolute inset-0 flex flex-col items-center justify-center px-10">
+  <div class="w-[945px] rounded-2xl border border-solid border-[var(--frost1)]/30 bg-[var(--slidev-bg-alt)] overflow-hidden shadow-2xl">
     <!-- Chat header -->
-    <div class="px-5 py-3 border-b border-solid border-[var(--slidev-border)] bg-[var(--slidev-bg)] flex items-center gap-2">
-      <mdi-robot class="!text-[1.2rem] text-[var(--frost2)]" />
-      <span class="!text-[0.9rem] font-semibold opacity-70">PlatformOps Agent</span>
+    <div class="px-6 py-4 border-b border-solid border-[var(--slidev-border)] bg-[var(--slidev-bg)] flex items-center gap-3">
+      <mdi-robot class="!text-[1.6rem] text-[var(--frost2)]" />
+      <span class="!text-[1.2rem] font-semibold opacity-70">PlatformOps Agent</span>
     </div>
     <!-- User message -->
-    <div class="px-5 pt-4 pb-2">
-      <div class="flex items-start gap-3">
-        <mdi-account class="!text-[1.4rem] text-[var(--frost1)] mt-0.5" />
-        <div class="rounded-xl bg-[var(--frost3)]/20 px-4 py-2 !text-[1.1rem]">
-          Can you show me the software catalog?
+    <div class="px-6 pt-5 pb-3">
+      <div class="flex items-start gap-4">
+        <mdi-account class="!text-[1.9rem] text-[var(--frost1)] mt-0.5" />
+        <div class="rounded-xl bg-[var(--frost3)]/20 px-5 py-3 !text-[1.5rem]">
+          Can you show me the service catalog?
         </div>
       </div>
     </div>
     <!-- Agent response: plain text -->
-    <div class="px-5 pb-5 pt-2">
-      <div class="flex items-start gap-3">
-        <mdi-robot class="!text-[1.4rem] text-[var(--frost2)] mt-0.5" />
-        <div class="flex-1 rounded-xl bg-[var(--slidev-bg)] px-4 py-3 font-mono !text-[0.95rem] opacity-80">
+    <div class="px-6 pb-6 pt-3">
+      <div class="flex items-start gap-4">
+        <mdi-robot class="!text-[1.9rem] text-[var(--frost2)] mt-0.5" />
+        <div class="flex-1 rounded-xl bg-[var(--slidev-bg)] px-5 py-4 font-mono !text-[1.28rem] opacity-80">
           5 services found: user-service (healthy), payment-api (healthy), notification-svc (degraded), api-gateway (healthy), auth-service (healthy)
         </div>
       </div>
     </div>
   </div>
-  <p class="!text-[1.43rem] !mt-6 !m-0 opacity-70 text-center">
+  <v-click>
+  <p class="!text-[1.93rem] !mt-12 !m-0 opacity-70 text-center">
     The agent is fine with this. But you're not an agent.
   </p>
-</div>
-
----
-layout: default
----
-
-<div class="absolute inset-0 bg-black">
-  <img src="/cj-overwhelmed.png" class="absolute inset-0 w-full h-full object-cover" />
-  <v-click>
-  <div class="absolute bottom-8 left-0 right-0 text-center">
-    <span dir="rtl" class="!text-[3.6rem] !font-bold text-white drop-shadow-[0_3px_8px_rgba(0,0,0,0.9)]">
-      CJ: אוי ויי
-    </span>
-  </div>
   </v-click>
 </div>
-
-<!--
-~5s. No words. The audience just saw the firehose of features. This is the face. Let the laugh land, then click into the pivot.
--->
 
 ---
 
 <div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
   <h1 class="!text-[7rem] !leading-tight !font-semibold !tracking-tight !m-0 !max-w-[95%]">
-    <span class="text-[var(--frost1)]">But,</span> let's think a second&hellip;
+    <span class="text-[var(--frost1)]">So,</span> let's think for a second&hellip;
   </h1>
 </div>
 
@@ -456,49 +447,99 @@ layout: default
 layout: default
 ---
 
-<div class="absolute inset-0 flex items-center justify-center px-16">
-  <div class="w-[700px] rounded-2xl border border-solid border-[var(--frost1)]/30 bg-[var(--slidev-bg-alt)] overflow-hidden shadow-2xl">
+<div class="absolute inset-0 flex items-center justify-center px-10">
+  <div class="w-[840px] rounded-2xl border border-solid border-[var(--frost1)]/30 bg-[var(--slidev-bg-alt)] overflow-hidden shadow-2xl">
     <!-- Chat header -->
-    <div class="px-5 py-3 border-b border-solid border-[var(--slidev-border)] bg-[var(--slidev-bg)] flex items-center gap-2">
-      <mdi-robot class="!text-[1.2rem] text-[var(--frost2)]" />
-      <span class="!text-[0.9rem] font-semibold opacity-70">PlatformOps Agent</span>
+    <div class="px-6 py-4 border-b border-solid border-[var(--slidev-border)] bg-[var(--slidev-bg)] flex items-center gap-3">
+      <mdi-robot class="!text-[1.44rem] text-[var(--frost2)]" />
+      <span class="!text-[1.08rem] font-semibold opacity-70">PlatformOps Agent</span>
     </div>
     <!-- User message -->
-    <div class="px-5 pt-4 pb-2">
-      <div class="flex items-start gap-3">
-        <mdi-account class="!text-[1.4rem] text-[var(--frost1)] mt-0.5" />
-        <div class="rounded-xl bg-[var(--frost3)]/20 px-4 py-2 !text-[1.1rem]">
-          Can you show me the software catalog?
+    <div class="px-6 pt-5 pb-3">
+      <div class="flex items-start gap-4">
+        <mdi-account class="!text-[1.68rem] text-[var(--frost1)] mt-0.5" />
+        <div class="rounded-xl bg-[var(--frost3)]/20 px-5 py-3 !text-[1.32rem]">
+          Can you show me the service catalog?
         </div>
       </div>
     </div>
     <!-- Agent response: rendered UI -->
-    <div class="px-5 pb-5 pt-2">
-      <div class="flex items-start gap-3">
-        <mdi-robot class="!text-[1.4rem] text-[var(--frost2)] mt-0.5" />
-        <div class="flex-1 rounded-xl border-2 border-solid border-[var(--frost1)]/40 bg-[var(--slidev-bg)] p-4">
-          <div class="text-[var(--frost1)] !text-[1rem] mb-3 font-semibold">Platform Service Catalog</div>
-          <div class="grid grid-cols-2 gap-2">
-            <div class="rounded p-2 !text-[0.9rem] bg-[var(--slidev-bg-alt)] border border-solid border-[var(--slidev-border)]">
+    <div class="px-6 pb-6 pt-3">
+      <div class="flex items-start gap-4">
+        <mdi-robot class="!text-[1.68rem] text-[var(--frost2)] mt-0.5" />
+        <div class="flex-1 rounded-xl border-2 border-solid border-[var(--frost1)]/40 bg-[var(--slidev-bg)] p-5">
+          <div class="text-[var(--frost1)] !text-[1.2rem] mb-3 font-semibold">Platform Service Catalog</div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="rounded p-3 !text-[1.08rem] bg-[var(--slidev-bg-alt)] border border-solid border-[var(--slidev-border)]">
               <div class="font-semibold">user-service</div>
-              <div class="text-[var(--green)] !text-[0.75rem]">● healthy</div>
+              <div class="text-[var(--green)] !text-[0.9rem]">● healthy</div>
             </div>
-            <div class="rounded p-2 !text-[0.9rem] bg-[var(--slidev-bg-alt)] border border-solid border-[var(--slidev-border)]">
+            <div class="rounded p-3 !text-[1.08rem] bg-[var(--slidev-bg-alt)] border border-solid border-[var(--slidev-border)]">
               <div class="font-semibold">payment-api</div>
-              <div class="text-[var(--green)] !text-[0.75rem]">● healthy</div>
+              <div class="text-[var(--green)] !text-[0.9rem]">● healthy</div>
             </div>
-            <div class="rounded p-2 !text-[0.9rem] bg-[var(--slidev-bg-alt)] border border-solid border-[var(--slidev-border)]">
+            <div class="rounded p-3 !text-[1.08rem] bg-[var(--slidev-bg-alt)] border border-solid border-[var(--slidev-border)]">
               <div class="font-semibold">notification-svc</div>
-              <div class="text-[var(--yellow)] !text-[0.75rem]">● degraded</div>
+              <div class="text-[var(--yellow)] !text-[0.9rem]">● degraded</div>
             </div>
-            <div class="rounded p-2 !text-[0.9rem] bg-[var(--slidev-bg-alt)] border border-solid border-[var(--slidev-border)]">
+            <div class="rounded p-3 !text-[1.08rem] bg-[var(--slidev-bg-alt)] border border-solid border-[var(--slidev-border)]">
               <div class="font-semibold">api-gateway</div>
-              <div class="text-[var(--green)] !text-[0.75rem]">● healthy</div>
+              <div class="text-[var(--green)] !text-[0.9rem]">● healthy</div>
             </div>
           </div>
-          <div class="mt-3">
-            <span class="px-2 py-1 bg-[var(--frost3)] text-white !text-[0.8rem] rounded">Deploy</span>
-            <span class="px-2 py-1 bg-[var(--slidev-bg-alt)] !text-[0.8rem] rounded ml-1 border border-solid border-[var(--slidev-border)]">Details</span>
+          <div class="mt-4">
+            <span class="px-3 py-1.5 bg-[var(--frost3)] text-white !text-[0.96rem] rounded">Deploy</span>
+            <span class="px-3 py-1.5 bg-[var(--slidev-bg-alt)] !text-[0.96rem] rounded ml-2 border border-solid border-[var(--slidev-border)]">Details</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+layout: default
+---
+
+<div class="absolute inset-0 flex items-center justify-center px-10">
+  <div class="w-[840px] rounded-2xl border border-solid border-[var(--frost1)]/30 bg-[var(--slidev-bg-alt)] overflow-hidden shadow-2xl">
+    <!-- Chat header -->
+    <div class="px-6 py-4 border-b border-solid border-[var(--slidev-border)] bg-[var(--slidev-bg)] flex items-center gap-3">
+      <mdi-robot class="!text-[1.44rem] text-[var(--frost2)]" />
+      <span class="!text-[1.08rem] font-semibold opacity-70">PlatformOps Agent</span>
+    </div>
+    <!-- User message -->
+    <div class="px-6 pt-5 pb-3">
+      <div class="flex items-start gap-4">
+        <mdi-account class="!text-[1.68rem] text-[var(--frost1)] mt-0.5" />
+        <div class="rounded-xl bg-[var(--frost3)]/20 px-5 py-3 !text-[1.32rem]">
+          Deploy payment-api to staging
+        </div>
+      </div>
+    </div>
+    <!-- Agent response: streaming deploy -->
+    <div class="px-6 pb-6 pt-3">
+      <div class="flex items-start gap-4">
+        <mdi-robot class="!text-[1.68rem] text-[var(--frost2)] mt-0.5" />
+        <div class="flex-1 rounded-xl border-2 border-solid border-[var(--frost1)]/40 bg-[var(--slidev-bg)] p-5">
+          <div class="text-[var(--frost1)] !text-[1.2rem] mb-4 font-semibold">Deploying payment-api → staging</div>
+          <div class="space-y-3">
+            <div class="flex items-center gap-3 !text-[1.1rem]">
+              <span class="w-6 h-6 rounded-full bg-[var(--green)]/20 text-[var(--green)] flex items-center justify-center text-xs">✓</span>
+              <span>Validating manifest</span>
+            </div>
+            <div class="flex items-center gap-3 !text-[1.1rem]">
+              <span class="w-6 h-6 rounded-full bg-[var(--green)]/20 text-[var(--green)] flex items-center justify-center text-xs">✓</span>
+              <span>Pushing image</span>
+            </div>
+            <div class="flex items-center gap-3 !text-[1.1rem]">
+              <span class="w-6 h-6 rounded-full bg-[var(--yellow)]/20 text-[var(--yellow)] flex items-center justify-center text-xs animate-pulse">●</span>
+              <span>Rolling out (2/3 replicas)</span>
+            </div>
+            <div class="flex items-center gap-3 !text-[1.1rem] opacity-40">
+              <span class="w-6 h-6 rounded-full bg-[var(--slidev-border)] flex items-center justify-center text-xs">○</span>
+              <span>Health check</span>
+            </div>
           </div>
         </div>
       </div>
@@ -521,7 +562,7 @@ Hila jumps in. "Rega" - the inside joke from our last talk. It means "wait a mom
 ---
 
 <div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
-  <h1 class="!text-[5.5rem] !leading-[1.05] !font-semibold !tracking-tight !m-0 !max-w-[95%]">
+  <h1 class="!text-[7.2rem] !leading-[1.05] !font-semibold !tracking-tight !m-0 whitespace-nowrap">
     But what about<br/><span class="text-[var(--frost1)]">Skills and CLIs?</span>
   </h1>
 </div>
@@ -531,19 +572,19 @@ layout: two-cols-header
 ---
 
 
-# But isn't everyone moving to Skills and CLIs?
+# But what about Skills and CLIs?
 
 <p class="!text-[1.56rem] !leading-relaxed !mt-2 !mb-4 opacity-80">
-Yes & no. Depends on who you build it for.
+Depends on who you build it for.
 </p>
 
 ::left::
 
 <v-click>
-<h3 class="!text-[1.5rem] !mt-2 !mb-3">Skills + CLI win for</h3>
+<h3 class="!text-[1.8rem] !mt-8 !mb-3">Skills + CLI win for</h3>
 </v-click>
 
-<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1.1rem] [&_li]:!leading-[1.5] [&_li]:!my-2">
+<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-4 [&_li]:!text-[1.3rem] [&_li]:!leading-[1.5] [&_li]:!my-2 -ml-4">
 
 <v-clicks>
 
@@ -565,10 +606,10 @@ Yes & no. Depends on who you build it for.
 ::right::
 
 <v-click>
-<h3 class="!text-[1.5rem] !mt-2 !mb-3">Protocols win for</h3>
+<h3 class="!text-[1.8rem] !mt-8 !mb-3 ml-4">Protocols win for</h3>
 </v-click>
 
-<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1rem] [&_li]:!leading-[1.5] [&_li]:!my-2">
+<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-4 [&_li]:!text-[1.3rem] [&_li]:!leading-[1.5] [&_li]:!my-2 ml-4">
 
 <v-clicks>
 
@@ -582,9 +623,11 @@ Yes & no. Depends on who you build it for.
 </div>
 
 <v-click>
+<div class="ml-4">
 <Admonition title="The platform layer" color="emerald-light">
 <div class="!text-[1.7rem] !font-bold !mt-6">You're not the user. Your org is.</div>
 </Admonition>
+</div>
 </v-click>
 
 <!--
@@ -609,33 +652,12 @@ Here's the elephant. A lot of solo developers are skipping MCP and extending the
   </p>
 </div>
 
----
-
-<div class="absolute inset-0 flex flex-col justify-center items-start px-20">
-  <h1 class="!text-[5.5rem] !leading-[1.02] !font-semibold !tracking-tight !mb-6 !max-w-[95%]">
-    Two engineers.<br/>One side project.<br/><span class="text-[var(--frost1)]">9 months.</span>
-  </h1>
-
-  <div class="!mt-8 !text-[1.5rem] !leading-relaxed opacity-80">
-    <v-clicks>
-    <div><strong class="text-[var(--frost1)]">May 2025</strong>&nbsp;&nbsp;Ido (Palo Alto Networks) and Liad (Shopify)<br/>start MCP-UI as a side project</div>
-    </v-clicks>
-  </div>
-</div>
-
 <!--
 This didn't come from a corporate lab. Two engineers started a side project. OpenAI independently validated the idea at DevDay. Anthropic and OpenAI co-authored the spec. Nine months later it shipped everywhere with 9 launch partners on day one - Amplitude, Asana, Box, Canva, Clay, Figma, Hex, monday.com, and Slack. Monday.com acqui-hired the founders.
 
 That's how fast this moved.
 -->
 
----
-layout: default
----
-
-<div class="absolute inset-0 bg-black flex items-center justify-center">
-  <img src="/jazz-music-stops.png" class="h-full w-auto object-contain" />
-</div>
 
 <!--
 ~5s. No words. The plot twist: this didn't come from a corporate lab. Let the meme land, then click into "Meet the Inventors".
@@ -645,81 +667,36 @@ layout: default
 layout: default
 ---
 
-# Meet the Inventors
+# Two engineers. One side project. <span class="text-[var(--frost1)]">9 months.</span>
 
-
-<div class="flex items-start gap-12">
-<div class="flex-shrink-0 w-[40%] flex flex-col gap-3">
+<div class="flex items-start gap-10 mt-6">
+<div class="flex-shrink-0 w-[30%] flex flex-col gap-3">
 <img src="/ido-liad-mcp-summit.jpg" class="w-full rounded-2xl shadow-xl border-4 border-[var(--frost1)]/30" />
-<div class="!text-[0.95rem] opacity-50 text-center">MCP Developers Summit, London 2025</div>
+<div class="!text-[0.85rem] opacity-50 text-center">Ido Salomon & Liad Yosef<br/>Co-creators of MCP Apps</div>
 </div>
-<div class="flex-1 space-y-4">
-<v-click>
-<div class="p-4 rounded-xl border border-solid border-[var(--frost1)]/30 bg-[var(--frost1)]/5">
-<div class="!text-[1.3rem] !font-bold">Ido Salomon</div>
-<div class="!text-[1.05rem] opacity-80 !mt-1">Author of MCP-UI</div>
-</div>
-</v-click>
-<v-click>
-<div class="p-4 rounded-xl border border-solid border-[var(--frost1)]/30 bg-[var(--frost1)]/5">
-<div class="!text-[1.3rem] !font-bold">Liad Yosef</div>
-<div class="!text-[1.05rem] opacity-80 !mt-1">Co-creator of MCP-UI</div>
-</div>
-</v-click>
-</div>
-</div>
+<div class="flex-1 [&_div]:!text-[1.3rem] [&_div]:!leading-[1.5] space-y-4">
+
+<div><strong class="text-[var(--frost1)]">May 2025</strong>&nbsp;&nbsp;Start MCP-UI as a side project</div>
+
+<v-clicks>
+
+<div><strong class="text-[var(--frost2)]">Oct 2025</strong>&nbsp;&nbsp;OpenAI ships Apps SDK at DevDay,<br/>validates the approach</div>
+
+<div><strong class="text-[var(--purple)]">Nov 2025</strong>&nbsp;&nbsp;SEP-1865 draft: Anthropic + OpenAI<br/>propose the spec together</div>
+
+<div><strong class="text-[var(--green)]">Jan 2026</strong>&nbsp;&nbsp;Ships in Claude, ChatGPT, VS Code, Goose<br/><span class="opacity-70 !text-[1.1rem]">9 day-one partners: Amplitude, Asana, Box, Canva, Clay, Figma, Hex, monday.com, Slack</span></div>
+
+</v-clicks>
 
 <v-click>
-<div class="absolute bottom-8 right-8 max-w-[28rem] rotate-[2deg] px-6 py-4 rounded-xl border-2 border-solid border-[#d08770] bg-[#d08770] text-[#2e3440] shadow-xl !text-[1.2rem] !leading-snug z-10">
-A side project launched May 2025. Monday.com acqui-hired them both. Now they co-author the spec with Anthropic and OpenAI.
-</div>
+<div class="!mt-7 !text-[1.15rem] italic opacity-70">Monday.com acqui-hired the founders.<br/><strong class="not-italic">Side project → industry standard in 9 months.</strong></div>
 </v-click>
 
-<!--
-And here's the part we love sharing at a Tel Aviv conference. Ido was at Palo Alto Networks, Liad at Shopify. Both Israeli. They started MCP-UI as a side project in May 2025 - an SDK that lets MCP servers return interactive HTML instead of just text.
-
-GitMCP, their other project, hit top 10 out of over 5,000 MCP servers. Monday.com - also Israeli, Nasdaq-listed - acqui-hired them both to work directly in the CEO's office. Now they co-author the MCP Apps spec with Anthropic and OpenAI on the global steering committee.
-
-Homegrown talent, global impact. This photo is from the MCP Developers Summit in London where they presented the specification.
--->
-
-
----
-
-<div class="absolute inset-0 flex flex-col justify-center items-start px-20">
-  <div class="opacity-60 tracking-[0.3em] uppercase !text-[1.1rem] !mb-6">The full timeline</div>
-  <h1 class="!text-[4.5rem] !leading-[1.02] !font-semibold !tracking-tight !mb-8 !max-w-[95%]">
-    Two engineers. One side project.<br/>
-    <span class="text-[var(--frost1)]">9 months.</span>
-  </h1>
-
-  <div class="!max-w-[92%] [&_div]:!text-[1.4rem] [&_div]:!leading-[1.4] space-y-4">
-
-  <div><strong class="text-[var(--frost1)]">May 2025</strong>&nbsp;&nbsp;Ido (Palo Alto Networks) and Liad (Shopify) start MCP-UI as a side project</div>
-
-  <v-clicks>
-
-  <div><strong class="text-[var(--frost2)]">Oct 2025</strong>&nbsp;&nbsp;OpenAI ships Apps SDK at DevDay, validates the approach</div>
-
-  <div><strong class="text-[var(--purple)]">Nov 2025</strong>&nbsp;&nbsp;SEP-1865 draft: Anthropic + OpenAI propose the spec together</div>
-
-  <div><strong class="text-[var(--green)]">Jan 2026</strong>&nbsp;&nbsp;Ships in Claude, ChatGPT, VS Code, Goose.<br/><span class="opacity-80">9 day-one partners: Amplitude, Asana, Box, Canva, Clay, Figma, Hex, monday.com, Slack.</span></div>
-
-  </v-clicks>
-
-  </div>
-
-  <v-click>
-
-  <div class="!mt-8 !text-[1.25rem] !leading-relaxed opacity-80 italic !max-w-[92%]">
-    Monday.com acqui-hired the founders. <strong class="not-italic">From side project to industry standard in 9 months.</strong>
-  </div>
-
-  </v-click>
+</div>
 </div>
 
 <!--
-This didn't come from a corporate lab. Two engineers started a side project. OpenAI independently validated the idea at DevDay. Anthropic and OpenAI co-authored the spec. Nine months later it shipped everywhere with 9 launch partners on day one - Amplitude, Asana, Box, Canva, Clay, Figma, Hex, monday.com, and Slack. Monday.com acqui-hired the founders.
+Two Israeli engineers started a side project. OpenAI validated the idea at DevDay. Anthropic and OpenAI co-authored the spec. Nine months later it shipped everywhere. Monday.com acqui-hired the founders.
 
 That's how fast this moved.
 -->
@@ -747,18 +724,18 @@ layout: default
 <div class="!text-[1rem] opacity-60 tracking-[0.3em] uppercase !mt-1 !mb-4">Request &middot; Render &middot; Interact</div>
 </v-click>
 
-<div class="grid grid-cols-3 gap-5">
+<div class="grid grid-cols-3 gap-3">
 
 <v-click>
 <div class="p-4 rounded-xl border border-solid border-[var(--frost1)]/30 bg-[var(--frost1)]/5">
   <div class="flex items-center gap-2 !mb-3">
-    <div class="w-7 h-7 rounded-full bg-[var(--frost1)] text-[#2e3440] flex items-center justify-center !font-bold !text-[0.95rem]">1</div>
-    <div class="!font-semibold tracking-wide uppercase !text-[0.85rem] opacity-80">Request</div>
+    <div class="w-7 h-7 rounded-full bg-[var(--frost1)] text-[#2e3440] flex items-center justify-center !font-bold !text-[1.1rem]">1</div>
+    <div class="!font-bold tracking-wide uppercase !text-[1rem] text-[#2e3440]">Request</div>
   </div>
-  <div class="space-y-2 !text-[0.95rem] !leading-snug">
-    <div><span class="opacity-50">&rarr;</span> Developer asks: <em>"Show me the catalog"</em></div>
-    <div><span class="opacity-50">&rarr;</span> LLM calls tool <code>show-catalog</code></div>
-    <div><span class="opacity-50">&rarr;</span> Tool returns <strong>data</strong> + pointer to <strong>UI resource</strong></div>
+  <div class="space-y-2 !text-[1rem] !leading-snug text-[#2e3440]">
+    <div class="flex gap-2"><span class="opacity-50 flex-shrink-0">&rarr;</span><span>Developer asks: <span class="font-semibold" style="color: #9B1179;">"Show&nbsp;me&nbsp;the&nbsp;catalog"</span></span></div>
+    <div class="flex gap-2"><span class="opacity-50 flex-shrink-0">&rarr;</span><span>LLM calls tool <span class="font-mono font-semibold" style="color: #F6DE3C;">show-catalog</span></span></div>
+    <div class="flex gap-2"><span class="opacity-50 flex-shrink-0">&rarr;</span><span>Tool returns <span class="font-bold" style="color: #1C1173;">data</span> + pointer to <br> <span class="font-bold" style="color: #1C1173;">UI resource</span></span></div>
   </div>
 </div>
 </v-click>
@@ -766,13 +743,13 @@ layout: default
 <v-click>
 <div class="p-4 rounded-xl border border-solid border-[var(--frost1)]/30 bg-[var(--frost1)]/5">
   <div class="flex items-center gap-2 !mb-3">
-    <div class="w-7 h-7 rounded-full bg-[var(--frost1)] text-[#2e3440] flex items-center justify-center !font-bold !text-[0.95rem]">2</div>
-    <div class="!font-semibold tracking-wide uppercase !text-[0.85rem] opacity-80">Render</div>
+    <div class="w-7 h-7 rounded-full bg-[var(--frost1)] text-[#2e3440] flex items-center justify-center !font-bold !text-[1.1rem]">2</div>
+    <div class="!font-bold tracking-wide uppercase !text-[1rem] text-[#2e3440]">Render</div>
   </div>
-  <div class="space-y-2 !text-[0.95rem] !leading-snug">
-    <div><span class="opacity-50">&rarr;</span> Host fetches HTML from <code>ui://catalog/app.html</code></div>
-    <div><span class="opacity-50">&rarr;</span> Renders in a <strong>sandboxed iframe</strong></div>
-    <div><span class="opacity-50">&rarr;</span> Inline in the conversation</div>
+  <div class="space-y-2 !text-[1rem] !leading-snug text-[#2e3440]">
+    <div class="flex gap-2"><span class="opacity-50 flex-shrink-0">&rarr;</span><span>Host fetches HTML from <span class="font-mono font-semibold" style="color: #F6DE3C;">ui://catalog/app.html</span></span></div>
+    <div class="flex gap-2"><span class="opacity-60 flex-shrink-0">&rarr;</span><span>Renders in a <span class="font-bold" style="color: #1C1173;">sandboxed iframe</span></span></div>
+    <div class="flex gap-2"><span class="opacity-50 flex-shrink-0">&rarr;</span><span>Inline in the conversation</span></div>
   </div>
 </div>
 </v-click>
@@ -780,39 +757,43 @@ layout: default
 <v-click>
 <div class="p-4 rounded-xl border border-solid border-[var(--frost1)]/30 bg-[var(--frost1)]/5">
   <div class="flex items-center gap-2 !mb-3">
-    <div class="w-7 h-7 rounded-full bg-[var(--frost1)] text-[#2e3440] flex items-center justify-center !font-bold !text-[0.95rem]">3</div>
-    <div class="!font-semibold tracking-wide uppercase !text-[0.85rem] opacity-80">Interact</div>
+    <div class="w-7 h-7 rounded-full bg-[var(--frost1)] text-[#2e3440] flex items-center justify-center !font-bold !text-[1.1rem]">3</div>
+    <div class="!font-bold tracking-wide uppercase !text-[1rem] text-[#2e3440]">Interact</div>
   </div>
-  <div class="space-y-2 !text-[0.95rem] !leading-snug">
-    <div><span class="opacity-50">&rarr;</span> Developer clicks <em>"Deploy"</em> inside the UI</div>
-    <div><span class="opacity-50">&rarr;</span> UI calls an <strong>app-only tool</strong></div>
-    <div><span class="opacity-50">&rarr;</span> Deployment runs, UI updates inline</div>
+  <div class="space-y-2 !text-[1rem] !leading-snug text-[#2e3440]">
+    <div class="flex gap-2"><span class="opacity-50 flex-shrink-0">&rarr;</span><span>Developer clicks <span class="font-semibold" style="color: #9B1179;">"Deploy"</span> inside the UI</span></div>
+    <div class="flex gap-2"><span class="opacity-50 flex-shrink-0">&rarr;</span><span>UI calls an <span class="font-bold" style="color: #1C1173;">app-only tool</span></span></div>
+    <div class="flex gap-2"><span class="opacity-50 flex-shrink-0">&rarr;</span><span>Deployment runs, <br>UI updates inline</span></div>
   </div>
 </div>
 </v-click>
 
 </div>
 
-<v-click>
 <div class="grid grid-cols-3 gap-5 !mt-5">
 
-<div class="p-3 rounded-lg border border-solid border-emerald-400/40 bg-emerald-400/5">
-  <div class="!text-[0.75rem] tracking-[0.2em] uppercase opacity-70 !mb-1">Two-part registration</div>
-  <div class="!text-[0.9rem] !leading-snug"><strong>Tool</strong> returns data + <code>_meta.ui.resourceUri</code>. <strong>Resource</strong> serves the bundled HTML.</div>
-</div>
-
-<div class="p-3 rounded-lg border border-solid border-sky-400/40 bg-sky-400/5">
-  <div class="!text-[0.75rem] tracking-[0.2em] uppercase opacity-70 !mb-1">App-only tools</div>
-  <div class="!text-[0.9rem] !leading-snug">The UI can call them. The LLM <strong>cannot see</strong> them. User stays in control.</div>
-</div>
-
-<div class="p-3 rounded-lg border border-solid border-green-400/40 bg-green-400/5">
-  <div class="!text-[0.75rem] tracking-[0.2em] uppercase opacity-70 !mb-1">Zero token cost</div>
-  <div class="!text-[0.9rem] !leading-snug">UI ships as a resource, not as generated tokens. Cost stays flat.</div>
-</div>
-
+<v-click>
+<div class="p-3 rounded-lg border border-solid border-[#A3BE8C]/60 bg-[#A3BE8C]/15">
+  <div class="!text-[0.9rem] tracking-[0.2em] uppercase opacity-70 !mb-1">Two-part registration</div>
+  <div class="!text-[1rem] !leading-snug"><strong>Tool</strong> returns data + <code>_meta.ui.resourceUri</code>. <strong>Resource</strong> serves the bundled HTML.</div>
 </div>
 </v-click>
+
+<v-click>
+<div class="p-3 rounded-lg border border-solid border-[#88C0D0]/60 bg-[#88C0D0]/15">
+  <div class="!text-[0.9rem] tracking-[0.2em] uppercase opacity-70 !mb-1">App-only tools</div>
+  <div class="!text-[1rem] !leading-snug">The UI can call them. The LLM <strong>cannot see</strong> them. User stays in control.</div>
+</div>
+</v-click>
+
+<v-click>
+<div class="p-3 rounded-lg border border-solid border-[#8FBCBB]/60 bg-[#8FBCBB]/15">
+  <div class="!text-[0.9rem] tracking-[0.2em] uppercase opacity-70 !mb-1">Zero token cost</div>
+  <div class="!text-[1rem] !leading-snug">UI ships as a resource, not as generated tokens. Cost stays flat.</div>
+</div>
+</v-click>
+
+</div>
 
 <!--
 Two-part registration: tool and resource, linked by a URI. The tool returns data plus a pointer to the UI. The host fetches the HTML, renders it sandboxed. The UI can call app-only tools - tools the model can't see, only the user can trigger. All through secure postMessage. Zero token cost.
@@ -847,189 +828,59 @@ layout: default
 </div>
 
 <!--
-~6s. Let the gif loop a couple of times. No words. The audience laughs, you give them space to actually think with you.
+Transition: "MCP Apps works today. But what about UI the agent composes on the fly — UI that doesn't exist until you ask for it?"
 -->
 
 ---
 
-<div class="absolute inset-0 flex flex-col justify-center items-center px-16 text-center">
-  <h1 class="!text-[7rem] !leading-[1.05] !font-semibold !tracking-tight !m-0 !max-w-[90%]">
-    The <span class="text-[var(--frost1)]">Agentic IDP</span> Stack
+<div class="absolute inset-0 flex flex-col justify-start items-start px-14 pt-8">
+  <h1 class="!text-[4rem] !leading-[1.2] !font-semibold !tracking-tight !mb-3">
+    A2UI: <span class="text-[var(--frost1)]">a bet on the future</span>
   </h1>
-</div>
 
----
-layout: two-cols-header
----
+  <v-click>
+  <p class="!text-[1.5rem] !leading-relaxed !m-0 opacity-80 !max-w-[85%] !mb-8">
+    What if the agent could describe the UI as <strong>data</strong>, and any host renders it natively?
+  </p>
+  </v-click>
 
+  <v-click>
+  <div class="!max-w-[85%] space-y-4">
+    <div class="flex items-start gap-4">
+      <span class="text-[var(--frost1)] !text-[1.3rem] mt-1">●</span>
+      <span class="!text-[1.3rem]">Agent emits a UI spec as JSON - not HTML, not tokens</span>
+    </div>
+    <div class="flex items-start gap-4">
+      <span class="text-[var(--frost1)] !text-[1.3rem] mt-1">●</span>
+      <span class="!text-[1.3rem]">Host renders it with native components (React, SwiftUI, email, PDF)</span>
+    </div>
+    <div class="flex items-start gap-4">
+      <span class="text-[var(--frost1)] !text-[1.3rem] mt-1">●</span>
+      <span class="!text-[1.3rem]">Google-backed (ADK), v0.9 spec shipped 2026</span>
+    </div>
+  </div>
+  </v-click>
 
-# What is Agentic UI?
+  <div class="!mt-10 px-5 py-4 rounded-xl border-2 border-solid border-[var(--yellow)]/50 bg-[var(--yellow)]/10 !max-w-[55%] [&:not(:has(.slidev-vclick-current,.slidev-vclick-prior))]:!hidden" style="color: #2e3440; direction: ltr; text-align: left;">
+    <v-clicks>
+    <p class="!text-[1.1rem] !m-0 !leading-relaxed" style="direction: ltr; text-align: left;">
+      MCP Apps: You build pages once,<br/>agent serves them inside the conversation.
+    </p>
+    <p class="!text-[1.1rem] !mt-3 !mb-0 !leading-relaxed" style="direction: ltr; text-align: left;">
+      A2UI: You ask something → Agent builds<br/>the page on the fly. No one pre-built it.
+    </p>
+    </v-clicks>
+  </div>
 
-<v-click>
-<p class="!text-[1.56rem] !leading-relaxed !mt-2 !mb-4 opacity-80">
-Agentic UI is the umbrella. Any interface an AI agent controls at runtime. <br></br><strong>MCP Apps is one approach inside it</strong>. 
-</p>
-</v-click>
-
-::left::
-
-<v-click>
-
-<h3 class="!text-[1.5rem] !mt-2 !mb-3">3 components for UI population</h3>
-
-<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1.05rem] [&_li]:!leading-[1.5] [&_li]:!my-2">
-
-- **Open-ended.** Agent renders custom HTML. <br></br>*(MCP Apps)*
-- **Declarative.** Agent emits UI as data. *(A2UI)*
-- **Alignment.** Align & sync the components with the agent in the UI. *(AG-UI / CopilotKit)*
-
-</div>
-
-</v-click>
-
-::right::
-
-<v-click>
-
-<h3 class="!text-[1.5rem] !mt-2 !mb-3">Where MCP Apps needs help</h3>
-
-<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1.05rem] [&_li]:!leading-[1.5] [&_li]:!my-2">
-
-- **Scale.** Hand-built HTML doesn't fit hundreds of platform tools.
-- **Reach.** MCP hosts only. Not mobile, email, or PDF.
-- **Custom frontends.** Your own dashboard isn't an MCP host.
-
-</div>
-
-</v-click>
-
-<!--
-Bridge before the next two slides. Two things to land. First, Agentic UI is the umbrella term. MCP Apps is one slice of it, not separate from it. CopilotKit frames the space as three patterns by who controls the UI. Open-ended is the agent rendering HTML, that's MCP Apps. Declarative is the agent emitting UI as data, that's A2UI. Controlled is you defining the components and the agent triggering them, that's AG-UI through CopilotKit. Second, MCP Apps nails what we just demoed. But it doesn't scale to hundreds of tools, it doesn't reach mobile or email or PDF, and it doesn't work in your own dashboard. The next two slides each address those gaps. They compose with MCP Apps, not replace them.
--->
-
----
-layout: two-cols-header
----
-
-
-# A2UI: the standard for declarative UI
-
-<v-click>
-<p class="!text-[1.56rem] !leading-relaxed !mt-2 !mb-4 opacity-80">
-Google-backed, framework-agnostic. The agent describes the UI as <strong>data</strong>. The host renders it natively in whatever framework it already uses. v0.9 shipped in 2026 alongside Google's ADK.
-</p>
-</v-click>
-
-::left::
-
-<v-click>
-
-<h3 class="!text-[1.5rem] !mt-2 !mb-3">How it works</h3>
-
-<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1.05rem] [&_li]:!leading-[1.5] [&_li]:!my-2">
-
-- Agent emits a UI **spec** as JSON
-- Host renders it with **native** components
-- Same spec works on web, mobile, email, PDF
-- No iframes. No HTML generation.
-
-</div>
-
-</v-click>
-
-::right::
-
-<v-click>
-
-<h3 class="!text-[1.5rem] !mt-2 !mb-3">Why it matters for platforms</h3>
-
-<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1.05rem] [&_li]:!leading-[1.5] [&_li]:!my-2">
-
-- One conversation UI, every surface your team owns
-- Native rendering means accessibility, theming, perf
-- Pick your component catalog once, reuse everywhere
-- Designed to compose with MCP and AG-UI
-
-</div>
-
-</v-click>
-
-<!--
-A2UI is Google's answer to the same question MCP Apps answers, with a different bet. Where MCP Apps ships pre-built HTML, A2UI ships a UI description as data and lets the host render it natively in whatever framework it already uses. Same agent output, different host renderers. React on web, Compose on Android, SwiftUI on iOS, plain HTML in email, formatted text in PagerDuty. The killer feature for platform engineering: write your service catalog UI once, render it in your internal portal, in Claude Desktop, in a mobile pager app, in escalation emails. v0.9 shipped in 2026. It's framework-agnostic by design. Backed by Google's Agent Development Kit but the spec is open.
--->
-
----
-layout: default
----
-
-
-# CopilotKit + AG-UI: the unifier
-
-<v-click>
-<p class="!text-[1.6rem] !leading-snug !mt-2 !mb-2 opacity-80">
-<strong>AG-UI</strong>: the open protocol between any agent backend and any frontend.
-</p>
-<p class="!text-[1.6rem] !leading-snug !mt-0 !mb-6 opacity-80">
-<strong>CopilotKit</strong>: its first-party React host.
-</p>
-</v-click>
-
-<v-click>
-
-<h3 class="!text-[1.5rem] !mt-2 !mb-3">What this unlocks</h3>
-
-<div class="opacity-85 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:!text-[1.25rem] [&_li]:!leading-[1.4] [&_li]:!my-2 !max-w-[92%]">
-
-- Streaming, tool calls, shared state, interrupts. One channel.
-- Backend swappable: LangGraph, Mastra, PydanticAI, Agno, CrewAI, ADK, custom.
-- Your React, your branding. MCP Apps and A2UI compose on top.
-- Long-running, bidirectional. Built for what HTTP wasn't.
-
-</div>
-
-</v-click>
-
-<Admonition title="The host can be yours" color="emerald-light">
-Claude Desktop is one host. CopilotKit lets you build your own, and the same MCP Apps, A2UI surfaces, and AG-UI actions render inside it.
-</Admonition>
-
-<div class="absolute bottom-[14px] right-6 bg-white rounded-lg p-2">
-  <QRCode value="https://docs.ag-ui.com/introduction" :size="90" render-as="svg" />
+  <v-click>
+  <div class="absolute bottom-6 right-10 max-w-[26rem] rotate-[2deg] px-3 py-4 rounded-xl border-1 border-solid border-[#d08770] bg-[#d08770] text-[#2e3440] shadow-xl !text-[1.11rem] !leading-snug z-10" style="direction: ltr; text-align: left;">
+    <strong>Why "the future" on not now?</strong> <br>No major host supports A2UI natively today, none render A2UI specs yet. <br>But this is where agentic UI is heading (we think)
+  </div>
+  </v-click>
 </div>
 
 <!--
-This is the practical answer to "but what about my own platform frontend?" AG-UI is the open, event-based protocol that standardizes how agent backends talk to frontends — streaming, tool calls, shared state, human-in-the-loop, all on one bidirectional channel. It was born from CopilotKit's work with LangGraph and CrewAI and is now an open protocol with multiple first-party clients. CopilotKit itself is the MIT-licensed React host: you write the developer dashboard your engineers actually want to use, embed a chat panel, and the same MCP Apps + A2UI surfaces + AG-UI streaming actions you've seen all day render inside YOUR app. Same backend code, different host. The point of the protocol is that the BACKEND is replaceable: today LangGraph, tomorrow your own agent, the frontend doesn't care. That's the bet on a standard. If your platform team needs a branded developer experience that includes conversation, this is the stack.
--->
-
----
-layout: default
----
-
-
-# When to use what
-
-<div class="!text-[1.1rem] !leading-snug mt-2 !mb-[20px] [&_th]:!py-1.5 [&_th]:!px-2 [&_td]:!py-1.5 [&_td]:!px-2">
-
-| | **MCP Apps** | **A2UI** | **CopilotKit + AG-UI** |
-|---|---|---|---|
-| **Best for** | Rich interactions in MCP hosts | Cross-surface declarative UI | Your own platform frontend |
-| **UI** | Pre-built HTML bundles | Agent-emitted spec (data) | React components in your app |
-| **Renders in** | Claude, ChatGPT, VS Code, Goose, Cursor | Any A2UI renderer (web/mobile/email) | Your custom dashboard |
-| **Who writes UI?** | You (HTML, once per tool) | You (component catalog, agent assembles) | You (React) + MCP Apps brought in |
-| **Platform use case** | Service catalog inside Claude / Cursor | Same UI in web + mobile + email | Internal developer dashboard |
-
-</div>
-
-<v-click>
-
-<Admonition title="They compose" color="purple-light">
-MCP Apps inside Claude. A2UI for cross-surface reach. CopilotKit + AG-UI to bring it all into your own dashboard. The 2026 platform stack uses all three.
-</Admonition>
-
-</v-click>
-
-<!--
-This is not a "pick one" decision. MCP Apps when your developers live in Claude or Cursor and you need rich interactions. A2UI when you need the same conversation UI to work in web, mobile, and email. CopilotKit and AG-UI when you're building your own internal developer portal and want the conversation baked in. They compose. A real platform team uses all three for different workflows.
+A2UI is the next step after MCP Apps. Instead of shipping pre-built HTML, the agent describes the UI as structured data and the host renders it natively. The spec exists, Google backs it, but adoption by major hosts hasn't happened yet. It's a bet — and we think it's a good one.
 -->
 
 ---
@@ -1040,7 +891,7 @@ layout: two-cols-header
 # Recap: From Destination to Delivery
 
 <p class="!text-[1.3rem] !leading-relaxed !mt-2 !mb-5 opacity-80 !max-w-[92%] italic">
-Portals are destinations. Conversations are interfaces that come to you.
+Portals - places you go to. &nbsp;&nbsp; Conversations - the portal comes to you.
 </p>
 
 ::left::
@@ -1072,24 +923,37 @@ Portals are destinations. Conversations are interfaces that come to you.
 
 <h3 class="!text-[1.6rem] !mt-2 !mb-3">The Delivery</h3>
 
-<blockquote class="!text-[1.25rem] !leading-relaxed !pl-4 border-l-4 border-solid border-[var(--frost1)] !my-3">
-"Deploy user-service to staging"
-</blockquote>
-
-<div class="p-3 rounded-xl border-2 border-solid border-[var(--green)] bg-[var(--slidev-bg-alt)] mt-3">
-  <div class="text-[var(--frost1)] !text-[0.95rem] mb-1 font-semibold">Platform Service Catalog</div>
-  <div class="!text-[1rem]">user-service &mdash; healthy &mdash; 3 replicas</div>
-  <div class="mt-2">
-    <span class="px-2 py-1 bg-[var(--frost3)] text-white !text-[0.85rem] rounded">Deploy to Staging</span>
+<div class="rounded-xl border border-solid border-[var(--frost1)]/30 bg-[var(--slidev-bg-alt)] overflow-hidden mt-2">
+  <div class="px-3 py-1.5 border-b border-solid border-[var(--slidev-border)] bg-[var(--slidev-bg)] flex items-center gap-2">
+    <mdi-robot class="!text-[0.9rem] text-[var(--frost2)]" />
+    <span class="!text-[0.7rem] font-semibold opacity-70">Agent</span>
+  </div>
+  <div class="px-3 pt-2 pb-1">
+    <div class="flex items-start gap-2">
+      <mdi-account class="!text-[0.9rem] text-[var(--frost1)] mt-0.5" />
+      <div class="rounded-lg bg-[var(--frost3)]/20 px-2 py-1 !text-[0.85rem]">Deploy payment-api to staging</div>
+    </div>
+  </div>
+  <div class="px-3 pb-2 pt-1">
+    <div class="flex items-start gap-2">
+      <mdi-robot class="!text-[0.9rem] text-[var(--frost2)] mt-0.5" />
+      <div class="flex-1 rounded-lg border border-solid border-[var(--frost1)]/30 bg-[var(--slidev-bg)] p-2 !text-[0.75rem]">
+        <div class="text-[var(--frost1)] font-semibold mb-1">Deploying payment-api → staging</div>
+        <div class="flex items-center gap-1"><span class="text-[var(--green)]">✓</span> Validate</div>
+        <div class="flex items-center gap-1"><span class="text-[var(--green)]">✓</span> Push</div>
+        <div class="flex items-center gap-1"><span class="text-[var(--green)]">✓</span> Roll out</div>
+        <div class="flex items-center gap-1"><span class="text-[var(--green)]">✓</span> Health check</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<Admonition title="3 steps, 0 context switches" color="emerald-light" />
+<Admonition title="1 sentence, 0 context switches" color="emerald-light" />
 
 </v-click>
 
 <!--
-Recap before action items. Same operation, two paradigms. Eight steps versus three. Five minutes versus ten seconds. Same platform data, same security model. The portal was a destination - you had to go to it. The conversation is delivery - the platform comes to you. That's the shift. Now here's what you do on Monday.
+Recap. Same operation, two paradigms. The portal was a destination — you had to go to it. MCP Apps delivers the platform inside the conversation. A2UI will take it further — agent-composed UI, natively rendered, wherever the developer already is. The portal didn't die. It became the backend.
 -->
 
 ---
@@ -1097,10 +961,10 @@ layout: default
 ---
 
 
-# What to do Monday morning
+# What to do Sunday morning
 
 <p class="!text-[1.3rem] !leading-relaxed !mt-2 !mb-6 opacity-80 !max-w-[92%]">
-Four moves your platform team can run this week.
+4 moves your platform team can do.
 </p>
 
 <div class="grid grid-cols-2 gap-5">
@@ -1109,7 +973,7 @@ Four moves your platform team can run this week.
 <div class="px-5 py-2 rounded-xl border border-solid h-full" style="border-color: rgba(136, 192, 208, 0.5); background: rgba(136, 192, 208, 0.08);">
 <div class="!text-[2rem] !font-bold !leading-none !m-0" style="color: var(--frost1);">01</div>
 <div class="!text-[1.2rem] !font-bold !mt-1 !mb-2">Audit your portal</div>
-<p class="!text-[1.05rem] !leading-snug !m-0 opacity-80">Which workflows have the lowest adoption? Those are your MCP candidates.</p>
+<p class="!text-[1.05rem] !leading-snug !m-0 opacity-80">Find the right workflows - those safe to experiment with & the ones that need a new interface most.</p>
 </div>
 </v-click>
 
@@ -1117,23 +981,23 @@ Four moves your platform team can run this week.
 <div class="px-5 py-2 rounded-xl border border-solid h-full" style="border-color: rgba(163, 190, 140, 0.5); background: rgba(163, 190, 140, 0.08);">
 <div class="!text-[2rem] !font-bold !leading-none !m-0" style="color: var(--green);">02</div>
 <div class="!text-[1.2rem] !font-bold !mt-1 !mb-2">Build one MCP server</div>
-<p class="!text-[1.05rem] !leading-snug !m-0 opacity-80">Start with service catalog or deploy.</p>
+<p class="!text-[1.05rem] !leading-snug !m-0 opacity-80">Start with the service catalog or deploying a service.</p>
 </div>
 </v-click>
 
 <v-click>
 <div class="px-5 py-2 rounded-xl border border-solid h-full" style="border-color: rgba(235, 203, 139, 0.5); background: rgba(235, 203, 139, 0.08);">
 <div class="!text-[2rem] !font-bold !leading-none !m-0" style="color: var(--yellow);">03</div>
-<div class="!text-[1.2rem] !font-bold !mt-1 !mb-2">Test your Agentic UI POC</div>
-<p class="!text-[1.05rem] !leading-snug !m-0 opacity-80">Track tool calls, UI renders, time-to-action. Compare adoption rates.</p>
+<div class="!text-[1.2rem] !font-bold !mt-1 !mb-2">Ship an MCP App</div>
+<p class="!text-[1.05rem] !leading-snug !m-0 opacity-80">Add UI to your MCP server. Track adoption,<br>time-to-action, and completion rate vs the portal.</p>
 </div>
 </v-click>
 
 <v-click>
 <div class="px-5 py-2 rounded-xl border border-solid h-full" style="border-color: rgba(180, 142, 173, 0.5); background: rgba(180, 142, 173, 0.08);">
 <div class="!text-[2rem] !font-bold !leading-none !m-0" style="color: var(--purple);">04</div>
-<div class="!text-[1.2rem] !font-bold !mt-1 !mb-2">Plan for the stack</div>
-<p class="!text-[1.05rem] !leading-snug !m-0 opacity-80">MCP Apps for deep flows inside Claude, ChatGPT, or Cursor. A2UI when the same UI has to reach mobile, email, or PDF. CopilotKit + AG-UI when you want it in your own dashboard.</p>
+<div class="!text-[1.2rem] !font-bold !mt-1 !mb-2">Explore A2UI</div>
+<p class="!text-[1.05rem] !leading-snug !m-0 opacity-80">MCP Apps - today. Prototype one workflow with A2UI. When hosts catch up, you'll be ready.</p>
 </div>
 </v-click>
 
@@ -1146,8 +1010,19 @@ Four moves for Monday. Audit the portal workflows nobody uses - those are your M
 ---
 
 <div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
+  <h1 class="!text-[12rem] !leading-none !font-semibold !tracking-tight !m-0">
+    ID<span class="relative inline-block"><span v-mark.strike-through.red="1" class="transition-opacity duration-500" :class="$clicks >= 2 ? 'opacity-30' : ''">P</span><v-click at="2"><span class="absolute inset-0 text-[var(--frost1)]">C</span></v-click></span>
+  </h1>
+  <p class="!mt-8 !text-[2.8rem] !m-0 opacity-60 whitespace-nowrap">
+    Internal Developer <span v-mark.strike-through.red="1" class="transition-opacity duration-500" :class="$clicks >= 2 ? 'opacity-30' : ''">Portal</span> <v-click at="2"><span class="text-[var(--frost1)]">Conversations</span></v-click>
+  </p>
+</div>
+
+---
+
+<div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
   <h1 class="!text-[6rem] !leading-tight !font-semibold !tracking-tight !m-0 !max-w-[95%]">
-    Stop Building <span class="opacity-50">Portals.</span><br/>
+    Stop Building Portals.<br/>
     Start Building <span v-mark.circle.yellow="1" class="text-[var(--frost1)]">Conversations</span>.
   </h1>
 </div>
@@ -1158,13 +1033,6 @@ Your portal isn't dead. It's your catalog of record, your golden paths, your age
 Thank you.
 -->
 
----
-
-<div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
-  <h1 class="!text-[12rem] !leading-none !font-semibold !tracking-tight !m-0 text-[var(--frost1)]">
-    Q&amp;A
-  </h1>
-</div>
 
 <!--
 Open it up for questions. If there's time, we can also show specific parts of the demo again or dive deeper into any of the GenUI approaches.
@@ -1175,7 +1043,7 @@ layout: default
 ---
 
 <div class="absolute inset-0 flex flex-col justify-center items-center px-20">
-  <div class="opacity-60 tracking-[0.3em] uppercase !text-[1rem] !mb-4">Thank you</div>
+  <div class="opacity-80 tracking-[0.6em] uppercase !text-[2rem] !mb-4">Thank you</div>
   <h1 class="!text-[3.6rem] !leading-[1.02] !font-semibold !tracking-tight !mb-12 text-center">
     Stay in <span class="text-[var(--frost1)]">conversation.</span>
   </h1>
@@ -1210,7 +1078,8 @@ layout: default
         <carbon-logo-github class="text-5xl" />
       </div>
       <div class="!text-[1.4rem] !font-bold">Slides + Demo</div>
-      <div class="opacity-60 !text-[0.85rem] mt-1 !leading-snug">github.com/dirien/stop-building-<br/>portals-start-building-conversations</div>
+      <div class="opacity-60 !text-[1rem]">&nbsp;</div>
+      <div class="mt-2 !text-[0.95rem] opacity-0">&nbsp;</div>
       <div class="mt-4 bg-white rounded-lg p-2 inline-block">
         <QRCode value="https://github.com/dirien/stop-building-portals-start-building-conversations" :size="110" render-as="svg" />
       </div>
@@ -1221,16 +1090,3 @@ layout: default
 <!--
 Thank you! Scan the QR codes to connect on LinkedIn or grab the slides and demo code from the repo.
 -->
-
----
-
-<!-- PARKED: IEP slide — move back into the deck when ready -->
-
-<div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
-  <h1 class="!text-[12rem] !leading-none !font-semibold !tracking-tight !m-0">
-    I<span class="text-[var(--red)]" style="text-decoration: line-through; text-decoration-thickness: 6px;">D</span><span class="text-[var(--frost1)]">E</span>P
-  </h1>
-  <p class="!mt-8 !text-[2rem] !m-0 opacity-60">
-    Internal <span style="text-decoration: line-through; color: var(--red);">Developer</span> <span class="text-[var(--frost1)]">Employee</span> Platform / internal developer conversations - until now we had only developers as our customers. now, we also have a new customer profile - agents
-  </p>
-</div>
