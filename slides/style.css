@@ -3,12 +3,12 @@ footer.absolute.bottom-1 {
   display: none !important;
 }
 
-/* Make the Slidev stage around the slide canvas white as well */
+/* Dark background for the slide stage */
 html,
 body,
 #app,
 #page-root {
-  background: #fff !important;
+  background: #2E3440 !important;
 }
 
 /* Larger padding and font for Admonitions */
@@ -20,3 +20,17 @@ body,
 .markdown-alert .markdown-alert-title-custom {
   font-size: 1.05rem !important;
 }
+
+/* Kiro ghost floating animation */
+@keyframes kiro-float {
+  0%, 100% { transform: translateY(0) rotate(2deg); }
+  25% { transform: translateY(-12px) rotate(-1deg); }
+  50% { transform: translateY(-6px) rotate(3deg); }
+  75% { transform: translateY(-16px) rotate(-2deg); }
+}
+
+.kiro-float {
+  animation: kiro-float 4s ease-in-out infinite;
+  opacity: 0.92;
+}
+
