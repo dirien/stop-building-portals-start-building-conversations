@@ -1,0 +1,114 @@
+[
+  {
+    "id": "root",
+    "component": "Card",
+    "child": "main-column"
+  },
+  {
+    "id": "main-column",
+    "component": "Column",
+    "children": [
+      "header-row",
+      "service-picker",
+      "title-field",
+      "urgency-picker",
+      "from-field",
+      "extra-details-field",
+      "share-checkbox",
+      "execute-button"
+    ],
+    "align": "stretch"
+  },
+  {
+    "id": "header-row",
+    "component": "Row",
+    "children": [
+      "header-icon",
+      "header-text"
+    ],
+    "align": "center"
+  },
+  {
+    "id": "header-icon",
+    "component": "Icon",
+    "name": "warning"
+  },
+  {
+    "id": "header-text",
+    "component": "Text",
+    "text": "Trigger PagerDuty Incident",
+    "variant": "h3"
+  },
+  {
+    "id": "service-picker",
+    "component": "ChoicePicker",
+    "label": "Service*",
+    "value": [],
+    "options": [
+      { "label": "Service A", "value": "service-a" },
+      { "label": "Service B", "value": "service-b" },
+      { "label": "Service C", "value": "service-c" }
+    ],
+    "variant": "mutuallyExclusive"
+  },
+  {
+    "id": "title-field",
+    "component": "TextField",
+    "label": "Title*",
+    "value": "",
+    "variant": "shortText"
+  },
+  {
+    "id": "urgency-picker",
+    "component": "ChoicePicker",
+    "label": "Urgency*",
+    "value": ["high"],
+    "options": [
+      { "label": "High", "value": "high" },
+      { "label": "Low",  "value": "low"  }
+    ],
+    "variant": "mutuallyExclusive"
+  },
+  {
+    "id": "from-field",
+    "component": "TextField",
+    "label": "From*",
+    "value": "Taylor (Platform)",
+    "variant": "shortText",
+    "checks": [
+      {
+        "condition": {
+          "call": "required",
+          "args": { "value": { "path": "/from" } }
+        },
+        "message": "From is required"
+      }
+    ]
+  },
+  {
+    "id": "extra-details-field",
+    "component": "TextField",
+    "label": "Extra Details",
+    "value": "",
+    "variant": "longText"
+  },
+  {
+    "id": "share-checkbox",
+    "component": "CheckBox",
+    "label": "Share",
+    "value": false
+  },
+  {
+    "id": "execute-button-text",
+    "component": "Text",
+    "text": "Execute"
+  },
+  {
+    "id": "execute-button",
+    "component": "Button",
+    "child": "execute-button-text",
+    "action": {
+      "event": { "name": "triggerIncident" }
+    }
+  }
+]

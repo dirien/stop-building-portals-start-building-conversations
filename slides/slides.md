@@ -239,6 +239,9 @@ layout: default
   <v-click>
     <img src="/kiro-ghost.png" class="absolute w-[18rem] h-auto kiro-float" style="bottom: 14%; right: 26%; z-index: 8;" />
   </v-click>
+  <v-click>
+    <img src="/pulumi-neo.png" class="absolute w-[14rem] h-auto" style="top: 48%; left: 8%; transform: rotate(-6deg); z-index: 9;" />
+  </v-click>
 
 </div>
 
@@ -858,6 +861,14 @@ Transition: "MCP Apps works today. But what about UI the agent composes on the f
 
 ---
 
+<div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
+  <h1 class="!text-[6.5rem] !leading-tight !font-semibold !tracking-tight !m-0 !max-w-[95%]">
+    The future is <span class="text-[var(--frost1)]">Agentic UIs</span>
+  </h1>
+</div>
+
+---
+
 <div class="absolute inset-0 flex flex-col justify-start items-start px-14 pt-8">
   <h1 class="!text-[4rem] !leading-[1.2] !font-semibold !tracking-tight !mb-3">
     A2UI: <span class="text-[var(--frost1)]">a bet on the future</span>
@@ -906,6 +917,165 @@ Transition: "MCP Apps works today. But what about UI the agent composes on the f
 
 <!--
 A2UI is the next step after MCP Apps. Instead of shipping pre-built HTML, the agent describes the UI as structured data and the host renders it natively. The spec exists, Google backs it, but adoption by major hosts hasn't happened yet. It's a bet — and we think it's a good one.
+-->
+
+---
+layout: default
+---
+
+# הדוגמה
+
+<div class="grid grid-cols-[0.7fr_1.6fr] gap-5 items-start">
+
+<v-click>
+<div class="flex flex-col items-center">
+  <div class="!text-[0.72rem] tracking-[0.25em] uppercase opacity-60 !mb-2">Rendered natively by the host</div>
+  <img src="/a2ui-pagerduty-form.png" class="max-h-[370px] w-auto rounded-xl shadow-2xl border-2 border-[var(--frost1)]/30 bg-white" />
+</div>
+</v-click>
+
+<v-click>
+<div class="space-y-2 min-w-0">
+
+<div class="!text-[0.72rem] tracking-[0.25em] uppercase opacity-60">Components</div>
+
+<div class="[&_pre]:!text-[0.44rem] [&_pre]:!leading-[1.5] [&_pre]:!my-0 [&_pre]:!max-h-[300px] [&_pre]:!overflow-auto [&_pre_*]:!text-[0.44rem] [&_pre_*]:!leading-[1.5] [&_code]:!text-[0.44rem] [&_code]:!leading-[1.5] [&_.line]:!text-[0.44rem] [&_.line]:!leading-[1.5]">
+
+```json {lines:false}
+[
+  {
+    "id": "root",
+    "component": "Card",
+    "child": "main-column"
+  },
+  {
+    "id": "main-column",
+    "component": "Column",
+    "children": [
+      "header-row",
+      "service-picker",
+      "title-field",
+      "urgency-picker",
+      "from-field",
+      "extra-details-field",
+      "share-checkbox",
+      "execute-button"
+    ],
+    "align": "stretch"
+  },
+  {
+    "id": "header-row",
+    "component": "Row",
+    "children": ["header-icon", "header-text"],
+    "align": "center"
+  },
+  {
+    "id": "header-icon",
+    "component": "Icon",
+    "name": "warning"
+  },
+  {
+    "id": "header-text",
+    "component": "Text",
+    "text": "Trigger PagerDuty Incident",
+    "variant": "h3"
+  },
+  {
+    "id": "service-picker",
+    "component": "ChoicePicker",
+    "label": "Service*",
+    "value": [],
+    "options": [
+      { "label": "Service A", "value": "service-a" },
+      { "label": "Service B", "value": "service-b" },
+      { "label": "Service C", "value": "service-c" }
+    ],
+    "variant": "mutuallyExclusive"
+  },
+  {
+    "id": "title-field",
+    "component": "TextField",
+    "label": "Title*",
+    "value": "",
+    "variant": "shortText"
+  },
+  {
+    "id": "urgency-picker",
+    "component": "ChoicePicker",
+    "label": "Urgency*",
+    "value": ["high"],
+    "options": [
+      { "label": "High", "value": "high" },
+      { "label": "Low",  "value": "low"  }
+    ],
+    "variant": "mutuallyExclusive"
+  },
+  {
+    "id": "from-field",
+    "component": "TextField",
+    "label": "From*",
+    "value": "Taylor (Platform)",
+    "variant": "shortText",
+    "checks": [
+      {
+        "condition": {
+          "call": "required",
+          "args": { "value": { "path": "/from" } }
+        },
+        "message": "From is required"
+      }
+    ]
+  },
+  {
+    "id": "extra-details-field",
+    "component": "TextField",
+    "label": "Extra Details",
+    "value": "",
+    "variant": "longText"
+  },
+  {
+    "id": "share-checkbox",
+    "component": "CheckBox",
+    "label": "Share",
+    "value": false
+  },
+  {
+    "id": "execute-button-text",
+    "component": "Text",
+    "text": "Execute"
+  },
+  {
+    "id": "execute-button",
+    "component": "Button",
+    "child": "execute-button-text",
+    "action": {
+      "event": { "name": "triggerIncident" }
+    }
+  }
+]
+```
+
+</div>
+
+<div class="!text-[0.72rem] tracking-[0.25em] uppercase opacity-60 !mt-2">Data</div>
+
+<div class="[&_pre]:!text-[0.57rem] [&_pre]:!leading-[1.5] [&_pre]:!my-0 [&_pre_*]:!text-[0.57rem] [&_pre_*]:!leading-[1.5] [&_code]:!text-[0.57rem] [&_code]:!leading-[1.5] [&_.line]:!leading-[1.5]">
+
+```json {lines:false}
+{
+  "from": "Taylor (Platform)"
+}
+```
+
+</div>
+
+</div>
+</v-click>
+
+</div>
+
+<!--
+Concrete A2UI shape: a JSON tree of typed components (Card, Column, Row, ChoicePicker, TextField, CheckBox, Button) plus a tiny data object. The agent never ships HTML — the host owns the components and renders the same spec natively in React, SwiftUI, email, PDF. Same spec, any surface.
 -->
 
 ---
