@@ -467,7 +467,7 @@ layout: default
 
 <div class="absolute inset-0 flex flex-col justify-center items-center px-20 text-center">
   <h1 class="!text-[6.5rem] !leading-tight !font-semibold !tracking-tight !m-0 !max-w-[95%]">
-    We're humans.<br/><span class="text-[var(--frost1)]">We need visualizations.</span>
+    We're humans.<br/><span class="text-[var(--frost1)]">We still need visualizations.</span>
   </h1>
 </div>
 
@@ -600,51 +600,51 @@ layout: two-cols-header
 ---
 
 
-# But what about Skills and CLIs?
+# Skills and MCP. Not Skills vs MCP.
 
-<p class="!text-[1.56rem] !leading-relaxed !mt-2 !mb-4 opacity-80">
-Depends on who you build it for.
+<p class="!text-[1.4rem] !leading-relaxed !mt-2 !mb-4 opacity-80">
+A skill can call your MCP server. They're different layers.
 </p>
 
 ::left::
 
 <v-click>
-<h3 class="!text-[1.8rem] !mt-8 !mb-3">Skills + CLI win for</h3>
+<h3 class="!text-[1.6rem] !mt-6 !mb-3">Skills, <code>CLAUDE.md</code>, slash commands</h3>
 </v-click>
 
-<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-4 [&_li]:!text-[1.3rem] [&_li]:!leading-[1.5] [&_li]:!my-2 -ml-4">
+<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-4 [&_li]:!text-[1.2rem] [&_li]:!leading-[1.5] [&_li]:!my-2 -ml-4">
 
 <v-clicks>
 
-- Your own workflows
-- Project conventions and runbooks
-- Customizing how your agent thinks for you
-- Anything that fits in a `SKILL.md` file
+- Your own workflows and runbooks
+- Project conventions, in the repo
+- How your agent thinks for you
+- Lives next to the code
 
 </v-clicks>
 
 </div>
 
 <v-click>
-<Admonition title="The individual layer" color="indigo-light">
-<div class="!text-[1.7rem] !font-bold !mt-6">Fast. Local. Yours.</div>
+<Admonition title="Reach for this when" color="indigo-light">
+<div class="!text-[1.5rem] !font-bold !mt-4">Fast. Local. Yours.</div>
 </Admonition>
 </v-click>
 
 ::right::
 
 <v-click>
-<h3 class="!text-[1.8rem] !mt-8 !mb-3 ml-4">Protocols win for</h3>
+<h3 class="!text-[1.6rem] !mt-6 !mb-3 ml-4">MCP server (built for your org)</h3>
 </v-click>
 
-<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-4 [&_li]:!text-[1.3rem] [&_li]:!leading-[1.5] [&_li]:!my-2 ml-4">
+<div class="opacity-80 [&_ul]:list-disc [&_ul]:pl-4 [&_li]:!text-[1.2rem] [&_li]:!leading-[1.5] [&_li]:!my-2 ml-4">
 
 <v-clicks>
 
-- A team serving the rest of engineering
+- One team serving the rest of engineering
 - OAuth identity, audit trails, RBAC
-- UI for users beyond the terminal
-- Anything that has to outlive the person who built it
+- UI for the people who won't open a terminal
+- Outlives whoever shipped it
 
 </v-clicks>
 
@@ -652,14 +652,14 @@ Depends on who you build it for.
 
 <v-click>
 <div class="ml-4">
-<Admonition title="The platform layer" color="emerald-light">
-<div class="!text-[1.7rem] !font-bold !mt-6">You're not the user. Your org is.</div>
+<Admonition title="Reach for this when" color="emerald-light">
+<div class="!text-[1.5rem] !font-bold !mt-4">You're not the user. Your org is.</div>
 </Admonition>
 </div>
 </v-click>
 
 <!--
-Here's the elephant. A lot of solo developers are skipping MCP and extending their coding agents directly. Skills, CLAUDE.md files, custom slash commands. For them, that's the right call. Fast, local, lives in the repo, no servers to maintain. But you're not in this room to optimize your personal workflow. You're here because you build platforms. Platforms have multiple users, governance to satisfy, identities to track, and product managers who won't open a terminal. Skills don't have audit trails. Skills can't authenticate as the user against external systems. Skills don't render UI for the PMs. The protocol war may shift. The need for a protocol won't.
+Here's the elephant we promised. Plenty of devs are extending their agents with skills, CLAUDE.md, slash commands, and skipping MCP. So do you even need a protocol if a skill can do it? They're not exclusive. A skill can call your MCP tools. The reason platform teams still ship MCP servers: skills don't carry OAuth identity. They don't write audit trails. They don't render UI for the PM who won't open a terminal. And they don't outlive the person who wrote them. That's what the platform layer is for.
 -->
 ---
 
@@ -884,7 +884,7 @@ Transition: "MCP Apps works today. But what about UI the agent composes on the f
   <div class="!max-w-[85%] space-y-4">
     <div class="flex items-start gap-4">
       <span class="text-[var(--frost1)] !text-[1.3rem] mt-1">●</span>
-      <span class="!text-[1.3rem]">Agent emits a UI spec as JSON - not HTML, not tokens</span>
+      <span class="!text-[1.3rem]">Agent emits a UI spec as JSON</span>
     </div>
     <div class="flex items-start gap-4">
       <span class="text-[var(--frost1)] !text-[1.3rem] mt-1">●</span>
