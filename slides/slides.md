@@ -124,7 +124,7 @@ layout: default
        Helping teams ship AWS cloud infrastructure faster.<br/>
        Core organizer of DevOpsDays Tel-Aviv &amp;<br/>
        TLV Community events.<br/>
-       Next event - 11.6.26 @ AWS Floor 28.
+       <strong>Next event - 11.6.26 @ AWS Floor 28.</strong>
     </p>
   </div>
 </div>
@@ -234,13 +234,13 @@ layout: default
     <img src="/cursor-cube.png" class="absolute w-[18rem] h-auto" style="top: 42%; left: 60%; transform: rotate(-3deg); z-index: 6;" />
   </v-click>
   <v-click>
+    <img src="/pulumi-neo.png" class="absolute w-[14rem] h-auto" style="top: 48%; left: 33%; transform: rotate(-6deg); z-index: 5;" />
+  </v-click>  
+  <v-click>
     <logos-claude-icon class="absolute !text-[22rem]" style="bottom: 12%; left: 2%; transform: rotate(3deg); z-index: 7;" />
   </v-click>
   <v-click>
     <img src="/kiro-ghost.png" class="absolute w-[18rem] h-auto kiro-float" style="bottom: 14%; right: 26%; z-index: 8;" />
-  </v-click>
-  <v-click>
-    <img src="/pulumi-neo.png" class="absolute w-[14rem] h-auto" style="top: 48%; left: 8%; transform: rotate(-6deg); z-index: 9;" />
   </v-click>
 
 </div>
@@ -409,7 +409,7 @@ Even Backstage — our northern star for building IDPs — has shifted. v1.40 sh
   </div>
   <v-click>
   <p class="!text-[1.93rem] !mt-12 !m-0 opacity-70 text-center">
-    The agent is fine with this. But you're not an agent.
+    The agent is fine with this. <strong>But you're not an agent.</strong>
   </p>
   </v-click>
 </div>
@@ -530,17 +530,17 @@ layout: default
 ---
 
 <div class="absolute inset-0 flex items-center justify-center px-10">
-  <div class="w-[840px] rounded-2xl border border-solid border-[var(--frost1)]/30 bg-[var(--slidev-bg-alt)] overflow-hidden shadow-2xl">
+  <div class="w-[900px] rounded-2xl border border-solid border-[var(--frost1)]/30 bg-[var(--slidev-bg-alt)] overflow-hidden shadow-2xl">
     <!-- Chat header -->
     <div class="px-6 py-4 border-b border-solid border-[var(--slidev-border)] bg-[var(--slidev-bg)] flex items-center gap-3">
-      <mdi-robot class="!text-[1.44rem] text-[var(--frost2)]" />
-      <span class="!text-[1.08rem] font-semibold opacity-70">PlatformOps Agent</span>
+      <mdi-robot class="!text-[1.54rem] text-[var(--frost2)]" />
+      <span class="!text-[1.15rem] font-semibold opacity-70">PlatformOps Agent</span>
     </div>
     <!-- User message -->
     <div class="px-6 pt-5 pb-3">
       <div class="flex items-start gap-4">
-        <mdi-account class="!text-[1.68rem] text-[var(--frost1)] mt-0.5" />
-        <div class="rounded-xl bg-[var(--frost3)]/20 px-5 py-3 !text-[1.32rem]">
+        <mdi-account class="!text-[1.8rem] text-[var(--frost1)] mt-0.5" />
+        <div class="rounded-xl bg-[var(--frost3)]/20 px-5 py-3 !text-[1.4rem]">
           Deploy payment-api to staging
         </div>
       </div>
@@ -548,23 +548,23 @@ layout: default
     <!-- Agent response: streaming deploy -->
     <div class="px-6 pb-6 pt-3">
       <div class="flex items-start gap-4">
-        <mdi-robot class="!text-[1.68rem] text-[var(--frost2)] mt-0.5" />
+        <mdi-robot class="!text-[1.8rem] text-[var(--frost2)] mt-0.5" />
         <div class="flex-1 rounded-xl border-2 border-solid border-[var(--frost1)]/40 bg-[var(--slidev-bg)] p-5">
-          <div class="text-[var(--frost1)] !text-[1.2rem] mb-4 font-semibold">Deploying payment-api → staging</div>
+          <div class="text-[var(--frost1)] !text-[1.28rem] mb-4 font-semibold">Deploying payment-api → staging</div>
           <div class="space-y-3">
-            <div class="flex items-center gap-3 !text-[1.1rem]">
+            <div class="flex items-center gap-3 !text-[1.18rem]">
               <span class="w-6 h-6 rounded-full bg-[var(--green)]/20 text-[var(--green)] flex items-center justify-center text-xs">✓</span>
               <span>Validating manifest</span>
             </div>
-            <div class="flex items-center gap-3 !text-[1.1rem]">
+            <div class="flex items-center gap-3 !text-[1.18rem]">
               <span class="w-6 h-6 rounded-full bg-[var(--green)]/20 text-[var(--green)] flex items-center justify-center text-xs">✓</span>
               <span>Pushing image</span>
             </div>
-            <div class="flex items-center gap-3 !text-[1.1rem]">
+            <div class="flex items-center gap-3 !text-[1.18rem]">
               <span class="w-6 h-6 rounded-full bg-[var(--yellow)]/20 text-[var(--yellow)] flex items-center justify-center text-xs animate-pulse">●</span>
               <span>Rolling out (2/3 replicas)</span>
             </div>
-            <div class="flex items-center gap-3 !text-[1.1rem] opacity-40">
+            <div class="flex items-center gap-3 !text-[1.18rem] opacity-40">
               <span class="w-6 h-6 rounded-full bg-[var(--slidev-border)] flex items-center justify-center text-xs">○</span>
               <span>Health check</span>
             </div>
@@ -579,7 +579,7 @@ layout: default
 
 
 <div class="absolute inset-0" style="background: #BABBBD;">
-  <div class="absolute top-[18%] right-[6%] !text-[16rem] !leading-none !font-bold !tracking-tight text-gray-900" dir="rtl">רגע!!!</div>
+  <div class="absolute top-[18%] right-[6%] !text-[16rem] !leading-none !font-bold !tracking-tight text-gray-900" dir="rtl">רגע!</div>
   <img src="/hila-fish-headshot.png" class="absolute bottom-0 left-0 max-h-[70%]" />
 </div>
 
@@ -1119,20 +1119,20 @@ Portals - places you go to. &nbsp;&nbsp; Conversations - the portal comes to you
 <h3 class="!text-[1.6rem] !mt-2 !mb-3">The Delivery</h3>
 
 <div class="rounded-xl border border-solid border-[var(--frost1)]/30 bg-[var(--slidev-bg-alt)] overflow-hidden mt-2">
-  <div class="px-3 py-1.5 border-b border-solid border-[var(--slidev-border)] bg-[var(--slidev-bg)] flex items-center gap-2">
-    <mdi-robot class="!text-[0.9rem] text-[var(--frost2)]" />
-    <span class="!text-[0.7rem] font-semibold opacity-70">Agent</span>
+  <div class="px-3 py-2 border-b border-solid border-[var(--slidev-border)] bg-[var(--slidev-bg)] flex items-center gap-2">
+    <mdi-robot class="!text-[1.1rem] text-[var(--frost2)]" />
+    <span class="!text-[0.85rem] font-semibold opacity-70">Agent</span>
   </div>
   <div class="px-3 pt-2 pb-1">
     <div class="flex items-start gap-2">
-      <mdi-account class="!text-[0.9rem] text-[var(--frost1)] mt-0.5" />
-      <div class="rounded-lg bg-[var(--frost3)]/20 px-2 py-1 !text-[0.85rem]">Deploy payment-api to staging</div>
+      <mdi-account class="!text-[1.1rem] text-[var(--frost1)] mt-0.5" />
+      <div class="rounded-lg bg-[var(--frost3)]/20 px-2 py-1 !text-[1rem]">Deploy payment-api to staging</div>
     </div>
   </div>
   <div class="px-3 pb-2 pt-1">
     <div class="flex items-start gap-2">
-      <mdi-robot class="!text-[0.9rem] text-[var(--frost2)] mt-0.5" />
-      <div class="flex-1 rounded-lg border border-solid border-[var(--frost1)]/30 bg-[var(--slidev-bg)] p-2 !text-[0.75rem]">
+      <mdi-robot class="!text-[1.1rem] text-[var(--frost2)] mt-0.5" />
+      <div class="flex-1 rounded-lg border border-solid border-[var(--frost1)]/30 bg-[var(--slidev-bg)] p-2 !text-[0.9rem]">
         <div class="text-[var(--frost1)] font-semibold mb-1">Deploying payment-api → staging</div>
         <div class="flex items-center gap-1"><span class="text-[var(--green)]">✓</span> Validate</div>
         <div class="flex items-center gap-1"><span class="text-[var(--green)]">✓</span> Push</div>
